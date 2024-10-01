@@ -8,8 +8,14 @@ This project was developed by **Vizcats** For [INFO 526 - Data Analysis and Visu
 
 -   Team member 1: One sentence description of Team member 1 (e.g., year, major, etc.).
 
--   Team member 2: One sentence description of Team member 2 (e.g., year, major, etc.).
+-   Johnson Jeeva John Jacob : Fall 2024, MS in Data Science.
 
--   Team member 3: One sentence description of Team member 3 (e.g., year, major, etc.).
+-   Likhith Ramesh : Fall 2024, MS in Information Science.
 
--   Team member 4: One sentence description of Team member 4 (e.g., year, major, etc.).
+-   Pragnya Narasimha : Fall 2024, MS in Data Science.
+
+-   Sreeharsha Nalluri : Fall 2024, MS in Information Science.
+
+-   Sumanth Manohar : Fall 2024, MS in Data Science.
+
+-   Tanmay Nalawade : Fall 2024, MS in Data Science.
