@@ -34,7 +34,7 @@ Roles (change as needed):
 Project Manager: Tanmay Nalawade – Ensures timelines are met, organizes meetings, and manages communications.
 Data Analyst: Pragnya Narasimha, Jay Patil – Responsible for data cleaning, analysis, and exploratory visualizations.
 Visualization Specialist: Sumanth Manohar, Sreeharsha Nalluri – Designs the final visualizations and makes aesthetic choices.
-Documentation Lead: Johnson Jeeva John Jacob, Likhith Reddy  – Keeps detailed notes, ensures all project decisions are documented, and handles the final report.
+Documentation Lead: Johnson Jeeva John Jacob, Likhith Ramesh  – Keeps detailed notes, ensures all project decisions are documented, and handles the final report.
 Responsibilities:
 General Responsibilities: Each team member is responsible for:
 Participating actively in all meetings.
@@ -69,6 +69,6 @@ If the conflict persists, consult the project supervisor for guidance.
 Signatures
 By signing below, each team member agrees to the terms of this contract and commits to working together effectively and respectfully.
 Sumanth Manohar (09/30/24)
-[Name]: ________________________ Date: ___________
+Likhith Ramesh (09/30/24)
 [Name]: ________________________ Date: ___________
 [Name]: ________________________ Date: ___________
