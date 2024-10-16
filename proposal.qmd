@@ -1,11 +1,11 @@
 ---
-title: "Proposal title"
+title: "Visualization of Crop and Livestock products"
 subtitle: "Proposal"
 author: 
-  - name: "Team Name"
+  - name: "Vizcats"
     affiliations:
       - name: "School of Information, University of Arizona"
-description: "Project description"
+description: "This project focuses on compiling and analyzing statistical data for a diverse range of 278 crop and livestock products. The dataset will be expressed in key indicators like production quantities, yields, and processed product outputs, making it a valuable resource for understanding global agricultural production patterns across crops and livestock industries."
 format:
   html:
     code-tools: true
@@ -21,23 +21,107 @@ execute:
 ```{r}
 #| label: load-pkgs
 #| message: false
-library(tidyverse)
+#| 
+# Install required packages
+
+# Define a function to check and install packages
+check_and_install <- function(package_name) {
+  if (!require(package_name, character.only = TRUE, quietly = TRUE)) {
+    install.packages(package_name, dependencies = TRUE, 
+                     repos = "https://cloud.r-project.org/")
+    library(package_name, character.only = TRUE)
+  }
+}
+
+# Check and install necessary packages
+check_and_install("tidyverse")
 ```
 
 ## Dataset
 
+data = read.csv(file = "data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_All_Data.csv")
+
+\# Display basic information about the dataset
+
+dim(data) \# Dimensions of the dataset
+
+glimpse(data) \# Quick overview of the data
+
+summary(data) \# Summary statistics
+
 ```{r}
 #| label: load-dataset
 #| message: false
+
+data = read.csv(file = "data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_All_Data.csv")
+
+# Display basic information about the dataset
+dim(data)  # Dimensions of the dataset
+glimpse(data)  # Quick overview of the data
+summary(data)  # Summary statistics
+
 ```
 
-A brief description of your dataset including its provenance, dimensions, etc. as well as the reason why you chose this dataset.
+**Dataset Description:**
 
-Make sure to load the data and use inline code for some of this information.
+**Crop and Livestock Data:** The dataset we’re working with is the FAOSTAT Crop and Livestock Production data. This dataset provides global statistics on agricultural production, focusing on crops and livestock. It tracks production volumes, harvested areas, and yields for various commodities.
+
+**Provenance:** This dataset is curated by the Food and Agriculture Organization (FAO) of the United Nations. It collects data from official government sources, surveys, and FAO estimates, covering over 200 countries.
+
+**Dimentions**: The dataset consists of **79,381** **rows** and **195 columns**. Each row represents production data for a specific commodity in a given year and country.
+
+**Column Overview:**
+
+1.  **Area Code:** Numeric code representing the country or region.
+2.  **Area:** Name of the country or region.
+3.  **Item Code:** Numeric code representing the commodity (e.g., wheat, rice).
+4.  **Item:** Name of the commodity (e.g., wheat, rice).
+5.  **Element Code:** Numeric code representing the type of data (e.g., production, area harvested).
+6.  **Element:** Type of data collected (e.g., production, area harvested, yield).
+7.  **Unit:** Unit of measurement (e.g., tons, hectares).
+8.  **Year:** The year of the recorded data.
+9.  **Yxxxx:** Columns representing the data for each year (e.g., Y1961, Y1962), where xxxx is the year.
+10. **Value:** The recorded value for the respective commodity and year.
+
+Reason for Choosing This Dataset:
+
+This dataset was selected for its rich insights into global agricultural production and its impact on food security and sustainability. Possible areas of investigation include:
+
+-   **Crop Production Trends:** Analyzing changes in crop yields and production volumes over time to understand global food supply dynamics.
+-   **Regional Comparisons:** Comparing the agricultural output of different regions to identify which areas contribute the most to global food production and how efficient they are.
+-   **Sustainability Insights:** Exploring the relationship between harvested areas and yields to assess agricultural efficiency and potential environmental impacts.
+
+The dataset offers a broad view of global agricultural practices, making it valuable for visualizing trends and informing agricultural policy.
+
+## **Introduction and Data:**
+
+### Source of the Data:
+
+The dataset is provided by FAOSTAT, the statistical database of the Food and Agriculture Organization (FAO) of the United Nations. FAOSTAT offers comprehensive data on global agricultural production, covering over 200 countries and territories. It is a key resource for understanding trends in food production and consumption on a global scale.
+
+### Data Collection:
+
+The data has been collected annually since 1961 through various official channels. FAO gathers data from national statistical offices, government reports, andannual surveys. In cases where official data is missing or incomplete, FAO uses estimation methods based on modeling and available statistics to ensure global consistency. The dataset captures detailed agricultural metrics, including production volumes, harvested areas, and yields for a broad range of crops and livestock.
+
+### Description of Observations:
+
+The dataset offers a granular view of global agricultural activities, with observations spanning multiple decades. Each record represents data from a specific country, commodity (e.g., wheat, maize, cattle), and year. Key metrics include the production volumes (measured in tons), harvested area (in hectares), and yield (tons per hectare), allowing for comprehensive analysis of trends in agricultural efficiency and food supply. The data covers a wide array of agricultural products, including both primary crops (such as grains, fruits, and vegetables) and livestock products (such as meat and dairy).
+
+### Ethical Concerns:
+
+There are several ethical considerations associated with the dataset:
+
+ - **Data Accuracy:** Since some countries may not provide complete or timely data, FAO often relies on estimations and imputation methods to fill gaps. This could introduce inaccuracies, especially in regions with limited statistical resources.
+
+\- **Regional Bias***:* Countries with well-developed statistical infrastructures may provide more accurate and detailed data, while those with less robust systems may report less reliable information. This could lead to potential biases in global comparisons and policy-making.
+
+ - **Sustainability:** The dataset could be used to highlight agricultural practices that may be environmentally harmful, such as overuse of land or water resources, without necessarily addressing the socio-economic challenges faced by the regions producing the data.
+
+Despite these concerns, FAOSTAT remains one of the most reliable and comprehensive sources of agricultural data worldwide, helping researchers and policymakers better understand global food production and its implications for food security and sustainability.
 
 ## Questions
 
-The two questions you want to answer.
+###    
 
 ## Analysis plan
 
