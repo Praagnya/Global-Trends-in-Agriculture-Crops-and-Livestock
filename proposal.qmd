@@ -111,18 +111,58 @@ The dataset offers a granular view of global agricultural activities, with obser
 
 There are several ethical considerations associated with the dataset:
 
- - **Data Accuracy:** Since some countries may not provide complete or timely data, FAO often relies on estimations and imputation methods to fill gaps. This could introduce inaccuracies, especially in regions with limited statistical resources.
+-   **Data Accuracy:** Since some countries may not provide complete or timely data, FAO often relies on estimations and imputation methods to fill gaps. This could introduce inaccuracies, especially in regions with limited statistical resources.
 
 \- **Regional Bias***:* Countries with well-developed statistical infrastructures may provide more accurate and detailed data, while those with less robust systems may report less reliable information. This could lead to potential biases in global comparisons and policy-making.
 
- - **Sustainability:** The dataset could be used to highlight agricultural practices that may be environmentally harmful, such as overuse of land or water resources, without necessarily addressing the socio-economic challenges faced by the regions producing the data.
+-   **Sustainability:** The dataset could be used to highlight agricultural practices that may be environmentally harmful, such as overuse of land or water resources, without necessarily addressing the socio-economic challenges faced by the regions producing the data.
 
 Despite these concerns, FAOSTAT remains one of the most reliable and comprehensive sources of agricultural data worldwide, helping researchers and policymakers better understand global food production and its implications for food security and sustainability.
 
 ## Questions
 
-###    
+1.  How has the global production of staple crops changed over the past 50 years, and what are the regional trends in production?
+
+    =\> Importance of the question: \
+    Understanding long-term changes in agricultural productivity, food security, and regional contributions to global crop output depends on answering this question. Policymakers and academics can evaluate how global supply dynamics may change as a result of variables like climate change or technological improvements by keeping an eye on these shifts and determining which regions are becoming more self-sufficient or dependent on imports.
+
+    =\> Research Topic and Hypothesis:
+
+    The study's main objective is to examine the production levels of basic crops including rice, wheat, and maize during the previous 50 years on a global and regional scale. It is hypothesised that although enhanced agricultural methods and technology have led to a rise in worldwide production, disparate locations may have encountered distinct patterns. For example, owing to saturation, developed regions may exhibit slower development, but developing regions may have notable gains as a result of expanding agricultural methods.
+
+    =\> Variables -
+
+    *Quantitative Variables:* - Production volume, Year
+
+    *Categorical Variables:* - Region (e.g., North America, Europe, Asia), Crop type (wheat, maize, rice)
+
+2.  How has the global production and trade of livestock commodities changed in response to rising population and demand for protein?
+
+    =\> Importance of the question:
+
+    The combination of shifting dietary patterns, food security, and global population expansion makes this subject important. Understanding how livestock production and commerce have changed in response to the growing demand for protein is essential to maintaining sustainable practices and supplying the world's nutritional needs. It also offers insights into how economic variables affect international trade as well as how raising livestock output affects the environment.
+
+    =\> Research Topic and Hypothesis:
+
+    The study will concentrate on the patterns of production and trade of important livestock products (meat, milk, etc.) and how these patterns connect to population expansion and the increased need for protein in recent decades. According to the theory, in order to satisfy the rising demand for foods high in protein, animal production and international trade have increased in tandem with the world's population and income levels.
+
+    =\> Variables -
+
+    *Quantitative Variables:* - Livestock production volumes (tons), Trade volumes (imports and exports), Population size, Year
+
+    *Categorical Variables:* - Region (e.g., North America, Europe, Asia), Livestock commodity (e.g., beef, pork, milk)
 
 ## Analysis plan
 
 -   A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
+
+| *Task Name*                      | *Status*    | *Assignee*                                | *Due*  | *Priority* | *Summary*                                                                                                                               |
+|---------|---------|---------|---------|---------|----------------------------|
+| *Data Loading and Cleaning*      | In Progress | Jay Patil, Johnson Jeeva John Jacob       | Week 1 | High       | Load the dataset, handle missing values, format columns, and clean data for analysis.                                                   |
+| *Exploratory Data Analysis*      | In Progress | Pragnya Narasimha, Sumanth Manohar        | Week 2 | High       | Analyze basic statistics, explore production trends for crops and livestock, visualize initial insights.                                |
+| *Question 1 Feature Engineering* | Not Started | Sreeharsha Nalluri, Jay Patil             | Week 3 | High       | Preprocess the data by extracting relevant features, including handling outliers, creating time-based and regional attributes.          |
+| *Question 1 Visualization*       | Not Started | Tanmay Nalawade, Johnson Jeeva John Jacob | Week 4 | High       | Create visualizations, such as line charts for crop production trends over time and bar charts comparing regional outputs.              |
+| *Question 2 Feature Engineering* | Not Started | Sreeharsha Nalluri, Likhith Ramesh        | Week 3 | High       | Calculate and compare livestock production metrics, including trade data, population-related variables, and regional indicators.        |
+| *Question 2 Visualization*       | Not Started | Tanmay Nalawade, Sumanth Manohar          | Week 4 | High       | Create visualizations, including bar charts comparing regional livestock production and line charts for trends in production and trade. |
+| *Drafting and Reviewing Results* | Not Started | Likhith Ramesh, Pragnya Narasimha         | Week 5 | Moderate   | Compile findings, draft the report, and review the results for insights into global agricultural trends.                                |
+| *Final Report and Presentation*  | Not Started | Pragnya Narasimha, Sumanth Manohar        | Week 6 | High       | Finalize the report, prepare presentation materials, and present findings on global agricultural production and trade trends.           |
