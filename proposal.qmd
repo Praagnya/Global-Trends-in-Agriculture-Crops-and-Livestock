@@ -37,7 +37,7 @@ check_and_install <- function(package_name) {
 check_and_install("tidyverse")
 ```
 
-## Dataset
+## Dataset 
 
 data = read.csv(file = "data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_All_Data.csv")
 
@@ -101,7 +101,7 @@ The dataset is provided by FAOSTAT, the statistical database of the Food and Agr
 
 ### Data Collection:
 
-The data has been collected annually since 1961 through various official channels. FAO gathers data from national statistical offices, government reports, andannual surveys. In cases where official data is missing or incomplete, FAO uses estimation methods based on modeling and available statistics to ensure global consistency. The dataset captures detailed agricultural metrics, including production volumes, harvested areas, and yields for a broad range of crops and livestock.
+The data has been collected annually since 1961 through various official channels. FAO gathers data from national statistical offices, government reports, and annual surveys. In cases where official data is missing or incomplete, FAO uses estimation methods based on modeling and available statistics to ensure global consistency. The dataset captures detailed agricultural metrics, including production volumes, harvested areas, and yields for a broad range of crops and livestock.
 
 ### Description of Observations:
 
@@ -112,9 +112,7 @@ The dataset offers a granular view of global agricultural activities, with obser
 There are several ethical considerations associated with the dataset:
 
 -   **Data Accuracy:** Since some countries may not provide complete or timely data, FAO often relies on estimations and imputation methods to fill gaps. This could introduce inaccuracies, especially in regions with limited statistical resources.
-
-\- **Regional Bias***:* Countries with well-developed statistical infrastructures may provide more accurate and detailed data, while those with less robust systems may report less reliable information. This could lead to potential biases in global comparisons and policy-making.
-
+-   **Regional Bias***:* Countries with well-developed statistical infrastructures may provide more accurate and detailed data, while those with less robust systems may report less reliable information. This could lead to potential biases in global comparisons and policy-making.
 -   **Sustainability:** The dataset could be used to highlight agricultural practices that may be environmentally harmful, such as overuse of land or water resources, without necessarily addressing the socio-economic challenges faced by the regions producing the data.
 
 Despite these concerns, FAOSTAT remains one of the most reliable and comprehensive sources of agricultural data worldwide, helping researchers and policymakers better understand global food production and its implications for food security and sustainability.
@@ -123,18 +121,18 @@ Despite these concerns, FAOSTAT remains one of the most reliable and comprehensi
 
 1.  How has the global production of staple crops changed over the past 50 years, and what are the regional trends in production?
 
-    =\> Importance of the question: \
+    =\> Importance of the question:\
     Understanding long-term changes in agricultural productivity, food security, and regional contributions to global crop output depends on answering this question. Policymakers and academics can evaluate how global supply dynamics may change as a result of variables like climate change or technological improvements by keeping an eye on these shifts and determining which regions are becoming more self-sufficient or dependent on imports.
 
     =\> Hypothesis:
 
     While global production of staple crops has increased due to improved agricultural practices and technology, developed regions may show slower growth, whereas developing regions could exhibit significant increases from expanding agricultural practices.
 
-    =\> Variables -
+    =\> Variables:
 
-    *Quantitative Variables:* - Production volume, Year
+    *Quantitative Variables:* Production volume, Year
 
-    *Categorical Variables:* - Region (e.g., North America, Europe, Asia), Crop type (wheat, maize, rice)
+    *Categorical Variables:* Region (e.g., North America, Europe, Asia), Crop type (wheat, maize, rice)
 
 2.  How has the global production and trade of livestock commodities changed in response to rising population and demand for protein?
 
@@ -146,18 +144,18 @@ Despite these concerns, FAOSTAT remains one of the most reliable and comprehensi
 
     As global population and income levels have risen, livestock production and international trade have increased to meet the growing demand for protein-rich foods.
 
-    =\> Variables -
+    =\> Variables:
 
-    *Quantitative Variables:* - Livestock production volumes (tons), Trade volumes (imports and exports), Population size, Year
+    *Quantitative Variables:* Livestock production volumes (tons), Trade volumes (imports and exports), Population size, Year
 
-    *Categorical Variables:* - Region (e.g., North America, Europe, Asia), Livestock commodity (e.g., beef, pork, milk)
+    *Categorical Variables:* Region (e.g., North America, Europe, Asia), Livestock commodity (e.g., beef, pork, milk)
 
 ## Analysis plan
 
 -   A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
 
 | *Task Name*                      | *Status*    | *Assignee*                                | *Due*  | *Priority* | *Summary*                                                                                                                               |
-|---------|---------|---------|---------|---------|----------------------------|
+|------------|------------|------------|------------|------------|------------|
 | *Data Loading and Cleaning*      | In Progress | Jay Patil, Johnson Jeeva John Jacob       | Week 1 | High       | Load the dataset, handle missing values, format columns, and clean data for analysis.                                                   |
 | *Exploratory Data Analysis*      | In Progress | Pragnya Narasimha, Sumanth Manohar        | Week 2 | High       | Analyze basic statistics, explore production trends for crops and livestock, visualize initial insights.                                |
 | *Question 1 Feature Engineering* | Not Started | Sreeharsha Nalluri, Jay Patil             | Week 3 | High       | Preprocess the data by extracting relevant features, including handling outliers, creating time-based and regional attributes.          |
