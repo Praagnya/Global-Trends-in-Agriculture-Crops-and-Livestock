@@ -150,7 +150,7 @@ Despite these concerns, FAOSTAT remains one of the most reliable sources of agri
 -   A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
 
 | *Task Name*                      | *Status*    | *Assignee*                                | *Due*  | *Priority* | *Summary*                                                                                                                               |
-|----------------------------------|-------------|-------------------------------------------|--------|------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+|------------|------------|------------|------------|------------|------------|
 | *Data Loading and Cleaning*      | In Progress | Jay Patil, Johnson Jeeva John Jacob       | Week 1 | High       | Load the dataset, handle missing values, format columns, and clean data for analysis.                                                   |
 | *Exploratory Data Analysis*      | In Progress | Pragnya Narasimha, Sumanth Manohar        | Week 2 | High       | Analyze basic statistics, explore production trends for crops and livestock, visualize initial insights.                                |
 | *Question 1 Feature Engineering* | Not Started | Sreeharsha Nalluri, Jay Patil             | Week 3 | High       | Preprocess the data by extracting relevant features, including handling outliers, creating time-based and regional attributes.          |
@@ -267,7 +267,7 @@ Ethical Concerns:
 -   A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
 
 | **Task Name**                  | **Status**  | **Assignee**                              | **Due** | **Priority** | **Summary**                                                                                                                    |
-|--------------------------------|-------------|-------------------------------------------|---------|--------------|--------------------------------------------------------------------------------------------------------------------------------|
+|------------|------------|------------|------------|------------|------------|
 | Data Loading and Cleaning      | In Progress | Jay Patil, Johnson Jeeva John Jacob       | Week 1  | High         | Load the dataset, handle missing values, format columns, and clean data for analysis.                                          |
 | Exploratory Data Analysis      | In Progress | Pragnya Narasimha, Sumanth Manohar        | Week 2  | High         | Analyze basic statistics, explore production trends for coffee quality, visualize initial insights.                            |
 | Question 1 Feature Engineering | Not Started | Sreeharsha Nalluri, Jay Patil             | Week 3  | High         | Preprocess the data by extracting relevant features, including handling outliers, creating time-based and regional attributes. |
@@ -377,7 +377,7 @@ Variables: - Quantitative: Weight (tons), Volume (cubic yards), Plastic bottles,
 ## Analysis Plan
 
 | **Task Name**                  | **Status**  | **Assignee**                              | **Due** | **Priority** | **Summary**                                                                                                                    |
-|--------------------------------|-------------|-------------------------------------------|---------|--------------|--------------------------------------------------------------------------------------------------------------------------------|
+|------------|------------|------------|------------|------------|------------|
 | Data Loading and Cleaning      | In Progress | Jay Patil, Johnson Jeeva John Jacob       | Week 1  | High         | Load the dataset, handle missing values, format columns, and clean data for analysis.                                          |
 | Exploratory Data Analysis      | In Progress | Pragnya Narasimha, Sumanth Manohar        | Week 2  | High         | Analyze basic statistics, explore trends in trash collection, and visualize initial insights.                                  |
 | Question 1 Feature Engineering | Not Started | Sreeharsha Nalluri, Jay Patil             | Week 3  | High         | Preprocess the data by extracting relevant features, handling outliers, and merging external environmental data.               |
@@ -386,3 +386,5 @@ Variables: - Quantitative: Weight (tons), Volume (cubic yards), Plastic bottles,
 | Question 2 Visualization       | Not Started | Tanmay Nalawade, Sumanth Manohar          | Week 4  | High         | Create visualizations, including pie charts for trash types and stacked bar charts comparing trash types across cities.        |
 | Drafting and Reviewing Results | Not Started | Likhith Ramesh, Pragnya Narasimha         | Week 5  | Moderate     | Compile findings, draft the report, and review results for trends in trash collection and environmental factors.               |
 | Final Report and Presentation  | Not Started | Sreeharsha Nalluri, Sumanth Manohar       | Week 6  | High         | Finalize the report, prepare presentation materials, and present findings on trash collection and environmental influences.    |
+
+After careful consideration of the available datasets, we have chosen to proceed with the **FAOSTAT Crop and Livestock Production dataset** for the remainder of the project. This dataset was selected due to its rich potential for uncovering global agricultural trends, its strong alignment with our research questions, and the significance of the insights it can provide on food production and sustainability. By concentrating on this dataset, we aim to perform an in-depth analysis and thoroughly address the research objectives of our project.
