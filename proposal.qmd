@@ -37,17 +37,7 @@ check_and_install <- function(package_name) {
 check_and_install("tidyverse")
 ```
 
-## Dataset 
-
-data = read.csv(file = "data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_All_Data.csv")
-
-\# Display basic information about the dataset
-
-dim(data) \# Dimensions of the dataset
-
-glimpse(data) \# Quick overview of the data
-
-summary(data) \# Summary statistics
+# 1. Crop and Livestock Data
 
 ```{r}
 #| label: load-dataset
@@ -93,69 +83,74 @@ This dataset was selected for its rich insights into global agricultural product
 
 The dataset offers a broad view of global agricultural practices, making it valuable for visualizing trends and informing agricultural policy.
 
-## **Introduction and Data:**
+## Introduction and Data:
 
-### Source of the Data:
+```         
+Source of the Data:
+```
 
 The dataset is provided by FAOSTAT, the statistical database of the Food and Agriculture Organization (FAO) of the United Nations. FAOSTAT offers comprehensive data on global agricultural production, covering over 200 countries and territories. It is a key resource for understanding trends in food production and consumption on a global scale.
 
-### Data Collection:
+```         
+Data Collection:
+```
 
 The data has been collected annually since 1961 through various official channels. FAO gathers data from national statistical offices, government reports, and annual surveys. In cases where official data is missing or incomplete, FAO uses estimation methods based on modeling and available statistics to ensure global consistency. The dataset captures detailed agricultural metrics, including production volumes, harvested areas, and yields for a broad range of crops and livestock.
 
-### Description of Observations:
+```         
+Description of Observations:
+```
 
 The dataset offers a granular view of global agricultural activities, with observations spanning multiple decades. Each record represents data from a specific country, commodity (e.g., wheat, maize, cattle), and year. Key metrics include the production volumes (measured in tons), harvested area (in hectares), and yield (tons per hectare), allowing for comprehensive analysis of trends in agricultural efficiency and food supply. The data covers a wide array of agricultural products, including both primary crops (such as grains, fruits, and vegetables) and livestock products (such as meat and dairy).
 
-### Ethical Concerns:
-
-There are several ethical considerations associated with the dataset:
+```         
+Ethical Concerns:
+```
 
 -   **Data Accuracy:** Since some countries may not provide complete or timely data, FAO often relies on estimations and imputation methods to fill gaps. This could introduce inaccuracies, especially in regions with limited statistical resources.
+
 -   **Regional Bias***:* Countries with well-developed statistical infrastructures may provide more accurate and detailed data, while those with less robust systems may report less reliable information. This could lead to potential biases in global comparisons and policy-making.
--   **Sustainability:** The dataset could be used to highlight agricultural practices that may be environmentally harmful, such as overuse of land or water resources, without necessarily addressing the socio-economic challenges faced by the regions producing the data.
 
-Despite these concerns, FAOSTAT remains one of the most reliable and comprehensive sources of agricultural data worldwide, helping researchers and policymakers better understand global food production and its implications for food security and sustainability.
+Despite these concerns, FAOSTAT remains one of the most reliable sources of agricultural data worldwide, helping researchers and policymakers better understand global food production and its implications for food security and sustainability.
 
-## Questions
+## Research Questions
 
-1.  How has the global production of staple crops changed over the past 50 years, and what are the regional trends in production?
+1.  **How has the global production of staple crops changed over the past 50 years, and what are the regional trends in production?**
 
-    =\> Importance of the question:\
-    Understanding long-term changes in agricultural productivity, food security, and regional contributions to global crop output depends on answering this question. Policymakers and academics can evaluate how global supply dynamics may change as a result of variables like climate change or technological improvements by keeping an eye on these shifts and determining which regions are becoming more self-sufficient or dependent on imports.
+    Importance:
 
-    =\> Hypothesis:
+    Understanding long-term changes in agricultural productivity and regional contributions to global crop output is essential. Policymakers and academics can assess how global supply dynamics may shift due to factors like climate change or technological advancements, identifying which regions are becoming more self-sufficient or reliant on imports.
+
+    Hypothesis:
 
     While global production of staple crops has increased due to improved agricultural practices and technology, developed regions may show slower growth, whereas developing regions could exhibit significant increases from expanding agricultural practices.
 
-    =\> Variables:
+    Variables:
 
-    *Quantitative Variables:* Production volume, Year
+    -   Quantitative Variables: Production volume, Year
+    -   Categorical Variables: Region (e.g., North America, Europe, Asia), Crop type (wheat, maize, rice)
 
-    *Categorical Variables:* Region (e.g., North America, Europe, Asia), Crop type (wheat, maize, rice)
+2.  **How has the global production and trade of livestock commodities changed in response to rising population and demand for protein?**
 
-2.  How has the global production and trade of livestock commodities changed in response to rising population and demand for protein?
+    Importance:
 
-    =\> Importance of the question:
+    Understanding how livestock production and trade have responded to rising protein demand is crucial for sustainability and meeting global nutritional needs. It also sheds light on the economic factors driving trade and the environmental impact of increased livestock output.
 
-    The combination of shifting dietary patterns, food security, and global population expansion makes this subject important. Understanding how livestock production and commerce have changed in response to the growing demand for protein is essential to maintaining sustainable practices and supplying the world's nutritional needs. It also offers insights into how economic variables affect international trade as well as how raising livestock output affects the environment.
-
-    =\> Hypothesis:
+    Hypothesis:
 
     As global population and income levels have risen, livestock production and international trade have increased to meet the growing demand for protein-rich foods.
 
-    =\> Variables:
+    Variables:
 
-    *Quantitative Variables:* Livestock production volumes (tons), Trade volumes (imports and exports), Population size, Year
-
-    *Categorical Variables:* Region (e.g., North America, Europe, Asia), Livestock commodity (e.g., beef, pork, milk)
+    -   Quantitative Variables: Livestock production volumes (tons), Trade volumes (imports and exports), Population size, Year
+    -   Categorical Variables:\* Region (e.g., North America, Europe, Asia), Livestock commodity (e.g., beef, pork, milk)
 
 ## Analysis plan
 
 -   A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
 
 | *Task Name*                      | *Status*    | *Assignee*                                | *Due*  | *Priority* | *Summary*                                                                                                                               |
-|------------|------------|------------|------------|------------|------------|
+|----------------------------------|-------------|-------------------------------------------|--------|------------|-----------------------------------------------------------------------------------------------------------------------------------------|
 | *Data Loading and Cleaning*      | In Progress | Jay Patil, Johnson Jeeva John Jacob       | Week 1 | High       | Load the dataset, handle missing values, format columns, and clean data for analysis.                                                   |
 | *Exploratory Data Analysis*      | In Progress | Pragnya Narasimha, Sumanth Manohar        | Week 2 | High       | Analyze basic statistics, explore production trends for crops and livestock, visualize initial insights.                                |
 | *Question 1 Feature Engineering* | Not Started | Sreeharsha Nalluri, Jay Patil             | Week 3 | High       | Preprocess the data by extracting relevant features, including handling outliers, creating time-based and regional attributes.          |
@@ -164,3 +159,230 @@ Despite these concerns, FAOSTAT remains one of the most reliable and comprehensi
 | *Question 2 Visualization*       | Not Started | Tanmay Nalawade, Sumanth Manohar          | Week 4 | High       | Create visualizations, including bar charts comparing regional livestock production and line charts for trends in production and trade. |
 | *Drafting and Reviewing Results* | Not Started | Likhith Ramesh, Pragnya Narasimha         | Week 5 | Moderate   | Compile findings, draft the report, and review the results for insights into global agricultural trends.                                |
 | *Final Report and Presentation*  | Not Started | Pragnya Narasimha, Sumanth Manohar        | Week 6 | High       | Finalize the report, prepare presentation materials, and present findings on global agricultural production and trade trends.           |
+
+# 2. Coffee Quality Data
+
+```{r}
+#| label: load-dataset
+#| message: false
+
+data = read.csv(file = "data/Coffee_Data/coffee.csv")
+
+# Display basic information about the dataset
+dim(data)  # Dimensions of the dataset
+glimpse(data)  # Quick overview of the data
+summary(data)  # Summary statistics
+```
+
+```         
+Dataset Description:
+```
+
+```         
+**Coffee Quality Data:** This dataset provides insights into the quality of coffee produced in various regions around the world. It includes key metrics such as flavor, aftertaste, acidity, and body, along with environmental factors like altitude and region of origin. The data allows us to explore how these factors influence the overall quality of coffee.
+
+**Provenance:** The dataset includes coffee quality evaluations and environmental factors from coffee producers globally. It is collected from cupping sessions and other quality assessments performed by coffee professionals.
+
+**Dimensions:** The dataset consists of 989 rows and 23 columns that provide information about the coffee’s origin, environmental conditions, and quality scores.
+```
+
+```         
+Column Overview:
+```
+
+1.  **Location.Country:** Name of the country where the coffee was produced.
+2.  **Location.Region:** Specific region of production within the country.
+3.  **Location.Altitude.Min:** Minimum altitude where the coffee was grown.
+4.  **Location.Altitude.Max:** Maximum altitude where the coffee was grown.
+5.  **Data.Owner:** Organization or individual that provided the coffee sample.
+6.  **Data.Type.Species:** Species of coffee (e.g., Arabica).
+7.  **Data.Scores.Flavor:** Flavor score (e.g., a number between 0 and 10).
+8.  **Data.Scores.Aftertaste:** Aftertaste score (e.g., a number between 0 and 10).
+9.  **Data.Scores.Acidity:** Acidity score (e.g., a number between 0 and 10).
+10. **Data.Scores.Body:** Body score (e.g., a number between 0 and 10).
+11. **Data.Scores.Balance:** Balance score (e.g., a number between 0 and 10).
+12. **Data.Scores.Total:** Total score combining all aspects of coffee quality.
+
+------------------------------------------------------------------------
+
+## Introduction and Data:
+
+```         
+Source of the Data:
+```
+
+The dataset is composed of coffee quality evaluations, collected from cupping sessions conducted by coffee producers or quality testers. It captures detailed metrics on the sensory attributes of coffee, including flavor, acidity, and aftertaste, as well as geographic and environmental factors like region and altitude.
+
+```         
+Data Collection:
+```
+
+The data was probably gathered from various coffee-producing regions and may have been assessed by professional coffee tasters. The key attributes measured include coffee species, altitude, and sensory scores for quality, offering a comprehensive view of global coffee production and quality trends.
+
+```         
+Description of Observations:
+```
+
+Each record represents a coffee sample evaluated for specific quality metrics, such as flavor, aftertaste, acidity, and body. These metrics provide insight into the overall quality of coffee produced in different regions. Additional details about the environment, such as altitude and region, allow for analysis of how these factors impact coffee quality.
+
+```         
+Ethical Concerns:
+```
+
+-   **Producer Privacy:** The dataset may include the names of coffee producers, which could reveal sensitive business information.
+-   **Data Accuracy:** There may be variability in the evaluation methods used across regions, which could affect the consistency of quality scores.
+
+------------------------------------------------------------------------
+
+## Research Questions
+
+1.  **How do environmental factors, such as altitude and geographic region, affect coffee quality?**
+
+    Importance: Environmental factors like altitude and region are often considered crucial in determining coffee quality. Understanding how these factors influence sensory metrics like flavor, aftertaste, and acidity is important for both coffee producers and consumers. This analysis could provide insights into optimal growing conditions for high-quality coffee.
+
+    Hypothesis: Coffee grown at higher altitudes will generally receive higher flavor and overall quality scores due to favorable growing conditions.
+
+    Variables:
+
+    -   Quantitative: Altitude, Flavor score, Acidity score
+    -   Categorical: Region, Country, Coffee species
+
+------------------------------------------------------------------------
+
+2.  **Do coffees with higher sweetness scores also score higher in overall quality, or is there an inverse relationship?**
+
+    Importance: Sweetness is a desirable quality in coffee, but it’s important to assess whether a high sweetness score correlates with higher overall quality or whether it sometimes detracts from other attributes.
+
+    Hypothesis: Coffees with higher sweetness scores will generally have higher total quality scores, although some very sweet coffees may score lower due to imbalances in other attributes.
+
+    Variables:
+
+    -   Quantitative: Sweetness score, Total quality score
+    -   Categorical: Coffee species, Region
+
+------------------------------------------------------------------------
+
+## Analysis Plan
+
+-   A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
+
+| **Task Name**                  | **Status**  | **Assignee**                              | **Due** | **Priority** | **Summary**                                                                                                                    |
+|--------------------------------|-------------|-------------------------------------------|---------|--------------|--------------------------------------------------------------------------------------------------------------------------------|
+| Data Loading and Cleaning      | In Progress | Jay Patil, Johnson Jeeva John Jacob       | Week 1  | High         | Load the dataset, handle missing values, format columns, and clean data for analysis.                                          |
+| Exploratory Data Analysis      | In Progress | Pragnya Narasimha, Sumanth Manohar        | Week 2  | High         | Analyze basic statistics, explore production trends for coffee quality, visualize initial insights.                            |
+| Question 1 Feature Engineering | Not Started | Sreeharsha Nalluri, Jay Patil             | Week 3  | High         | Preprocess the data by extracting relevant features, including handling outliers, creating time-based and regional attributes. |
+| Question 1 Visualization       | Not Started | Tanmay Nalawade, Johnson Jeeva John Jacob | Week 4  | High         | Create visualizations, such as scatter plots for altitude vs flavor scores and bar charts comparing regional coffee quality.   |
+| Question 2 Feature Engineering | Not Started | Sreeharsha Nalluri, Likhith Ramesh        | Week 3  | High         | Calculate and compare processing methods, and extract metrics related to flavor and balance.                                   |
+| Question 2 Visualization       | Not Started | Tanmay Nalawade, Sumanth Manohar          | Week 4  | High         | Create visualizations, including bar charts comparing processing methods and their effect on flavor and balance scores.        |
+| Drafting and Reviewing Results | Not Started | Likhith Ramesh, Pragnya Narasimha         | Week 5  | Moderate     | Compile findings, draft the report, and review the results for insights into global coffee quality trends.                     |
+| Final Report and Presentation  | Not Started | Jeeva John Jacob, Sumanth Manohar         | Week 6  | High         | Finalize the report, prepare presentation materials, and present findings on coffee quality and environmental influences.      |
+
+# 3. Trash Wheel Data
+
+```{r}
+#| label: load-dataset
+#| message: false
+
+data = read.csv(file = "data/Trash_Wheel/Trash_Wheel.csv")
+
+# Display basic information about the dataset
+dim(data)  # Dimensions of the dataset
+glimpse(data)  # Quick overview of the data
+summary(data)  # Summary statistics
+```
+
+```         
+  Dataset Description:
+
+  **Trash Wheel Data:** This dataset provides insights into the amount of trash collected by trash wheels in rivers and harbors. It includes key metrics such as the type of waste collected, weight, volume, and environmental factors like water flow and rainfall.
+
+**Provenance:** The dataset includes trash collection data from various trash wheels deployed in different locations, focusing on environmental cleanup efforts in urban waterways.
+
+**Dimensions:** The dataset consists of multiple rows and columns detailing the type of waste collected (plastic, organic, etc.), location, and environmental metrics.
+
+Column Overview:
+```
+
+1.  **Dumpster:** Identification of the dumpster where trash was collected.
+2.  **Month:** The month when the data was recorded.
+3.  **Year:** The year when the data was recorded.
+4.  **Date:** Specific date of trash collection.
+5.  **Weight (tons):** Weight of trash collected (in tons).
+6.  **Volume (cubic yards):** Volume of trash collected (in cubic yards).
+7.  **Plastic Bottles:** Number of plastic bottles collected.
+8.  **Polystyrene:** Amount of polystyrene collected.
+9.  **Cigarette Butts:** Number of cigarette butts collected.
+10. **Glass Bottles:** Number of glass bottles collected.
+11. **Plastic Bags:** Number of plastic bags collected.
+12. **Wrappers:** Number of wrappers collected.
+13. **Sports Balls:** Number of sports balls collected.
+14. **Homes Powered:** Number of homes that could be powered by the energy produced from the collected waste.
+
+------------------------------------------------------------------------
+
+## Introduction and Data:
+
+```         
+Source of the Data:
+```
+
+This dataset is composed of information on trash collection by trash wheels deployed in various urban waterways. The data captures details on the types of trash collected, environmental factors such as rainfall and water flow, and other metrics associated with trash collection operations.
+
+```         
+Data Collection:
+```
+
+The data was gathered from trash wheels installed in urban rivers and harbors. Key attributes measured include waste types, collection weight, and environmental factors like rainfall and water flow, offering insights into the impact of environmental conditions on waste accumulation.
+
+```         
+Description of Observations:
+```
+
+Each record represents a specific collection event where waste was removed from the water by a trash wheel. The data includes metrics like the weight and volume of trash, categorized by type, as well as environmental factors that may influence the quantity of trash collected.
+
+```         
+Ethical Concerns:
+```
+
+-   **Data Transparency:** The data should ensure that it accurately reflects the amount of waste collected without manipulation or misrepresentation.
+-   **Environmental Impact:** The dataset should promote positive environmental actions without stigmatizing certain areas for waste pollution.
+
+------------------------------------------------------------------------
+
+## Research Questions
+
+1.  **How do environmental factors such as rainfall and water flow affect the volume of trash collected by trash wheels?**
+
+    Importance: Environmental factors like rainfall and water flow are critical in understanding the behavior of waste in waterways. This analysis could provide insights into how trash wheels perform under different environmental conditions.
+
+    Hypothesis: Higher rainfall and water flow will result in a larger volume of trash collected by trash wheels due to increased debris being washed into waterways.
+
+    Variables:
+
+    -   Quantitative: Rainfall, Water flow, Trash volume
+    -   Categorical: City, Body of water
+
+------------------------------------------------------------------------
+
+**How do the weight and volume of collected trash correlate with specific trash items, and what impact does this have on energy generation?**
+
+Importance: Understanding how specific waste types (e.g., plastic bottles, cigarette butts) affect the total weight and volume helps identify major contributors to trash. Additionally, evaluating the relationship between trash weight and energy generation ("Homes Powered") can provide insights into waste-to-energy efficiency.
+
+Hypothesis: Higher amounts of glass bottles will strongly correlate with greater weight and volume, and heavier trash will generate more energy.
+
+Variables: - Quantitative: Weight (tons), Volume (cubic yards), Plastic bottles, Cigarette butts, Homes Powered - Categorical: Waste type (plastic, polystyrene, etc.)
+
+------------------------------------------------------------------------
+
+## Analysis Plan
+
+| **Task Name**                  | **Status**  | **Assignee**                              | **Due** | **Priority** | **Summary**                                                                                                                    |
+|--------------------------------|-------------|-------------------------------------------|---------|--------------|--------------------------------------------------------------------------------------------------------------------------------|
+| Data Loading and Cleaning      | In Progress | Jay Patil, Johnson Jeeva John Jacob       | Week 1  | High         | Load the dataset, handle missing values, format columns, and clean data for analysis.                                          |
+| Exploratory Data Analysis      | In Progress | Pragnya Narasimha, Sumanth Manohar        | Week 2  | High         | Analyze basic statistics, explore trends in trash collection, and visualize initial insights.                                  |
+| Question 1 Feature Engineering | Not Started | Sreeharsha Nalluri, Jay Patil             | Week 3  | High         | Preprocess the data by extracting relevant features, handling outliers, and merging external environmental data.               |
+| Question 1 Visualization       | Not Started | Tanmay Nalawade, Johnson Jeeva John Jacob | Week 4  | High         | Create visualizations, such as scatter plots for rainfall vs trash volume and bar charts comparing city vs. rural trash types. |
+| Question 2 Feature Engineering | Not Started | Sreeharsha Nalluri, Likhith Ramesh        | Week 3  | High         | Create features related to waste type, perform comparisons across regions, and analyze trash composition.                      |
+| Question 2 Visualization       | Not Started | Tanmay Nalawade, Sumanth Manohar          | Week 4  | High         | Create visualizations, including pie charts for trash types and stacked bar charts comparing trash types across cities.        |
+| Drafting and Reviewing Results | Not Started | Likhith Ramesh, Pragnya Narasimha         | Week 5  | Moderate     | Compile findings, draft the report, and review results for trends in trash collection and environmental factors.               |
+| Final Report and Presentation  | Not Started | Sreeharsha Nalluri, Sumanth Manohar       | Week 6  | High         | Finalize the report, prepare presentation materials, and present findings on trash collection and environmental influences.    |
