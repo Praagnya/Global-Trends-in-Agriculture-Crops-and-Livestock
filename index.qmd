@@ -1,8 +1,8 @@
 ---
-title: "Project Title"
+title: "Visualization of Crop and Livestock products"
 subtitle: "INFO 526 - Fall 2024 - Project 01"
 author: 
-  - name: "Team name"
+  - name: "VizCats"
     affiliations:
       - name: "School of Information, University of Arizona"
 description: "Project description"
@@ -20,3 +20,5 @@ execute:
 ## Abstract
 
 Add project abstract here.
+
+This project focuses on compiling and analyzing statistical data for a diverse range of 278 crop and livestock products. The dataset will be expressed in key indicators like production quantities, yields, and processed product outputs, making it a valuable resource for understanding global agricultural production patterns across crops and livestock industries.
