@@ -266,16 +266,16 @@ Ethical Concerns:
 
 -   A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
 
-| **Task Name**                  | **Status**  | **Assignee**                              | **Due** | **Priority** | **Summary**                                                                                                                    |
-|------------|------------|------------|------------|------------|------------|
-| Data Loading and Cleaning      | In Progress | Jay Patil, Johnson Jeeva John Jacob       | Week 1  | High         | Load the dataset, handle missing values, format columns, and clean data for analysis.                                          |
-| Exploratory Data Analysis      | In Progress | Pragnya Narasimha, Sumanth Manohar        | Week 2  | High         | Analyze basic statistics, explore production trends for coffee quality, visualize initial insights.                            |
-| Question 1 Feature Engineering | Not Started | Sreeharsha Nalluri, Jay Patil             | Week 3  | High         | Preprocess the data by extracting relevant features, including handling outliers, creating time-based and regional attributes. |
-| Question 1 Visualization       | Not Started | Tanmay Nalawade, Johnson Jeeva John Jacob | Week 4  | High         | Create visualizations, such as scatter plots for altitude vs flavor scores and bar charts comparing regional coffee quality.   |
-| Question 2 Feature Engineering | Not Started | Sreeharsha Nalluri, Likhith Ramesh        | Week 3  | High         | Calculate and compare processing methods, and extract metrics related to flavor and balance.                                   |
-| Question 2 Visualization       | Not Started | Tanmay Nalawade, Sumanth Manohar          | Week 4  | High         | Create visualizations, including bar charts comparing processing methods and their effect on flavor and balance scores.        |
-| Drafting and Reviewing Results | Not Started | Likhith Ramesh, Pragnya Narasimha         | Week 5  | Moderate     | Compile findings, draft the report, and review the results for insights into global coffee quality trends.                     |
-| Final Report and Presentation  | Not Started | Jeeva John Jacob, Sumanth Manohar         | Week 6  | High         | Finalize the report, prepare presentation materials, and present findings on coffee quality and environmental influences.      |
+| **Task Name**                  | **Status**   | **Assignee**                              | **Due** | **Priority** | **Summary**                                                                                                                    |
+|-------------------|------------|------------|------------|------------|------------|
+| Data Loading and Cleaning      | Not started  | Jay Patil, Johnson Jeeva John Jacob       | Week 1  | High         | Load the dataset, handle missing values, format columns, and clean data for analysis.                                          |
+| Exploratory Data Analysis      | Not started  | Pragnya Narasimha, Sumanth Manohar        | Week 2  | High         | Analyze basic statistics, explore production trends for coffee quality, visualize initial insights.                            |
+| Question 1 Feature Engineering | Not Started  | Sreeharsha Nalluri, Jay Patil             | Week 3  | High         | Preprocess the data by extracting relevant features, including handling outliers, creating time-based and regional attributes. |
+| Question 1 Visualization       | Not Started  | Tanmay Nalawade, Johnson Jeeva John Jacob | Week 4  | High         | Create visualizations, such as scatter plots for altitude vs flavor scores and bar charts comparing regional coffee quality.   |
+| Question 2 Feature Engineering | Not Started  | Sreeharsha Nalluri, Likhith Ramesh        | Week 3  | High         | Calculate and compare processing methods, and extract metrics related to flavor and balance.                                   |
+| Question 2 Visualization       | Not Started  | Tanmay Nalawade, Sumanth Manohar          | Week 4  | High         | Create visualizations, including bar charts comparing processing methods and their effect on flavor and balance scores.        |
+| Drafting and Reviewing Results | Not Started  | Likhith Ramesh, Pragnya Narasimha         | Week 5  | Moderate     | Compile findings, draft the report, and review the results for insights into global coffee quality trends.                     |
+| Final Report and Presentation  | Not Started  | Jeeva John Jacob, Sumanth Manohar         | Week 6  | High         | Finalize the report, prepare presentation materials, and present findings on coffee quality and environmental influences.      |
 
 # 3. Trash Wheel Data
 
@@ -364,13 +364,13 @@ Ethical Concerns:
 
 ------------------------------------------------------------------------
 
-**How do the weight and volume of collected trash correlate with specific trash items, and what impact does this have on energy generation?**
+2.  **How do the weight and volume of collected trash correlate with specific trash items, and what impact does this have on energy generation?**
 
 Importance: Understanding how specific waste types (e.g., plastic bottles, cigarette butts) affect the total weight and volume helps identify major contributors to trash. Additionally, evaluating the relationship between trash weight and energy generation ("Homes Powered") can provide insights into waste-to-energy efficiency.
 
 Hypothesis: Higher amounts of glass bottles will strongly correlate with greater weight and volume, and heavier trash will generate more energy.
 
-Variables: - Quantitative: Weight (tons), Volume (cubic yards), Plastic bottles, Cigarette butts, Homes Powered - Categorical: Waste type (plastic, polystyrene, etc.)
+Variables: - Quantitative: Weight, Volume, Plastic bottles, Cigarette butts, Homes Powered - Categorical: Waste type
 
 ------------------------------------------------------------------------
 
