@@ -1,4 +1,5 @@
 ```{r}
+
 # Load required libraries
 library(dplyr)
 library(ggplot2)
@@ -111,11 +112,13 @@ ggplot(global_production, aes(x = Year, y = Global_Production)) +
 
 ```{r, fig.height=9,fig.width=12}
 # Load required libraries
-library(dplyr)
+
 library(ggplot2)
+library(dplyr)
 library(sf)
 library(rnaturalearth)
-library(viridis)
+library(rnaturalearthdata)
+library(scales)
 
 # Step 1: Load the map data (world map)
 world <- ne_countries(scale = "medium", returnclass = "sf")
@@ -139,8 +142,8 @@ regional_map_data <- world %>%
 ggplot(data = regional_map_data) +
   geom_sf(aes(fill = Total_Production), color = "black", size = 0.1) +  # Fill countries with production data
   scale_fill_gradient(
-    low = "red", 
-    high = "darkblue", 
+    low = "#f7fcb9", 
+    high = "#31a354", 
     name = "Total Production\n(Metric Tons)",
     labels = scales::comma_format(scale = 1e-6, suffix = "M")  # Format in millions
   ) +
@@ -210,7 +213,7 @@ ggplot(agg_trends, aes(x = Year, y = Total_Production, color = Country_Category,
     breaks = seq(min(prod_data_classified$Year, na.rm = TRUE), max(prod_data_classified$Year, na.rm = TRUE), by = 5)
   ) +
   scale_color_manual(
-    values = c("Developed" = "blue", "Developing" = "green")
+    values = c("Developed" = "blue", "Developing" = "orange")
   ) +
   theme(
     plot.title = element_text(size = 18, face = "bold", hjust = 0.5),
