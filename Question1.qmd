@@ -171,7 +171,9 @@ library(ggplot2)
 developed_countries <- c("United States", "Canada", "Germany", "United Kingdom", "France", "Australia", "Japan")
 developing_countries <- c("India", "China", "Brazil", "Nigeria", "Indonesia", "Mexico", "South Africa")
 
-# Add a classification column to the production data
+# Step 2: Add a classification column to the production data
+# Ensure that prod_data_long contains the correct column names like 'Area' for country names, 'Year' for the year, and 'Production' for the data values
+
 prod_data_long <- prod_data_long %>%
   mutate(
     Country_Category = case_when(
@@ -181,16 +183,16 @@ prod_data_long <- prod_data_long %>%
     )
   )
 
-# Step 2: Filter for Developed and Developing countries only
+# Step 3: Filter for Developed and Developing countries only
 prod_data_classified <- prod_data_long %>%
   filter(Country_Category %in% c("Developed", "Developing"))
 
-# Step 3: Aggregate production by year and country category
+# Step 4: Aggregate production by year and country category
 agg_trends <- prod_data_classified %>%
   group_by(Year, Country_Category) %>%
   summarize(Total_Production = sum(Production, na.rm = TRUE), .groups = "drop")
 
-# Step 4: Create the line plot
+# Step 5: Create the line plot
 ggplot(agg_trends, aes(x = Year, y = Total_Production, color = Country_Category, group = Country_Category)) +
   geom_line(linewidth = 1.2) +  # Line plot
   theme_minimal() +

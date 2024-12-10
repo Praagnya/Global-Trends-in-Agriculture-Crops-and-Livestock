@@ -163,7 +163,7 @@ Despite these concerns, FAOSTAT remains one of the most reliable sources of agri
 # 2. Coffee Quality Data
 
 ```{r}
-#| label: load-dataset
+#| label: load-dataset1
 #| message: false
 
 data = read.csv(file = "data/Coffee_Data/coffee.csv")
@@ -174,7 +174,7 @@ glimpse(data)  # Quick overview of the data
 summary(data)  # Summary statistics
 ```
 
-```         
+```      
 Dataset Description:
 ```
 
@@ -280,7 +280,7 @@ Ethical Concerns:
 # 3. Trash Wheel Data
 
 ```{r}
-#| label: load-dataset
+#| label: load-dataset2
 #| message: false
 
 data = read.csv(file = "data/Trash_Wheel/Trash_Wheel.csv")
