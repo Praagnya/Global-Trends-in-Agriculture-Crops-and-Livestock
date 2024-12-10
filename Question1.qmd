@@ -1,0 +1,225 @@
+```{r}
+# Load required libraries
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(readr)
+library(sf)
+library(rnaturalearth)
+library(viridis)
+
+# Step 1: Load datasets
+prod_data <- read.csv("data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_All_Data.csv")
+area_codes <- read.csv("data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_AreaCodes.csv")
+item_codes <- read.csv("data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_ItemCodes.csv")
+elements <- read.csv("data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_Elements.csv")
+
+```
+
+```{r}
+
+# Step 2: Extract and filter data for the top 10 staple crops
+# Define the top 10 staple crops based on Item names
+top_crops <- c("Wheat", "Rice", "Maize (corn)", "Potatoes", "Barley", 
+               "Cassava", "Sweet potatoes", "Sorghum", "Oats", "Beans")
+
+# Filter the data for these crops and "Production" element (not "Area harvested")
+prod_data_filtered <- prod_data %>%
+  filter(Item %in% top_crops) %>%
+  filter(Element == "Production") %>%
+  select(Area, Item, Element, Unit, starts_with('Y'))  # Select relevant columns
+
+
+# Step 3: Preprocess the data
+# Remove columns that have characters like 'F' or 'N' in their names (e.g. Y1961F, Y1961N)
+prod_data_filtered <- prod_data_filtered %>%
+  select(-matches("F$|N$"))  # Remove columns ending with "F" or "N"
+
+# Pivot the data so that each year's production is a separate column
+prod_data_long <- prod_data_filtered %>%
+  pivot_longer(cols = starts_with("Y"), 
+               names_to = "Year", 
+               values_to = "Production") %>%
+  filter(!is.na(Production))  # Remove rows with missing production data
+
+# Convert Year to numeric and Production to numeric
+prod_data_long <- prod_data_long %>%
+  mutate(Year = as.numeric(gsub("Y", "", Year)),  # Extract numeric year from column names
+         Production = as.numeric(Production))  # Ensure production is numeric
+
+
+# Step 5: (Optional) Export the processed data
+# Export the cleaned data to a CSV file
+write.csv(prod_data_long, "data/Processed_Staple_Crops_Production.csv", row.names = FALSE)
+
+```
+
+```{r, fig.height=9,fig.width=12}
+# Summarize global production trends over time
+global_production <- prod_data_long %>%
+  group_by(Year, Item) %>%
+  summarize(Global_Production = sum(Production, na.rm = TRUE), .groups = "drop")
+
+# Create a line plot to visualize the global production trends over time
+ggplot(global_production, aes(x = Year, y = Global_Production)) +
+  geom_line(aes(color = Item), linewidth = 1.2) +  # Line plot with thicker lines
+  theme_minimal() +
+  labs(
+    x = "Year", 
+    y = "Global Production (Metric Tons)",  
+    color = "Crop",
+    title = "Global Production Trends of Top 10 Staple Crops (1961 - 2022)",
+    caption = "Source: FAO"
+  ) +
+  scale_color_manual(
+    values = c("Wheat" = "#FF5733", "Rice" = "#33C4FF", "Maize (corn)" = "#FFB533", 
+               "Potatoes" = "#33FF57", "Barley" = "#5A33FF", "Cassava" = "#FF33A1", 
+               "Sweet potatoes" = "#FF8533", "Sorghum" = "#33FFAA", "Oats" = "#FF33CC", 
+               "Beans" = "#7A33FF"),
+    labels = c("Wheat", "Rice", "Maize (corn)", "Potatoes", "Barley", 
+               "Cassava", "Sweet potatoes", "Sorghum", "Oats", "Beans")
+  ) +
+  coord_cartesian(clip = "off") +
+  theme(
+    legend.position = c(0.36, 0.80),  # Slightly move the legend right and down
+    legend.direction = "horizontal",  # Display legend horizontally
+    legend.box = "horizontal",  # Align the legend horizontally
+    axis.title.x = element_text(hjust = 0.5, size = 18),  # Increase X axis title font size
+    axis.title.y = element_text(hjust = 0.5, size = 18),  # Increase Y axis title font size
+    plot.title = element_text(size = 20, face = "bold", hjust = 0.5),  # Increase title font size
+    plot.caption = element_text(size = 14, hjust = 1, color = "grey30"),  # Caption with slightly larger font
+    legend.title = element_text(size = 18),  # Increase legend title font size
+    legend.text = element_text(size = 16),  # Increase legend text font size
+    axis.text.x = element_text(size = 14, face = "bold"),  # Increase and bold X axis tick labels
+    axis.text.y = element_text(size = 14, face = "bold")   # Increase and bold Y axis tick labels
+  ) +
+  scale_y_continuous(
+    labels = scales::comma_format(scale = 1e-6, prefix = "", suffix = "M"),  # Format y-axis in millions with commas
+    breaks = seq(0, max(global_production$Global_Production, na.rm = TRUE), by = 200000000)  # Reduced step size for y-axis ticks
+  ) +
+  scale_x_continuous(
+    breaks = seq(min(global_production$Year, na.rm = TRUE), max(global_production$Year, na.rm = TRUE), by = 5)  # Increase x-axis ticks
+  ) +
+  # Set figure size for output
+  theme(
+    plot.margin = margin(2, 2, 2, 2)  # Increase plot margin if needed
+  )
+
+
+```
+
+
+```{r, fig.height=9,fig.width=12}
+# Load required libraries
+library(dplyr)
+library(ggplot2)
+library(sf)
+library(rnaturalearth)
+library(viridis)
+
+# Step 1: Load the map data (world map)
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+# Step 2: Aggregate production data for the 10 staple crops
+# Define the top 10 crops
+top_crops <- c("Wheat", "Rice", "Maize (corn)", "Potatoes", "Barley", 
+               "Cassava", "Sweet potatoes", "Sorghum", "Oats", "Beans")
+
+# Aggregate total production by country across all years for the top crops
+agg_prod_data <- prod_data_long %>%
+  filter(Item %in% top_crops) %>%
+  group_by(Area) %>%
+  summarize(Total_Production = sum(Production, na.rm = TRUE), .groups = "drop")
+
+# Step 3: Join the aggregated production data with the world map data
+regional_map_data <- world %>%
+  left_join(agg_prod_data, by = c("name" = "Area"))  # Join by country names
+
+# Step 4: Create the choropleth map
+ggplot(data = regional_map_data) +
+  geom_sf(aes(fill = Total_Production), color = "black", size = 0.1) +  # Fill countries with production data
+  scale_fill_gradient(
+    low = "red", 
+    high = "darkblue", 
+    name = "Total Production\n(Metric Tons)",
+    labels = scales::comma_format(scale = 1e-6, suffix = "M")  # Format in millions
+  ) +
+  labs(
+    title = "Production of Top 10 Staple Crops",
+    caption = "Source: FAO"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 20, face = "bold", hjust = 0.5),  # Title styling
+    plot.caption = element_text(size = 14, hjust = 1, color = "grey30"),  # Caption styling
+    legend.position = "bottom",  # Legend at the bottom
+    legend.title = element_text(size = 16),  # Legend title font size
+    legend.text = element_text(size = 14),  # Legend text font size
+    axis.text = element_blank(),  # Remove axis ticks for cleaner map
+    axis.title = element_blank()  # Remove axis titles
+  )
+
+```
+
+```{r, fig.height=9,fig.width=12}
+# Load required libraries
+library(dplyr)
+library(ggplot2)
+
+# Step 1: Create a classification of countries (Developed vs. Developing)
+# Define lists of developed and developing countries (replace with actual classification)
+developed_countries <- c("United States", "Canada", "Germany", "United Kingdom", "France", "Australia", "Japan")
+developing_countries <- c("India", "China", "Brazil", "Nigeria", "Indonesia", "Mexico", "South Africa")
+
+# Add a classification column to the production data
+prod_data_long <- prod_data_long %>%
+  mutate(
+    Country_Category = case_when(
+      Area %in% developed_countries ~ "Developed",
+      Area %in% developing_countries ~ "Developing",
+      TRUE ~ "Other"  # Classify remaining countries as "Other"
+    )
+  )
+
+# Step 2: Filter for Developed and Developing countries only
+prod_data_classified <- prod_data_long %>%
+  filter(Country_Category %in% c("Developed", "Developing"))
+
+# Step 3: Aggregate production by year and country category
+agg_trends <- prod_data_classified %>%
+  group_by(Year, Country_Category) %>%
+  summarize(Total_Production = sum(Production, na.rm = TRUE), .groups = "drop")
+
+# Step 4: Create the line plot
+ggplot(agg_trends, aes(x = Year, y = Total_Production, color = Country_Category, group = Country_Category)) +
+  geom_line(linewidth = 1.2) +  # Line plot
+  theme_minimal() +
+  labs(
+    title = "Production Trends of Staple Crops in Developed vs. Developing Countries (1961 - 2022)",
+    x = "Year",
+    y = "Total Production (Metric Tons)",
+    color = "Country Category",
+    caption = "Source: FAO"
+  ) +
+  scale_y_continuous(
+    labels = scales::comma_format(scale = 1e-6, suffix = "M")  # Format y-axis in millions
+  ) +
+  scale_x_continuous(
+    breaks = seq(min(prod_data_classified$Year, na.rm = TRUE), max(prod_data_classified$Year, na.rm = TRUE), by = 5)
+  ) +
+  scale_color_manual(
+    values = c("Developed" = "blue", "Developing" = "green")
+  ) +
+  theme(
+    plot.title = element_text(size = 18, face = "bold", hjust = 0.5),
+    axis.title = element_text(size = 14),
+    axis.text = element_text(size = 12),
+    legend.title = element_text(size = 14),
+    legend.text = element_text(size = 12)
+  )
+
+```
+
+```{r}
+
+```

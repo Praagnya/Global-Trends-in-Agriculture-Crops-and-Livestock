@@ -149,16 +149,16 @@ Despite these concerns, FAOSTAT remains one of the most reliable sources of agri
 
 -   A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
 
-| *Task Name*                      | *Status*    | *Assignee*                                | *Due*  | *Priority* | *Summary*                                                                                                                               |
+| *Task Name* | *Status* | *Assignee* | *Due* | *Priority* | *Summary* |
 |------------|------------|------------|------------|------------|------------|
-| *Data Loading and Cleaning*      | In Progress | Jay Patil, Johnson Jeeva John Jacob       | Week 1 | High       | Load the dataset, handle missing values, format columns, and clean data for analysis.                                                   |
-| *Exploratory Data Analysis*      | In Progress | Pragnya Narasimha, Sumanth Manohar        | Week 2 | High       | Analyze basic statistics, explore production trends for crops and livestock, visualize initial insights.                                |
-| *Question 1 Feature Engineering* | Not Started | Sreeharsha Nalluri, Jay Patil             | Week 3 | High       | Preprocess the data by extracting relevant features, including handling outliers, creating time-based and regional attributes.          |
-| *Question 1 Visualization*       | Not Started | Tanmay Nalawade, Johnson Jeeva John Jacob | Week 4 | High       | Create visualizations, such as line charts for crop production trends over time and bar charts comparing regional outputs.              |
-| *Question 2 Feature Engineering* | Not Started | Sreeharsha Nalluri, Likhith Ramesh        | Week 3 | High       | Calculate and compare livestock production metrics, including trade data, population-related variables, and regional indicators.        |
-| *Question 2 Visualization*       | Not Started | Tanmay Nalawade, Sumanth Manohar          | Week 4 | High       | Create visualizations, including bar charts comparing regional livestock production and line charts for trends in production and trade. |
-| *Drafting and Reviewing Results* | Not Started | Likhith Ramesh, Pragnya Narasimha         | Week 5 | Moderate   | Compile findings, draft the report, and review the results for insights into global agricultural trends.                                |
-| *Final Report and Presentation*  | Not Started | Pragnya Narasimha, Sumanth Manohar        | Week 6 | High       | Finalize the report, prepare presentation materials, and present findings on global agricultural production and trade trends.           |
+| *Data Loading and Cleaning* | In Progress | Jay Patil, Johnson Jeeva John Jacob | Week 1 | High | Load the dataset, handle missing values, format columns, and clean data for analysis. |
+| *Exploratory Data Analysis* | In Progress | Pragnya Narasimha, Sumanth Manohar | Week 2 | High | Analyze basic statistics, explore production trends for crops and livestock, visualize initial insights. |
+| *Question 1 Feature Engineering* | Not Started | Sreeharsha Nalluri, Jay Patil | Week 3 | High | Preprocess the data by extracting relevant features, including handling outliers, creating time-based and regional attributes. |
+| *Question 1 Visualization* | Not Started | Tanmay Nalawade, Johnson Jeeva John Jacob | Week 4 | High | Create visualizations, such as line charts for crop production trends over time and bar charts comparing regional outputs. |
+| *Question 2 Feature Engineering* | Not Started | Sreeharsha Nalluri, Likhith Ramesh | Week 3 | High | Calculate and compare livestock production metrics, including trade data, population-related variables, and regional indicators. |
+| *Question 2 Visualization* | Not Started | Tanmay Nalawade, Sumanth Manohar | Week 4 | High | Create visualizations, including bar charts comparing regional livestock production and line charts for trends in production and trade. |
+| *Drafting and Reviewing Results* | Not Started | Likhith Ramesh, Pragnya Narasimha | Week 5 | Moderate | Compile findings, draft the report, and review the results for insights into global agricultural trends. |
+| *Final Report and Presentation* | Not Started | Pragnya Narasimha, Sumanth Manohar | Week 6 | High | Finalize the report, prepare presentation materials, and present findings on global agricultural production and trade trends. |
 
 # 2. Coffee Quality Data
 
@@ -266,16 +266,16 @@ Ethical Concerns:
 
 -   A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
 
-| **Task Name**                  | **Status**   | **Assignee**                              | **Due** | **Priority** | **Summary**                                                                                                                    |
-|-------------------|------------|------------|------------|------------|------------|
-| Data Loading and Cleaning      | Not started  | Jay Patil, Johnson Jeeva John Jacob       | Week 1  | High         | Load the dataset, handle missing values, format columns, and clean data for analysis.                                          |
-| Exploratory Data Analysis      | Not started  | Pragnya Narasimha, Sumanth Manohar        | Week 2  | High         | Analyze basic statistics, explore production trends for coffee quality, visualize initial insights.                            |
-| Question 1 Feature Engineering | Not Started  | Sreeharsha Nalluri, Jay Patil             | Week 3  | High         | Preprocess the data by extracting relevant features, including handling outliers, creating time-based and regional attributes. |
-| Question 1 Visualization       | Not Started  | Tanmay Nalawade, Johnson Jeeva John Jacob | Week 4  | High         | Create visualizations, such as scatter plots for altitude vs flavor scores and bar charts comparing regional coffee quality.   |
-| Question 2 Feature Engineering | Not Started  | Sreeharsha Nalluri, Likhith Ramesh        | Week 3  | High         | Calculate and compare processing methods, and extract metrics related to flavor and balance.                                   |
-| Question 2 Visualization       | Not Started  | Tanmay Nalawade, Sumanth Manohar          | Week 4  | High         | Create visualizations, including bar charts comparing processing methods and their effect on flavor and balance scores.        |
-| Drafting and Reviewing Results | Not Started  | Likhith Ramesh, Pragnya Narasimha         | Week 5  | Moderate     | Compile findings, draft the report, and review the results for insights into global coffee quality trends.                     |
-| Final Report and Presentation  | Not Started  | Jeeva John Jacob, Sumanth Manohar         | Week 6  | High         | Finalize the report, prepare presentation materials, and present findings on coffee quality and environmental influences.      |
+| **Task Name** | **Status** | **Assignee** | **Due** | **Priority** | **Summary** |
+|------------|------------|------------|------------|------------|------------|
+| Data Loading and Cleaning | Not started | Jay Patil, Johnson Jeeva John Jacob | Week 1 | High | Load the dataset, handle missing values, format columns, and clean data for analysis. |
+| Exploratory Data Analysis | Not started | Pragnya Narasimha, Sumanth Manohar | Week 2 | High | Analyze basic statistics, explore production trends for coffee quality, visualize initial insights. |
+| Question 1 Feature Engineering | Not Started | Sreeharsha Nalluri, Jay Patil | Week 3 | High | Preprocess the data by extracting relevant features, including handling outliers, creating time-based and regional attributes. |
+| Question 1 Visualization | Not Started | Tanmay Nalawade, Johnson Jeeva John Jacob | Week 4 | High | Create visualizations, such as scatter plots for altitude vs flavor scores and bar charts comparing regional coffee quality. |
+| Question 2 Feature Engineering | Not Started | Sreeharsha Nalluri, Likhith Ramesh | Week 3 | High | Calculate and compare processing methods, and extract metrics related to flavor and balance. |
+| Question 2 Visualization | Not Started | Tanmay Nalawade, Sumanth Manohar | Week 4 | High | Create visualizations, including bar charts comparing processing methods and their effect on flavor and balance scores. |
+| Drafting and Reviewing Results | Not Started | Likhith Ramesh, Pragnya Narasimha | Week 5 | Moderate | Compile findings, draft the report, and review the results for insights into global coffee quality trends. |
+| Final Report and Presentation | Not Started | Jeeva John Jacob, Sumanth Manohar | Week 6 | High | Finalize the report, prepare presentation materials, and present findings on coffee quality and environmental influences. |
 
 # 3. Trash Wheel Data
 
@@ -376,15 +376,15 @@ Variables: - Quantitative: Weight, Volume, Plastic bottles, Cigarette butts, Hom
 
 ## Analysis Plan
 
-| **Task Name**                  | **Status**  | **Assignee**                              | **Due** | **Priority** | **Summary**                                                                                                                    |
+| **Task Name** | **Status** | **Assignee** | **Due** | **Priority** | **Summary** |
 |------------|------------|------------|------------|------------|------------|
-| Data Loading and Cleaning      | In Progress | Jay Patil, Johnson Jeeva John Jacob       | Week 1  | High         | Load the dataset, handle missing values, format columns, and clean data for analysis.                                          |
-| Exploratory Data Analysis      | In Progress | Pragnya Narasimha, Sumanth Manohar        | Week 2  | High         | Analyze basic statistics, explore trends in trash collection, and visualize initial insights.                                  |
-| Question 1 Feature Engineering | Not Started | Sreeharsha Nalluri, Jay Patil             | Week 3  | High         | Preprocess the data by extracting relevant features, handling outliers, and merging external environmental data.               |
-| Question 1 Visualization       | Not Started | Tanmay Nalawade, Johnson Jeeva John Jacob | Week 4  | High         | Create visualizations, such as scatter plots for rainfall vs trash volume and bar charts comparing city vs. rural trash types. |
-| Question 2 Feature Engineering | Not Started | Sreeharsha Nalluri, Likhith Ramesh        | Week 3  | High         | Create features related to waste type, perform comparisons across regions, and analyze trash composition.                      |
-| Question 2 Visualization       | Not Started | Tanmay Nalawade, Sumanth Manohar          | Week 4  | High         | Create visualizations, including pie charts for trash types and stacked bar charts comparing trash types across cities.        |
-| Drafting and Reviewing Results | Not Started | Likhith Ramesh, Pragnya Narasimha         | Week 5  | Moderate     | Compile findings, draft the report, and review results for trends in trash collection and environmental factors.               |
-| Final Report and Presentation  | Not Started | Sreeharsha Nalluri, Sumanth Manohar       | Week 6  | High         | Finalize the report, prepare presentation materials, and present findings on trash collection and environmental influences.    |
+| Data Loading and Cleaning | In Progress | Jay Patil, Johnson Jeeva John Jacob | Week 1 | High | Load the dataset, handle missing values, format columns, and clean data for analysis. |
+| Exploratory Data Analysis | In Progress | Pragnya Narasimha, Sumanth Manohar | Week 2 | High | Analyze basic statistics, explore trends in trash collection, and visualize initial insights. |
+| Question 1 Feature Engineering | Not Started | Sreeharsha Nalluri, Jay Patil | Week 3 | High | Preprocess the data by extracting relevant features, handling outliers, and merging external environmental data. |
+| Question 1 Visualization | Not Started | Tanmay Nalawade, Johnson Jeeva John Jacob | Week 4 | High | Create visualizations, such as scatter plots for rainfall vs trash volume and bar charts comparing city vs. rural trash types. |
+| Question 2 Feature Engineering | Not Started | Sreeharsha Nalluri, Likhith Ramesh | Week 3 | High | Create features related to waste type, perform comparisons across regions, and analyze trash composition. |
+| Question 2 Visualization | Not Started | Tanmay Nalawade, Sumanth Manohar | Week 4 | High | Create visualizations, including pie charts for trash types and stacked bar charts comparing trash types across cities. |
+| Drafting and Reviewing Results | Not Started | Likhith Ramesh, Pragnya Narasimha | Week 5 | Moderate | Compile findings, draft the report, and review results for trends in trash collection and environmental factors. |
+| Final Report and Presentation | Not Started | Sreeharsha Nalluri, Sumanth Manohar | Week 6 | High | Finalize the report, prepare presentation materials, and present findings on trash collection and environmental influences. |
 
 After careful consideration of the available datasets, we have chosen to proceed with the **FAOSTAT Crop and Livestock Production dataset** for the remainder of the project. This dataset was selected due to its rich potential for uncovering global agricultural trends, its strong alignment with our research questions, and the significance of the insights it can provide on food production and sustainability. By concentrating on this dataset, we aim to perform an in-depth analysis and thoroughly address the research objectives of our project.
