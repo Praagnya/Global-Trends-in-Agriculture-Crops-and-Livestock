@@ -1,5 +1,4 @@
 ```{r}
-
 # Load required libraries
 library(dplyr)
 library(ggplot2)
@@ -112,13 +111,11 @@ ggplot(global_production, aes(x = Year, y = Global_Production)) +
 
 ```{r, fig.height=9,fig.width=12}
 # Load required libraries
-
-library(ggplot2)
 library(dplyr)
+library(ggplot2)
 library(sf)
 library(rnaturalearth)
-library(rnaturalearthdata)
-library(scales)
+library(viridis)
 
 # Step 1: Load the map data (world map)
 world <- ne_countries(scale = "medium", returnclass = "sf")
@@ -142,8 +139,8 @@ regional_map_data <- world %>%
 ggplot(data = regional_map_data) +
   geom_sf(aes(fill = Total_Production), color = "black", size = 0.1) +  # Fill countries with production data
   scale_fill_gradient(
-    low = "#f7fcb9", 
-    high = "#31a354", 
+    low = "khaki1", 
+    high = "green4", 
     name = "Total Production\n(Metric Tons)",
     labels = scales::comma_format(scale = 1e-6, suffix = "M")  # Format in millions
   ) +
