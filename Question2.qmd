@@ -62,4 +62,16 @@ livestock_data_long <- livestock_data_filtered %>%
 # Remove rows with missing Year values if there are any
 livestock_data_long <- livestock_data_long %>%
   filter(!is.na(Year))
+
+# Aggregate data by year and element
+aggregated_data <- livestock_data_long %>%
+  group_by(Year, Element) %>%
+  summarise(Total_Value = sum(Value, na.rm = TRUE), .groups = "drop")
+
+# Step 4: Decode area names and item names
+area_decoded <- area_codes %>%
+  rename(Area_Code = `Area.Code`, Area_Name = Area)
+
+item_decoded <- item_codes %>%
+  rename(Item_Code = `Item.Code`, Item_Name = `Item`)
 ```
