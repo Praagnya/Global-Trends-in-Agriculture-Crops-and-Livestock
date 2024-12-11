@@ -75,3 +75,18 @@ area_decoded <- area_codes %>%
 item_decoded <- item_codes %>%
   rename(Item_Code = `Item.Code`, Item_Name = `Item`)
 ```
+
+```{r plots}
+
+# Plot 1: Trends in livestock production and yeids
+ggplot(data = aggregated_data, aes(x = Year, y = Total_Value / 1e6, color = Element)) +
+  geom_line(linewidth = 1.2) +
+  labs(
+    title = "Global Trends in Livestock Production and Trade",
+    x = "Year",
+    y = "Volume (in millions of tons)",
+    color = "Element"
+  ) +
+  theme_minimal() +
+  scale_y_continuous(labels = scales::comma)
+```
