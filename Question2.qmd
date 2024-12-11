@@ -58,4 +58,8 @@ livestock_data_long <- livestock_data_filtered %>%
     values_to = "Value"
   ) %>%
   mutate(Year = as.numeric(gsub("Y", "", Year))) # To convert Year to numeric
+
+# Remove rows with missing Year values if there are any
+livestock_data_long <- livestock_data_long %>%
+  filter(!is.na(Year))
 ```
