@@ -1,3 +1,14 @@
+---
+title: "Question 2"
+format:
+  html:
+    embed-resources: true
+execute:
+  warning: false
+  message: false
+toc: true
+---
+
 ```{r load-packages, message = FALSE}
 
 if (!require("pacman")) 
@@ -13,4 +24,12 @@ pacman::p_load(tidyverse,
                rnaturalearth,
                sf
                )
+```
+
+```{r}
+# Loading the main datasets
+livestock_data <- read.csv("./data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_All_Data.csv")
+area_codes <- read.csv("./data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_AreaCodes.csv")
+elements <- read.csv("./data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_Elements.csv")
+item_codes <- read.csv("./data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_ItemCodes.csv")
 ```
