@@ -39,7 +39,23 @@ item_codes <- read.csv("./data/Production_Crops_Livestock_E_All_Data/Production_
 
 ```{r Filtering and preprocessing}
 
-# Identify livestock commodities of interest
+# Identifying livestock commodities that we want
 livestock_items <- c("Beef and Buffalo Meat, primary", "Fat of pigs", "Meat, Poultry", "Sheep and Goat Meat", "Milk, Total")
 
+# Filtering for livestock production and trade data
+livestock_data_filtered <- livestock_data %>%
+  filter(Item %in% livestock_items,
+         Element %in% c("Production", "Area harvested", "Yield")) %>%
+  select(Area, Item, Element, starts_with("Y"))
+
+columns_to_pivot <- grep("^Y[0-9]{4}$", names(livestock_data_filtered), value = TRUE)
+
+# Reshaping the data to long format
+livestock_data_long <- livestock_data_filtered %>%
+  pivot_longer(
+    cols = all_of(columns_to_pivot),
+    names_to = "Year",
+    values_to = "Value"
+  ) %>%
+  mutate(Year = as.numeric(gsub("Y", "", Year))) # To convert Year to numeric
 ```
