@@ -1,0 +1,16 @@
+```{r load-packages, message = FALSE}
+
+if (!require("pacman")) 
+  install.packages("pacman")
+
+pacman::p_load(tidyverse,
+               dplyr,
+               ggplot2,
+               tidyr,
+               scales,
+               readr,
+               ggthemes,
+               rnaturalearth,
+               sf
+               )
+```
