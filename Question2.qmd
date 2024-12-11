@@ -74,6 +74,12 @@ area_decoded <- area_codes %>%
 
 item_decoded <- item_codes %>%
   rename(Item_Code = `Item.Code`, Item_Name = `Item`)
+
+# For plot 2
+commodity_trends <- livestock_data_long %>%
+  filter(Element == "Production") %>%
+  group_by(Year, Item) %>%
+  summarise(Total_Production = sum(Value, na.rm = TRUE), .groups = "drop")
 ```
 
 ```{r plots}
@@ -89,4 +95,7 @@ ggplot(data = aggregated_data, aes(x = Year, y = Total_Value / 1e6, color = Elem
   ) +
   theme_minimal() +
   scale_y_continuous(labels = scales::comma)
+
+# Plot 2: Trends in individual livestock commodities (Production Only)
+
 ```
