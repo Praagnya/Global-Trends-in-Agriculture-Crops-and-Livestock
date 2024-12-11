@@ -97,5 +97,13 @@ ggplot(data = aggregated_data, aes(x = Year, y = Total_Value / 1e6, color = Elem
   scale_y_continuous(labels = scales::comma)
 
 # Plot 2: Trends in individual livestock commodities (Production Only)
-
+ggplot(data = commodity_trends, aes(x = Year, y = Total_Production / 1e6, fill = Item)) +
+  geom_area(position = "stack", alpha = 0.7) +
+  labs(
+    title = "Trends in Production of Livestock Commodities",
+    x = "Year",
+    y = "Production Volume (in millions of tons)",
+    fill = "Commodity"
+  ) +
+  theme_minimal()
 ```
