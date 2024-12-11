@@ -28,7 +28,7 @@ pacman::p_load(tidyverse,
 
 ```{r load-datasets}
 
-# Loading the main datasets
+# Loading the main datasets for visualisations
 livestock_data <- read.csv("./data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_All_Data.csv")
 area_codes <- read.csv("./data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_AreaCodes.csv")
 elements <- read.csv("./data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_Elements.csv")
