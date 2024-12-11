@@ -26,10 +26,20 @@ pacman::p_load(tidyverse,
                )
 ```
 
-```{r}
+```{r load-datasets}
+
 # Loading the main datasets
 livestock_data <- read.csv("./data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_All_Data.csv")
 area_codes <- read.csv("./data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_AreaCodes.csv")
 elements <- read.csv("./data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_Elements.csv")
 item_codes <- read.csv("./data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_ItemCodes.csv")
+
+```
+
+
+```{r Filtering and preprocessing}
+
+# Identify livestock commodities of interest
+livestock_items <- c("Beef and Buffalo Meat, primary", "Fat of pigs", "Meat, Poultry", "Sheep and Goat Meat", "Milk, Total")
+
 ```
