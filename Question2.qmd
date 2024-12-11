@@ -130,4 +130,20 @@ ggplot(data = commodity_trends, aes(x = Year, y = Total_Production / 1e6, fill =
     fill = "Commodity"
   ) +
   theme_minimal()
+
+# Plot 3: Livestock Production on a World Map
+ggplot() +
+  geom_sf(data = world) +
+  geom_sf(data = map_production, aes(geometry = geometry, fill = Total_Value), color = "black") +
+  scale_fill_viridis_c(name = "Production (tons)", option = "C") +
+  scale_fill_gradient(
+    low = "khaki1", 
+    high = "green4"
+  )+
+  labs(
+    title = "Global Livestock Production",
+    subtitle = "Production volumes (tons) by country",
+    caption = "Source: FAO Livestock Data"
+  ) +
+  theme_minimal()
 ```
