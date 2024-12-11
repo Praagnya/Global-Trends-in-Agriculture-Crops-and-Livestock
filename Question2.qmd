@@ -80,6 +80,30 @@ commodity_trends <- livestock_data_long %>%
   filter(Element == "Production") %>%
   group_by(Year, Item) %>%
   summarise(Total_Production = sum(Value, na.rm = TRUE), .groups = "drop")
+
+# For plot 3
+# Load Natural Earth data for country boundaries
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+# Prepare data for map-based visualizations
+# Summarize livestock production by country
+map_data <- livestock_data_long %>%
+  filter(Element %in% c("Production", "Export Quantity", "Import Quantity")) %>%
+  group_by(Area, Element) %>%
+  summarize(Total_Value = sum(Value, na.rm = TRUE)) %>%
+  ungroup()
+
+# Merge map data with country boundaries
+map_data <- map_data %>%
+  left_join(world, by = c("Area" = "admin"))
+
+# Create separate datasets for production, export, and import
+map_production <- map_data %>%
+  filter(Element == "Production")
+
+map_trade <- map_data %>%
+  filter(Element %in% c("Export Quantity", "Import Quantity")) %>%
+  mutate(Trade_Type = ifelse(Element == "Export Quantity", "Export", "Import"))
 ```
 
 ```{r plots}
