@@ -22,7 +22,8 @@ pacman::p_load(tidyverse,
                readr,
                ggthemes,
                rnaturalearth,
-               sf
+               sf,
+               leaflet
                )
 ```
 
@@ -151,4 +152,23 @@ ggplot() +
     caption = "Source: FAO Livestock Data"
   ) +
   theme_minimal()
+
+
+#Plot 4: Interactive plot 3
+leaflet(data = map_production_sf) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%  # Base map
+  addPolygons(
+    fillColor = ~colorNumeric("YlGn", Total_Value)(Total_Value),  # Color based on production value
+    weight = 1,
+    color = "black",
+    fillOpacity = 0.7,
+    label = ~paste(Area, "<br>Production:", Total_Value, "tons"),
+    highlightOptions = highlightOptions(weight = 2, color = "blue", bringToFront = TRUE)
+  ) %>%
+  addLegend(
+    pal = colorNumeric("YlGn", map_production$Total_Value),
+    values = ~Total_Value,
+    title = "Livestock Production (tons)",
+    position = "bottomright"
+  )
 ```
