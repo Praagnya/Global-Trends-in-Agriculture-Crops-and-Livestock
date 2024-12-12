@@ -231,4 +231,20 @@ leaflet() %>%
     overlayGroups = c("Total Production", "Per Capita Production"),
     options = layersControlOptions(collapsed = FALSE)
   ) %>%
+  
+  # Add legends
+  addLegend(
+    pal = production_pal,
+    values = map_production_sf$Total_Value,
+    title = "Total Production (tons)",
+    position = "bottomleft",
+    group = "Total Production"
+  ) %>%
+  addLegend(
+    pal = per_capita_pal,
+    values = map_production_sf$Per_Capita_Production,
+    title = "Per Capita Production (tons)",
+    position = "bottomright",
+    group = "Per Capita Production"
+  )
 ```
