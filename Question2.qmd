@@ -104,6 +104,11 @@ map_production <- map_data %>%
 map_trade <- map_data %>%
   filter(Element %in% c("Export Quantity", "Import Quantity")) %>%
   mutate(Trade_Type = ifelse(Element == "Export Quantity", "Export", "Import"))
+
+#For Interactive plot 4
+# Ensure `geometry` column is in correct SF format
+map_production_sf <- map_production %>%
+  st_as_sf()
 ```
 
 ```{r plots}
