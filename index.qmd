@@ -19,6 +19,75 @@ execute:
 
 ## Abstract
 
-Add project abstract here.
-
 This project focuses on compiling and analyzing statistical data for a diverse range of 278 crop and livestock products. The dataset will be expressed in key indicators like production quantities, yields, and processed product outputs, making it a valuable resource for understanding global agricultural production patterns across crops and livestock industries.
+
+## Introduction
+
+This report analyzes the FAOSTAT Crop and Livestock Production dataset, which provides global agricultural production statistics across more than 200 countries. The dataset covers crop production volumes, harvested areas, and yields, alongside livestock statistics. The objective of this project is to explore trends in agricultural productivity, compare regional outputs, and assess the sustainability of agricultural practices.
+
+## Source of the Data
+
+The data used in this report is curated by the Food and Agriculture Organization (FAO) of the United Nations, through their FAOSTAT database. It includes data collected annually since 1961 from government sources, surveys, and FAO estimates. website link : https://www.fao.org/faostat/en/#data/QCL
+
+## Data Collection
+
+The dataset is compiled from official reports from national statistical offices, and in cases of missing data, FAO uses estimation methods. This ensures consistency in the data for over 200 countries and regions.
+
+## Column Observations
+
+The dataset consists of 79,381 rows and 195 columns. Each row represents the production data for a specific commodity in a given country and year. The key variables include:
+
+-   **Area**: Country or region.
+-   **Item**: Commodity (e.g., wheat, rice, livestock).
+-   **Element**: Type of data (e.g., production, area harvested).
+-   **Year**: Year of the observation.
+-   **Yxxxx**: Yearly production data. (e.g., Y1961, Y1962), where xxxx is the year.
+-   **Value**: Recorded production value.
+
+## Exploratory Data Analysis (EDA)
+
+We took a number of measures to carry out inspection, cleaning, and visualization of the data effectively, which in turn enables us to conduct analysis regarding livestock production trends and its regional distribution.
+
+1.  **Data Inspection**
+
+Understanding the structure and content of a dataset is essential, so this method consisted of loading and examining the dataset. The dataset consists of several columns, including:
+
+Area: Refers to the country or region.
+
+Item: Denotes the specific livestock commodity (e.g., Beef, Poultry, Milk).
+
+Element: Represents the type of data, such as “Production,” “Area harvested,” or “Yield.”
+
+Year: The year of the data.
+
+Value: The production value (in tons, hectares, etc.) for the specified year and item.
+
+Examination of the dataset produced values that were relatively substantial as the data collected covered a period of several decades.
+
+2.  **Data Cleaning**
+
+For such cleaning operations, we focused removal of rows containing missing values on key columns such as Area, Item and Element. This step ensured that the analysis concentrated on completed records only without any other missing or non-relevant information.
+
+Post- cleaning, the data was arranged in such a manner that Year and Item columns served as the grouping variables while Value was used to denote the total production or harvested area for that year and item.
+
+3.  **Distribution of Livestock Holding Items**
+
+The first insight was in livestock items distribution across the locations in the database. The commonest items cut across include beef, poultry, milk and pork, which form the leading lines in the livestock production for the world. This distribution gives an idea of the intensity of different types of livestock kept and can be useful in the later analysis by helping to establish in which region which commodities are most produced.
+
+4.  **product Data Description**
+
+We created an item-centric cross -section in the dataset for ”Production” data by such years. This brought out the perspective of total production for each livestock commodity in the course of time. The total amounts of production of every commodity were in estimates, which enabled the study to observe which livestock product had the biggest global turnovers in livestock production.
+
+5.  **Annual Variation in Growth of Animal Resources**
+
+An important aspect of the analysis was to assess the scope of change in livestock production in the course of time. We displayed the shifts in production of poultry, beef and milk over the period under analysis. For instance, while poultry and beef sectors witnessed dramatic increases during the period in the production, others grew only moderate or flat.
+
+6.  **Livestock Production Across The World**
+
+Thereafter, we proceeded to analyze livestock production from geographic perspective. We made a case to combine production statistics by Region (country) and inquired which countries are the most significant net live stock producers on a global basis. The findings suggest that livestock production is indeed concentrated in only a few countries and on top of that list are China, United States and Brazil.
+
+In order to illustrate what these figures mean, we have created charts for the concentration of livestock production across the regions. This type of assessment enables the determination of regions which in the case of meat and milk production play more than just a peripheral role in world production.
+
+7.  **Missing Data Analysis**
+
+Among the other activities in EDA, one critical aspect is the identification and treatment of missing data. In the dataset, respondents from certain regions or years were missing which could impair the wholeness of our analysis. We checked for any non-response or partial non-response and presented the depiction of the distribution of missing data to ensure that it did not heavily impact our results.
