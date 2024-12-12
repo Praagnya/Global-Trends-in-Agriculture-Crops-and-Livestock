@@ -225,4 +225,10 @@ leaflet() %>%
     ),
     group = "Per Capita Production"
   ) %>%
+  
+  # Add a layers control
+  addLayersControl(
+    overlayGroups = c("Total Production", "Per Capita Production"),
+    options = layersControlOptions(collapsed = FALSE)
+  ) %>%
 ```
