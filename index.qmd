@@ -91,3 +91,35 @@ In order to illustrate what these figures mean, we have created charts for the c
 7.  **Missing Data Analysis**
 
 Among the other activities in EDA, one critical aspect is the identification and treatment of missing data. In the dataset, respondents from certain regions or years were missing which could impair the wholeness of our analysis. We checked for any non-response or partial non-response and presented the depiction of the distribution of missing data to ensure that it did not heavily impact our results.
+
+## Methodology
+
+This analysis examines the trends in global livestock production based on information from the FAOSTAT database focusing on several commodities, namely beef, poultry, and milk. Generally, a technique is conceived in terms of
+
+1.  **Data Collection** Sourcing data basically from the FAOSTAT Crop and Livestock Production dataset, including volumes produced, harvested areas, and yields from various livestock commodities across the world of more than 200 countries.
+
+Key datasets carried out for the analysis included:
+
+Production_Crops_Livestock_E_All_Data.csv: It comprises production data for multiple livestock commodities. Production_Crops_Livestock_E_AreaCodes.csv: It provides the area (country) codes and names. Production_Crops_Livestock_E_Elements.csv: It provides the respective observations of various elements (production, area harvested, yield). Production_Crops_Livestock_E_ItemCodes.csv: It gives codes and descriptions of each component of livestock (i.e., Beef, Poultry, Milk).
+
+2.  **Data Processing** 
+ The dataset was reshaped from a wide format (with columns for each year) to a long format (with year and value columns), enabling the analysis of time series data for each commodity. This was achieved by pivoting the dataset on the year column. Rows with missing values for essential columns, such as Year or Value, were removed. This ensured that only complete observations were used for analysis.
+ 
+3.  **Data Aggregation**
+For subsequent analysis, the data was aggregated on various levels.An Annual Aggregation, total cattle production, area harvested, and yield were aggregated per commodity for each year. That is, the data for the respective years were grouped by Year and Element Value was then summed for each group. A commodity-level trend analysis was made to track and analyse the trends in production of individual livestock commodities over time. Any production data for each livestock item were aggregated and visualizations for individual livestock products over a certain period were constructed.
+
+4.  **Visualization** There are a range of techniques used to create visualizations, including such that demonstrate time series data for global livestock trends; stacked area plots for individual commodity trends; choropleth maps indicating country-wise production. Interactive maps were used for per capita production exploration by country.
+
+## Results
+
+## Discussion
+
+Analysis of livestock production trends worldwide has confirmed substantial increments in production involving poultry, beef, and milk due to the rising demand for population growth and dietary changes. However, contrary trends do exist: the countries in Asia and Africa might grow faster, while slow growth has occurred in Europe and America due to market maturity.
+
+The study identifies some inefficiencies and environmental challenges of large-scale livestock production among the largest producers in the world, but it highlights the need for more sustainable practices. Additionally, livestock trade plays a very important role, with countries like Brazil and Australia putting their stamp on the production dynamics of the world.
+
+The findings highlight that policymakers have to encourage sustainability and efficiency in livestock farming, alongside optimizing the consequences on the environment. Further research may deal with the effects of climate change and alternatives to conventional livestock products.
+
+## Future work
+
+Future research sectors should focus on studies that would assess the impact of climate change on livestock production in especially vulnerable regions. Also, it is imperative to explore alternative and sustainable livestock practices and alternative sources of protein to reduce the environmental impacts. More investigations will fill in the gap on policy interventions and international trades that shape global livestock production trends and how one balances production efficiencies with sustainability. Lastly, further social inquiry would consider the potential effects of technological innovations in animal farming on global production dynamics. 
