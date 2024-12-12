@@ -173,20 +173,32 @@ ggplot() +
 
 
 #Plot 4: Interactive plot 3
-leaflet(data = map_production_sf) %>%
-  addProviderTiles(providers$CartoDB.Positron) %>%  # Base map
+leaflet() %>%
+  # Base map
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  
+  # Production layer
   addPolygons(
-    fillColor = ~colorNumeric("YlGn", Total_Value)(Total_Value),  # Color based on production value
-    weight = 1,
+    data = map_production_sf,
+    fillColor = ~production_pal(Total_Value),
     color = "black",
+    weight = 1,
     fillOpacity = 0.7,
-    label = ~paste(Area, "<br>Production:", Total_Value, "tons"),
-    highlightOptions = highlightOptions(weight = 2, color = "blue", bringToFront = TRUE)
+    label = ~paste(
+      "<strong>", Area, "</strong><br>",
+      "Total Production: ", scales::comma(Total_Value), " tons"
+    ),
+    popup = ~paste(
+      "<strong>Country:</strong> ", Area, "<br>",
+      "<strong>Total Production (tons):</strong> ", scales::comma(Total_Value), "<br>",
+      "<strong>Population:</strong> ", scales::comma(Population), "<br>",
+      "<strong>Per Capita Production (tons):</strong> ", round(Per_Capita_Production, 2)
+    ),
+    highlightOptions = highlightOptions(
+      weight = 2,
+      color = "blue",
+      bringToFront = TRUE
+    ),
+    group = "Total Production"
   ) %>%
-  addLegend(
-    pal = colorNumeric("YlGn", map_production$Total_Value),
-    values = ~Total_Value,
-    title = "Livestock Production (tons)",
-    position = "bottomright"
-  )
 ```
