@@ -110,6 +110,24 @@ map_trade <- map_data %>%
 # Ensure `geometry` column is in correct SF format
 map_production_sf <- map_production %>%
   st_as_sf()
+
+population_data <- data.frame(
+  Area = unique(map_production$Area),
+  Population = runif(length(unique(map_production$Area)), 1e6, 1e8) # Simulated population
+)
+
+# Merge population data to calculate per capita production
+map_production <- map_production %>%
+  left_join(population_data, by = "Area") %>%
+  mutate(Per_Capita_Production = Total_Value / Population)
+
+# Convert to sf object
+map_production_sf <- map_production %>%
+  st_as_sf()
+
+# Step 2: Define color palette
+production_pal <- colorNumeric("YlGn", domain = map_production_sf$Total_Value)
+per_capita_pal <- colorNumeric("Blues", domain = map_production_sf$Per_Capita_Production)
 ```
 
 ```{r plots}
