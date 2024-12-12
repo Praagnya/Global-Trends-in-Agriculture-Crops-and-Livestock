@@ -135,14 +135,16 @@ agg_prod_data <- prod_data_long %>%
 regional_map_data <- world %>%
   left_join(agg_prod_data, by = c("name" = "Area"))  # Join by country names
 
-# Step 4: Create the choropleth map
+# Step 4: Create the choropleth map with a sequential blue palette and custom color for missing data
 ggplot(data = regional_map_data) +
   geom_sf(aes(fill = Total_Production), color = "black", size = 0.1) +  # Fill countries with production data
   scale_fill_gradient(
-    low = "khaki1", 
-    high = "green4", 
+    low = "#3182bd",  # Light blue
+    high = "#225577", # Dark blue
     name = "Total Production\n(Metric Tons)",
-    labels = scales::comma_format(scale = 1e-6, suffix = "M")  # Format in millions
+    labels = scales::comma_format(scale = 1e-6, suffix = "M"),  # Format in millions
+    na.value = "#e0efff",  # Use the specified color (#e0efff) for missing data
+    guide = guide_colorbar(barwidth = 15, barheight = 1)  # Increase the width of the legend
   ) +
   labs(
     title = "Production of Top 10 Staple Crops",
@@ -151,7 +153,7 @@ ggplot(data = regional_map_data) +
   theme_minimal() +
   theme(
     plot.title = element_text(size = 20, face = "bold", hjust = 0.5),  # Title styling
-    plot.caption = element_text(size = 14, hjust = 1, color = "grey30"),  # Caption styling
+    plot.caption = element_text(size = 14, hjust = 1, color = "#e0efff"),  # Caption styling
     legend.position = "bottom",  # Legend at the bottom
     legend.title = element_text(size = 16),  # Legend title font size
     legend.text = element_text(size = 14),  # Legend text font size
@@ -159,9 +161,10 @@ ggplot(data = regional_map_data) +
     axis.title = element_blank()  # Remove axis titles
   )
 
+
 ```
 
-```{r, fig.height=9,fig.width=12}
+```{r, fig.height=9,fig.width=14}
 # Load required libraries
 library(dplyr)
 library(ggplot2)
@@ -192,7 +195,7 @@ agg_trends <- prod_data_classified %>%
   group_by(Year, Country_Category) %>%
   summarize(Total_Production = sum(Production, na.rm = TRUE), .groups = "drop")
 
-# Step 5: Create the line plot
+# Step 5: Create the line plot with modified legend position and increased axis/title sizes
 ggplot(agg_trends, aes(x = Year, y = Total_Production, color = Country_Category, group = Country_Category)) +
   geom_line(linewidth = 1.2) +  # Line plot
   theme_minimal() +
@@ -204,7 +207,8 @@ ggplot(agg_trends, aes(x = Year, y = Total_Production, color = Country_Category,
     caption = "Source: FAO"
   ) +
   scale_y_continuous(
-    labels = scales::comma_format(scale = 1e-6, suffix = "M")  # Format y-axis in millions
+    labels = scales::comma_format(scale = 1e-6, suffix = "M"),  # Format y-axis in millions
+    breaks = scales::pretty_breaks(n = 10)  # Add more ticks to y-axis
   ) +
   scale_x_continuous(
     breaks = seq(min(prod_data_classified$Year, na.rm = TRUE), max(prod_data_classified$Year, na.rm = TRUE), by = 5)
@@ -213,12 +217,15 @@ ggplot(agg_trends, aes(x = Year, y = Total_Production, color = Country_Category,
     values = c("Developed" = "blue", "Developing" = "orange")
   ) +
   theme(
-    plot.title = element_text(size = 18, face = "bold", hjust = 0.5),
-    axis.title = element_text(size = 14),
+    plot.title = element_text(size = 22, face = "bold", hjust = 0.5),
+    axis.title.x = element_text(size = 19),  # Increase x-axis title size
+    axis.title.y = element_text(size = 19),  # Increase y-axis title size
     axis.text = element_text(size = 12),
-    legend.title = element_text(size = 14),
-    legend.text = element_text(size = 12)
+    legend.position = c(0.3, 0.75),  # Position the legend to the right
+    legend.title = element_text(size = 19),  # Increase legend title size
+    legend.text = element_text(size = 18)  # Increase legend text size
   )
+
 
 ```
 
