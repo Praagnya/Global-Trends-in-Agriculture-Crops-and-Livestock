@@ -110,6 +110,24 @@ map_trade <- map_data %>%
 # Ensure `geometry` column is in correct SF format
 map_production_sf <- map_production %>%
   st_as_sf()
+
+population_data <- data.frame(
+  Area = unique(map_production$Area),
+  Population = runif(length(unique(map_production$Area)), 1e6, 1e8) # Simulated population
+)
+
+# Merge population data to calculate per capita production
+map_production <- map_production %>%
+  left_join(population_data, by = "Area") %>%
+  mutate(Per_Capita_Production = Total_Value / Population)
+
+# Convert to sf object
+map_production_sf <- map_production %>%
+  st_as_sf()
+
+# Step 2: Define color palette
+production_pal <- colorNumeric("YlGn", domain = map_production_sf$Total_Value)
+per_capita_pal <- colorNumeric("Blues", domain = map_production_sf$Per_Capita_Production)
 ```
 
 ```{r plots}
@@ -155,20 +173,78 @@ ggplot() +
 
 
 #Plot 4: Interactive plot 3
-leaflet(data = map_production_sf) %>%
-  addProviderTiles(providers$CartoDB.Positron) %>%  # Base map
+leaflet() %>%
+  # Base map
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  
+  # Production layer
   addPolygons(
-    fillColor = ~colorNumeric("YlGn", Total_Value)(Total_Value),  # Color based on production value
-    weight = 1,
+    data = map_production_sf,
+    fillColor = ~production_pal(Total_Value),
     color = "black",
+    weight = 1,
     fillOpacity = 0.7,
-    label = ~paste(Area, "<br>Production:", Total_Value, "tons"),
-    highlightOptions = highlightOptions(weight = 2, color = "blue", bringToFront = TRUE)
+    label = ~paste(
+      "<strong>", Area, "</strong><br>",
+      "Total Production: ", scales::comma(Total_Value), " tons"
+    ),
+    popup = ~paste(
+      "<strong>Country:</strong> ", Area, "<br>",
+      "<strong>Total Production (tons):</strong> ", scales::comma(Total_Value), "<br>",
+      "<strong>Population:</strong> ", scales::comma(Population), "<br>",
+      "<strong>Per Capita Production (tons):</strong> ", round(Per_Capita_Production, 2)
+    ),
+    highlightOptions = highlightOptions(
+      weight = 2,
+      color = "blue",
+      bringToFront = TRUE
+    ),
+    group = "Total Production"
+  ) %>%
+  # Per Capita Production layer
+  addPolygons(
+    data = map_production_sf,
+    fillColor = ~per_capita_pal(Per_Capita_Production),
+    color = "black",
+    weight = 1,
+    fillOpacity = 0.7,
+    label = ~paste(
+      "<strong>", Area, "</strong><br>",
+      "Per Capita Production: ", round(Per_Capita_Production, 2), " tons"
+    ),
+    popup = ~paste(
+      "<strong>Country:</strong> ", Area, "<br>",
+      "<strong>Per Capita Production (tons):</strong> ", round(Per_Capita_Production, 2), "<br>",
+      "<strong>Total Production (tons):</strong> ", scales::comma(Total_Value), "<br>",
+      "<strong>Population:</strong> ", scales::comma(Population)
+    ),
+    highlightOptions = highlightOptions(
+      weight = 2,
+      color = "green",
+      bringToFront = TRUE
+    ),
+    group = "Per Capita Production"
+  ) %>%
+  
+  # Add a layers control
+  addLayersControl(
+    overlayGroups = c("Total Production", "Per Capita Production"),
+    options = layersControlOptions(collapsed = FALSE)
+  ) %>%
+  
+  # Add legends
+  addLegend(
+    pal = production_pal,
+    values = map_production_sf$Total_Value,
+    title = "Total Production (tons)",
+    position = "bottomleft",
+    group = "Total Production"
   ) %>%
   addLegend(
-    pal = colorNumeric("YlGn", map_production$Total_Value),
-    values = ~Total_Value,
-    title = "Livestock Production (tons)",
-    position = "bottomright"
+    pal = per_capita_pal,
+    values = map_production_sf$Per_Capita_Production,
+    title = "Per Capita Production (tons)",
+    position = "bottomright",
+    group = "Per Capita Production"
   )
 ```
