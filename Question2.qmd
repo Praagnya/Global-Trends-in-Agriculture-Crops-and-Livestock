@@ -201,4 +201,28 @@ leaflet() %>%
     ),
     group = "Total Production"
   ) %>%
+  # Per Capita Production layer
+  addPolygons(
+    data = map_production_sf,
+    fillColor = ~per_capita_pal(Per_Capita_Production),
+    color = "black",
+    weight = 1,
+    fillOpacity = 0.7,
+    label = ~paste(
+      "<strong>", Area, "</strong><br>",
+      "Per Capita Production: ", round(Per_Capita_Production, 2), " tons"
+    ),
+    popup = ~paste(
+      "<strong>Country:</strong> ", Area, "<br>",
+      "<strong>Per Capita Production (tons):</strong> ", round(Per_Capita_Production, 2), "<br>",
+      "<strong>Total Production (tons):</strong> ", scales::comma(Total_Value), "<br>",
+      "<strong>Population:</strong> ", scales::comma(Population)
+    ),
+    highlightOptions = highlightOptions(
+      weight = 2,
+      color = "green",
+      bringToFront = TRUE
+    ),
+    group = "Per Capita Production"
+  ) %>%
 ```
