@@ -132,17 +132,34 @@ per_capita_pal <- colorNumeric("Blues", domain = map_production_sf$Per_Capita_Pr
 
 ```{r plots}
 
-# Plot 1: Trends in livestock production and yeids
+
+#Plot 1: Trends in livestock production and yeids
 ggplot(data = aggregated_data, aes(x = Year, y = Total_Value / 1e6, color = Element)) +
   geom_line(linewidth = 1.2) +
   labs(
     title = "Global Trends in Livestock Production and Trade",
     x = "Year",
-    y = "Volume (in millions of tons)",
+    y = "Volume ( Millions - Tons )",
     color = "Element"
   ) +
-  theme_minimal() +
+   theme(
+    plot.title = element_text(size = 22, face = "bold", hjust = 0.5),
+    axis.title.x = element_text(size = 19),
+    axis.title.y = element_text(size = 19),
+    axis.text = element_text(size = 12),
+    plot.caption = element_text(size = 14, hjust = 1, color = "grey30"),
+    legend.position = "right",  # Legend on the right
+    legend.direction = "vertical",  # Stack legend vertically
+    legend.title = element_text(size = 19),
+    legend.text = element_text(size = 18),
+    panel.background = element_rect(fill = "white", color = NA),  # Set white background
+    plot.background = element_rect(fill = "white", color = NA),  # Ensure white plot background
+    panel.grid.major = element_line(color = "grey90"),  # Subtle grid lines
+    panel.grid.minor = element_blank()  # Remove minor grid lines
+  )+
   scale_y_continuous(labels = scales::comma)
+
+
 
 # Plot 2: Trends in individual livestock commodities (Production Only)
 ggplot(data = commodity_trends, aes(x = Year, y = Total_Production / 1e6, fill = Item)) +
@@ -150,10 +167,24 @@ ggplot(data = commodity_trends, aes(x = Year, y = Total_Production / 1e6, fill =
   labs(
     title = "Trends in Production of Livestock Commodities",
     x = "Year",
-    y = "Production Volume (in millions of tons)",
+    y = "Production Volume ( Millions - Tons )",
     fill = "Commodity"
   ) +
-  theme_minimal()
+   theme(
+    plot.title = element_text(size = 22, face = "bold", hjust = 0.5),
+    axis.title.x = element_text(size = 19),
+    axis.title.y = element_text(size = 19),
+    axis.text = element_text(size = 12),
+    plot.caption = element_text(size = 14, hjust = 1, color = "grey30"),
+    legend.position = "right",  # Legend on the right
+    legend.direction = "vertical",  # Stack legend vertically
+    legend.title = element_text(size = 19),
+    legend.text = element_text(size = 18),
+    panel.background = element_rect(fill = "white", color = NA),  # Set white background
+    plot.background = element_rect(fill = "white", color = NA),  # Ensure white plot background
+    panel.grid.major = element_line(color = "grey90"),  # Subtle grid lines
+    panel.grid.minor = element_blank()  # Remove minor grid lines
+  )
 
 # Plot 3: Livestock Production on a World Map
 ggplot() +
@@ -172,21 +203,21 @@ ggplot() +
   theme_minimal()
 
 
-#Plot 4: Interactive plot 3
+# Enhanced Leaflet Map
 leaflet() %>%
-  # Base map
+  # Add a base map
   addProviderTiles(providers$CartoDB.Positron) %>%
   
-  # Production layer
+  # Add Total Production Layer
   addPolygons(
     data = map_production_sf,
     fillColor = ~production_pal(Total_Value),
     color = "black",
     weight = 1,
-    fillOpacity = 0.7,
+    fillOpacity = ~pmax(Total_Value / max(map_production_sf$Total_Value, na.rm = TRUE), 0.2),  # Dynamic opacity
     label = ~paste(
-      "<strong>", Area, "</strong><br>",
-      "Total Production: ", scales::comma(Total_Value), " tons"
+      "<strong>Country:</strong> ", Area, "<br>",
+      "<strong>Total Production:</strong> ", scales::comma(Total_Value), " tons"
     ),
     popup = ~paste(
       "<strong>Country:</strong> ", Area, "<br>",
@@ -195,22 +226,23 @@ leaflet() %>%
       "<strong>Per Capita Production (tons):</strong> ", round(Per_Capita_Production, 2)
     ),
     highlightOptions = highlightOptions(
-      weight = 2,
+      weight = 3,
       color = "blue",
       bringToFront = TRUE
     ),
     group = "Total Production"
   ) %>%
-  # Per Capita Production layer
+  
+  # Add Per Capita Production Layer
   addPolygons(
     data = map_production_sf,
     fillColor = ~per_capita_pal(Per_Capita_Production),
     color = "black",
     weight = 1,
-    fillOpacity = 0.7,
+    fillOpacity = ~pmax(Per_Capita_Production / max(map_production_sf$Per_Capita_Production, na.rm = TRUE), 0.2),  # Dynamic opacity
     label = ~paste(
-      "<strong>", Area, "</strong><br>",
-      "Per Capita Production: ", round(Per_Capita_Production, 2), " tons"
+      "<strong>Country:</strong> ", Area, "<br>",
+      "<strong>Per Capita Production:</strong> ", round(Per_Capita_Production, 2), " tons"
     ),
     popup = ~paste(
       "<strong>Country:</strong> ", Area, "<br>",
@@ -219,32 +251,125 @@ leaflet() %>%
       "<strong>Population:</strong> ", scales::comma(Population)
     ),
     highlightOptions = highlightOptions(
-      weight = 2,
+      weight = 3,
       color = "green",
       bringToFront = TRUE
     ),
     group = "Per Capita Production"
   ) %>%
   
-  # Add a layers control
+  # Add Layer Control
   addLayersControl(
+    baseGroups = c("Base Map"),
     overlayGroups = c("Total Production", "Per Capita Production"),
     options = layersControlOptions(collapsed = FALSE)
   ) %>%
   
-  # Add legends
+  # Add Legend for Total Production
   addLegend(
     pal = production_pal,
     values = map_production_sf$Total_Value,
-    title = "Total Production (tons)",
+    title = "Total Production<br>(in tons)",
     position = "bottomleft",
     group = "Total Production"
   ) %>%
+  
+  # Add Legend for Per Capita Production
   addLegend(
     pal = per_capita_pal,
     values = map_production_sf$Per_Capita_Production,
-    title = "Per Capita Production (tons)",
+    title = "Per Capita<br>Production (tons)",
     position = "bottomright",
     group = "Per Capita Production"
   )
 ```
+```
+
+```{r}
+library(leaflet)
+library(scales)
+
+# Enhanced Leaflet Map
+leaflet() %>%
+  # Add a base map
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  
+  # Add Total Production Layer
+  addPolygons(
+    data = map_production_sf,
+    fillColor = ~production_pal(Total_Value),
+    color = "black",
+    weight = 1,
+    fillOpacity = ~pmax(Total_Value / max(map_production_sf$Total_Value, na.rm = TRUE), 0.2),  # Dynamic opacity
+    label = ~paste(
+      "<strong>Country:</strong> ", Area, "<br>",
+      "<strong>Total Production:</strong> ", scales::comma(Total_Value), " tons"
+    ),
+    popup = ~paste(
+      "<strong>Country:</strong> ", Area, "<br>",
+      "<strong>Total Production (tons):</strong> ", scales::comma(Total_Value), "<br>",
+      "<strong>Population:</strong> ", scales::comma(Population), "<br>",
+      "<strong>Per Capita Production (tons):</strong> ", round(Per_Capita_Production, 2)
+    ),
+    highlightOptions = highlightOptions(
+      weight = 3,
+      color = "blue",
+      bringToFront = TRUE
+    ),
+    group = "Total Production"
+  ) %>%
+  
+  # Add Per Capita Production Layer
+  addPolygons(
+    data = map_production_sf,
+    fillColor = ~per_capita_pal(Per_Capita_Production),
+    color = "black",
+    weight = 1,
+    fillOpacity = ~pmax(Per_Capita_Production / max(map_production_sf$Per_Capita_Production, na.rm = TRUE), 0.2),  # Dynamic opacity
+    label = ~paste(
+      "<strong>Country:</strong> ", Area, "<br>",
+      "<strong>Per Capita Production:</strong> ", round(Per_Capita_Production, 2), " tons"
+    ),
+    popup = ~paste(
+      "<strong>Country:</strong> ", Area, "<br>",
+      "<strong>Per Capita Production (tons):</strong> ", round(Per_Capita_Production, 2), "<br>",
+      "<strong>Total Production (tons):</strong> ", scales::comma(Total_Value), "<br>",
+      "<strong>Population:</strong> ", scales::comma(Population)
+    ),
+    highlightOptions = highlightOptions(
+      weight = 3,
+      color = "green",
+      bringToFront = TRUE
+    ),
+    group = "Per Capita Production"
+  ) %>%
+  
+  # Add Layer Control
+  addLayersControl(
+    baseGroups = c("Base Map"),
+    overlayGroups = c("Total Production", "Per Capita Production"),
+    options = layersControlOptions(collapsed = FALSE)
+  ) %>%
+  
+  # Add Legend for Total Production
+  addLegend(
+    pal = production_pal,
+    values = map_production_sf$Total_Value,
+    title = "Total Production<br>(in tons)",
+    position = "bottomleft",
+    group = "Total Production"
+  ) %>%
+  
+  # Add Legend for Per Capita Production
+  addLegend(
+    pal = per_capita_pal,
+    values = map_production_sf$Per_Capita_Production,
+    title = "Per Capita<br>Production (tons)",
+    position = "bottomright",
+    group = "Per Capita Production"
+  )
+
+```
+
+
+

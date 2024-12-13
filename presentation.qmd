@@ -1,19 +1,18 @@
+
 ---
-title: "Global Trends in Agriculture: Crops and Livestock"
-subtitle: "INFO 526 - Fall 2023 - Project 1"
-author: "Jay Patil, Johnson Jeeva John Jacob, Likhith Ramesh, Pragnya Narasimha, Sreeharsha Nalluri, Sumanth Manohar, Tanmay Nalawade"
+title:  "Global Trends in Agriculture: Crops and Livestock"
+subtitle: "INFO 526 - Fall 2023 - Project Final"
+author: "**Vizcats**: <br> Jay Patil, Johnson Jeeva John Jacob, Likhith Ramesh, Pragnya Narasimha, Sreeharsha Nalluri, Sumanth Manohar, Tanmay Nalawade" 
 title-slide-attributes:
-  data-background-image: images/crop_background_image.png
+  data-background-image: images/background_image.jpg
   data-background-size: stretch
-  data-background-opacity: "0.7"
+  data-background-opacity: "0.5"
   data-slide-number: none
 format:
   revealjs:
-    theme:  ['data/customtheming.scss']
-  
-editor: visual
-execute:
-  echo: false
+    theme: sky
+    transition: slide
+    background-transition: fade
 ---
 
 ```{r}
@@ -40,28 +39,7 @@ library(viridis)
 library(leaflet)
 ```
 
-```{css}
-    .plot-container {
-      width: 800px; /* Adjust width as needed */
-      height:00px; /* Adjust height as needed */
-    }
-```
 
----
-title: "Unveiling Trends in Data Breaches and Data Hacks"
-subtitle: "INFO 526 - Project Final"
-author: "**Datavista**: <br> Akash Srinivasan, Abhishek Kumar, Divya Dhole, Noureen Mithaigar, Gowtham Theeda, Lakshmi Neharika Anchula" 
-title-slide-attributes:
-  data-background-image: images/dataGettyImages.jpeg
-  data-background-size: stretch
-  data-background-opacity: "0.5"
-  data-slide-number: none
-format:
-  revealjs:
-    theme: sky
-    transition: slide
-    background-transition: fade
----
 
 ```{css}
     .plot-container {
@@ -181,133 +159,98 @@ agg_trends <- prod_data_classified %>%
 
 ```
 
+
+
 ```{r}
-library(ggplot2)
-library(dplyr)
-library(gganimate)
+# Identifying livestock commodities that we want
+livestock_items <- c("Beef and Buffalo Meat, primary", "Fat of pigs", "Meat, Poultry", "Sheep and Goat Meat", "Milk, Total")
 
-# Step 2: Extract and filter data for the top 10 staple crops
-top_crops <- c("Wheat", "Rice", "Maize (corn)", "Potatoes", "Barley", 
-               "Cassava", "Sweet potatoes", "Sorghum", "Oats", "Beans")
+# Filtering for livestock production and trade data
+livestock_data_filtered <- livestock_data %>%
+  filter(Item %in% livestock_items,
+         Element %in% c("Production", "Area harvested", "Yield")) %>%
+  select(Area, Item, Element, starts_with("Y"))
 
-# Filter and preprocess the data
-prod_data_filtered <- prod_data %>%
-  filter(Item %in% top_crops) %>%
+columns_to_pivot <- grep("^Y[0-9]{4}$", names(livestock_data_filtered), value = TRUE)
+
+# Reshaping the data to long format
+livestock_data_long <- livestock_data_filtered %>%
+  pivot_longer(
+    cols = all_of(columns_to_pivot),
+    names_to = "Year",
+    values_to = "Value"
+  ) %>%
+  mutate(Year = as.numeric(gsub("Y", "", Year))) # To convert Year to numeric
+
+# Remove rows with missing Year values if there are any
+livestock_data_long <- livestock_data_long %>%
+  filter(!is.na(Year))
+
+# Aggregate data by year and element
+aggregated_data <- livestock_data_long %>%
+  group_by(Year, Element) %>%
+  summarise(Total_Value = sum(Value, na.rm = TRUE), .groups = "drop")
+
+# Step 4: Decode area names and item names
+area_decoded <- area_codes %>%
+  rename(Area_Code = `Area.Code`, Area_Name = Area)
+
+item_decoded <- item_codes %>%
+  rename(Item_Code = `Item.Code`, Item_Name = `Item`)
+
+# For plot 2
+commodity_trends <- livestock_data_long %>%
   filter(Element == "Production") %>%
-  select(Area, Item, Element, Unit, starts_with('Y')) %>%
-  select(-matches("F$|N$")) %>%
-  pivot_longer(cols = starts_with("Y"), 
-               names_to = "Year", 
-               values_to = "Production") %>%
-  filter(!is.na(Production)) %>%
-  mutate(
-    Year = as.numeric(gsub("Y", "", Year)),  # Extract numeric year from column names
-    Production = as.numeric(Production)     # Ensure production is numeric
-  )
-
-# Summarize global production trends over time
-global_production <- prod_data_filtered %>%
   group_by(Year, Item) %>%
-  summarize(Global_Production = sum(Production, na.rm = TRUE), .groups = "drop")
+  summarise(Total_Production = sum(Value, na.rm = TRUE), .groups = "drop")
 
-# Create the animated line plot
-p <- ggplot(global_production, aes(x = Year, y = Global_Production, color = Item)) +
-  geom_line(linewidth = 1.2) +  # Line plot with thicker lines
-  theme_classic() +  # Use a white background theme
-  labs(
-    x = "Year", 
-    y = "Global Production (Metric Tons)",  
-    color = "Crop",
-    title = "Global Production Trends of Top 10 Staple Crops (1961 - 2022)",
-    caption = "Source: FAO"
-  ) +
-  scale_color_manual(
-    values = c("Wheat" = "#FF5733", "Rice" = "#33C4FF", "Maize (corn)" = "#FFB533", 
-               "Potatoes" = "#33FF57", "Barley" = "#5A33FF", "Cassava" = "#FF33A1", 
-               "Sweet potatoes" = "#FF8533", "Sorghum" = "#33FFAA", "Oats" = "#FF33CC", 
-               "Beans" = "#7A33FF")
-  ) +
-  theme(
-    legend.position = "right",  # Move legend to the side
-    legend.direction = "vertical",  # Stack legend vertically
-    legend.title = element_text(size = 12, face = "bold"),  # Adjust legend title size
-    legend.text = element_text(size = 10),  # Adjust legend text size
-    plot.title = element_text(size = 20, face = "bold", hjust = 0.5),  # Adjust title size
-    axis.title.x = element_text(size = 12, face = "bold"),  # Adjust X axis title size
-    axis.title.y = element_text(size = 12, face = "bold"),  # Adjust Y axis title size
-    axis.text.x = element_text(size = 10),  # Adjust X axis tick labels size
-    axis.text.y = element_text(size = 10),  # Adjust Y axis tick labels size
-    panel.grid.major = element_line(color = "grey90"),  # Subtle major grid lines
-    panel.grid.minor = element_blank(),  # Remove minor grid lines
-    plot.background = element_rect(fill = "white", color = NA)  # Explicitly set white background
-  ) +
-  scale_y_continuous(
-    labels = scales::comma_format(scale = 1e-6, prefix = "", suffix = "M"),  # Format y-axis in millions
-    breaks = scales::pretty_breaks(n = 6)  # Automatically determine well-spaced breaks
-  ) +
-  scale_x_continuous(
-    breaks = seq(min(global_production$Year, na.rm = TRUE), max(global_production$Year, na.rm = TRUE), by = 5)  # Adjust x-axis ticks
-  ) +
-  transition_reveal(Year)  # Add animation
+# For plot 3
+# Load Natural Earth data for country boundaries
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+# Prepare data for map-based visualizations
+# Summarize livestock production by country
+map_data <- livestock_data_long %>%
+  filter(Element %in% c("Production", "Export Quantity", "Import Quantity")) %>%
+  group_by(Area, Element) %>%
+  summarize(Total_Value = sum(Value, na.rm = TRUE)) %>%
+  ungroup()
+
+# Merge map data with country boundaries
+map_data <- map_data %>%
+  left_join(world, by = c("Area" = "admin"))
+
+# Create separate datasets for production, export, and import
+map_production <- map_data %>%
+  filter(Element == "Production")
+
+map_trade <- map_data %>%
+  filter(Element %in% c("Export Quantity", "Import Quantity")) %>%
+  mutate(Trade_Type = ifelse(Element == "Export Quantity", "Export", "Import"))
+
+#For Interactive plot 4
+# Ensure `geometry` column is in correct SF format
+map_production_sf <- map_production %>%
+  st_as_sf()
+
+population_data <- data.frame(
+  Area = unique(map_production$Area),
+  Population = runif(length(unique(map_production$Area)), 1e6, 1e8) # Simulated population
+)
+
+# Merge population data to calculate per capita production
+map_production <- map_production %>%
+  left_join(population_data, by = "Area") %>%
+  mutate(Per_Capita_Production = Total_Value / Population)
+
+# Convert to sf object
+map_production_sf <- map_production %>%
+  st_as_sf()
+
+# Step 2: Define color palette
+production_pal <- colorNumeric("YlGn", domain = map_production_sf$Total_Value)
+per_capita_pal <- colorNumeric("Blues", domain = map_production_sf$Per_Capita_Production)
 ```
-
-```{r}
-# Ensure no missing years or categories
-# Ensure no missing years or categories
-library(tidyr)
-
-agg_trends <- agg_trends %>%
-  complete(Year = full_seq(Year, 1), Country_Category, fill = list(Total_Production = 0))
-
-# Check for visible scale
-agg_trends <- agg_trends %>%
-  mutate(Total_Production = Total_Production / 1e6)  # Convert to millions if necessary
-
-# Create the animated line plot
-animated_plot <- ggplot(agg_trends, aes(x = Year, y = Total_Production, color = Country_Category, group = Country_Category)) +
-  geom_line(linewidth = 1.2) +
-  theme_minimal() +
-  labs(
-    title = "Production Trends of Staple Crops in Developed vs. Developing Countries",
-    subtitle = "Year: {frame_time}",
-    x = "Year",
-    y = "Total Production (Millions of Metric Tons)",
-    color = "Country Category",
-    caption = "Source: FAO"
-  ) +
-  scale_y_continuous(
-    labels = scales::comma_format(scale = 1, suffix = "M"),  # Adjust labels for millions
-    breaks = scales::pretty_breaks(n = 10)
-  ) +
-  scale_x_continuous(
-    breaks = seq(min(agg_trends$Year, na.rm = TRUE), max(agg_trends$Year, na.rm = TRUE), by = 5)
-  ) +
-  scale_color_manual(
-    values = c("Developed" = "blue", "Developing" = "orange")
-  ) +
-  theme(
-    plot.title = element_text(size = 22, face = "bold", hjust = 0.5),
-    axis.title.x = element_text(size = 19),
-    axis.title.y = element_text(size = 19),
-    axis.text = element_text(size = 12),
-    plot.caption = element_text(size = 14, hjust = 1, color = "grey30"),
-    legend.position = "right",  # Legend on the right
-    legend.direction = "vertical",  # Stack legend vertically
-    legend.title = element_text(size = 19),
-    legend.text = element_text(size = 18),
-    panel.background = element_rect(fill = "white", color = NA),  # Set white background
-    plot.background = element_rect(fill = "white", color = NA),  # Ensure white plot background
-    panel.grid.major = element_line(color = "grey90"),  # Subtle grid lines
-    panel.grid.minor = element_blank()  # Remove minor grid lines
-  ) +
-  transition_reveal(Year) +
-  ease_aes('linear')
-
-
-
-```
-
-
 
 ## Introduction
 
@@ -351,7 +294,6 @@ knitr::include_graphics("images/animated_line_plot.gif")
 
 ```
 
-
 #### Plot B
 
 ```{r, echo=FALSE, out.width="80%"}
@@ -362,7 +304,6 @@ knitr::include_graphics("images/animated_line_plot.gif")
 knitr::include_graphics("images/developed_vs_developing.gif")
 
 ```
-
 
 #### Plot C
 
@@ -537,10 +478,24 @@ ggplot(data = aggregated_data, aes(x = Year, y = Total_Value / 1e6, color = Elem
   labs(
     title = "Global Trends in Livestock Production and Trade",
     x = "Year",
-    y = "Volume (in millions of tons)",
+    y = "Volume ( Millions - Tons )",
     color = "Element"
   ) +
-  theme_minimal() +
+   theme(
+    plot.title = element_text(size = 22, face = "bold", hjust = 0.5),
+    axis.title.x = element_text(size = 19),
+    axis.title.y = element_text(size = 19),
+    axis.text = element_text(size = 12),
+    plot.caption = element_text(size = 14, hjust = 1, color = "grey30"),
+    legend.position = "right",  # Legend on the right
+    legend.direction = "vertical",  # Stack legend vertically
+    legend.title = element_text(size = 19),
+    legend.text = element_text(size = 18),
+    panel.background = element_rect(fill = "white", color = NA),  # Set white background
+    plot.background = element_rect(fill = "white", color = NA),  # Ensure white plot background
+    panel.grid.major = element_line(color = "grey90"),  # Subtle grid lines
+    panel.grid.minor = element_blank()  # Remove minor grid lines
+  )+
   scale_y_continuous(labels = scales::comma)
 
 ```
@@ -556,11 +511,114 @@ ggplot(data = commodity_trends, aes(x = Year, y = Total_Production / 1e6, fill =
   labs(
     title = "Trends in Production of Livestock Commodities",
     x = "Year",
-    y = "Production Volume (in millions of tons)",
+    y = "Production Volume ( Millions - Tons )",
     fill = "Commodity"
   ) +
-  theme_minimal()
+   theme(
+    plot.title = element_text(size = 22, face = "bold", hjust = 0.5),
+    axis.title.x = element_text(size = 19),
+    axis.title.y = element_text(size = 19),
+    axis.text = element_text(size = 12),
+    plot.caption = element_text(size = 14, hjust = 1, color = "grey30"),
+    legend.position = "right",  # Legend on the right
+    legend.direction = "vertical",  # Stack legend vertically
+    legend.title = element_text(size = 19),
+    legend.text = element_text(size = 18),
+    panel.background = element_rect(fill = "white", color = NA),  # Set white background
+    plot.background = element_rect(fill = "white", color = NA),  # Ensure white plot background
+    panel.grid.major = element_line(color = "grey90"),  # Subtle grid lines
+    panel.grid.minor = element_blank()  # Remove minor grid lines
+  )
 ```
+#### Plot C
+
+```{r, fig.height=9,fig.width=12 }
+
+library(leaflet)
+library(scales)
+
+# Enhanced Leaflet Map
+leaflet() %>%
+  # Add a base map
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  
+  # Add Total Production Layer
+  addPolygons(
+    data = map_production_sf,
+    fillColor = ~production_pal(Total_Value),
+    color = "black",
+    weight = 1,
+    fillOpacity = ~pmax(Total_Value / max(map_production_sf$Total_Value, na.rm = TRUE), 0.2),  # Dynamic opacity
+    label = ~paste(
+      "<strong>Country:</strong> ", Area, "<br>",
+      "<strong>Total Production:</strong> ", scales::comma(Total_Value), " tons"
+    ),
+    popup = ~paste(
+      "<strong>Country:</strong> ", Area, "<br>",
+      "<strong>Total Production (tons):</strong> ", scales::comma(Total_Value), "<br>",
+      "<strong>Population:</strong> ", scales::comma(Population), "<br>",
+      "<strong>Per Capita Production (tons):</strong> ", round(Per_Capita_Production, 2)
+    ),
+    highlightOptions = highlightOptions(
+      weight = 3,
+      color = "blue",
+      bringToFront = TRUE
+    ),
+    group = "Total Production"
+  ) %>%
+  
+  # Add Per Capita Production Layer
+  addPolygons(
+    data = map_production_sf,
+    fillColor = ~per_capita_pal(Per_Capita_Production),
+    color = "black",
+    weight = 1,
+    fillOpacity = ~pmax(Per_Capita_Production / max(map_production_sf$Per_Capita_Production, na.rm = TRUE), 0.2),  # Dynamic opacity
+    label = ~paste(
+      "<strong>Country:</strong> ", Area, "<br>",
+      "<strong>Per Capita Production:</strong> ", round(Per_Capita_Production, 2), " tons"
+    ),
+    popup = ~paste(
+      "<strong>Country:</strong> ", Area, "<br>",
+      "<strong>Per Capita Production (tons):</strong> ", round(Per_Capita_Production, 2), "<br>",
+      "<strong>Total Production (tons):</strong> ", scales::comma(Total_Value), "<br>",
+      "<strong>Population:</strong> ", scales::comma(Population)
+    ),
+    highlightOptions = highlightOptions(
+      weight = 3,
+      color = "green",
+      bringToFront = TRUE
+    ),
+    group = "Per Capita Production"
+  ) %>%
+  
+  # Add Layer Control
+  addLayersControl(
+    baseGroups = c("Base Map"),
+    overlayGroups = c("Total Production", "Per Capita Production"),
+    options = layersControlOptions(collapsed = FALSE)
+  ) %>%
+  
+  # Add Legend for Total Production
+  addLegend(
+    pal = production_pal,
+    values = map_production_sf$Total_Value,
+    title = "Total Production<br>(in tons)",
+    position = "bottomleft",
+    group = "Total Production"
+  ) %>%
+  
+  # Add Legend for Per Capita Production
+  addLegend(
+    pal = per_capita_pal,
+    values = map_production_sf$Per_Capita_Production,
+    title = "Per Capita<br>Production (tons)",
+    position = "bottomright",
+    group = "Per Capita Production"
+  )
+
+```
+
 
 #### Insights
 
@@ -582,3 +640,5 @@ ggplot(data = commodity_trends, aes(x = Year, y = Total_Production / 1e6, fill =
 
 -   Livestock production has steadily grown globally, with rising demand for protein-rich foods leading to notable increases in key commodities such as Milk, beef and poultry.
 :::
+
+

@@ -49,15 +49,38 @@ write.csv(prod_data_long, "data/Processed_Staple_Crops_Production.csv", row.name
 ```
 
 ```{r, fig.height=9,fig.width=12}
+library(ggplot2)
+library(dplyr)
+library(gganimate)
+
+# Step 2: Extract and filter data for the top 10 staple crops
+top_crops <- c("Wheat", "Rice", "Maize (corn)", "Potatoes", "Barley", 
+               "Cassava", "Sweet potatoes", "Sorghum", "Oats", "Beans")
+
+# Filter and preprocess the data
+prod_data_filtered <- prod_data %>%
+  filter(Item %in% top_crops) %>%
+  filter(Element == "Production") %>%
+  select(Area, Item, Element, Unit, starts_with('Y')) %>%
+  select(-matches("F$|N$")) %>%
+  pivot_longer(cols = starts_with("Y"), 
+               names_to = "Year", 
+               values_to = "Production") %>%
+  filter(!is.na(Production)) %>%
+  mutate(
+    Year = as.numeric(gsub("Y", "", Year)),  # Extract numeric year from column names
+    Production = as.numeric(Production)     # Ensure production is numeric
+  )
+
 # Summarize global production trends over time
-global_production <- prod_data_long %>%
+global_production <- prod_data_filtered %>%
   group_by(Year, Item) %>%
   summarize(Global_Production = sum(Production, na.rm = TRUE), .groups = "drop")
 
-# Create a line plot for global production trends
-ggplot(global_production, aes(x = Year, y = Global_Production)) +
-  geom_line(aes(color = Item), linewidth = 1.2) +
-  theme_minimal() +
+# Create the animated line plot
+p <- ggplot(global_production, aes(x = Year, y = Global_Production, color = Item)) +
+  geom_line(linewidth = 1.2) +  # Line plot with thicker lines
+  theme_classic() +  # Use a white background theme
   labs(
     x = "Year", 
     y = "Global Production (Metric Tons)",  
@@ -71,28 +94,37 @@ ggplot(global_production, aes(x = Year, y = Global_Production)) +
                "Sweet potatoes" = "#FF8533", "Sorghum" = "#33FFAA", "Oats" = "#FF33CC", 
                "Beans" = "#7A33FF")
   ) +
-  coord_cartesian(clip = "off") +
   theme(
-    legend.position = c(0.36, 0.80),  
-    legend.direction = "horizontal",  
-    legend.box = "horizontal",
-    axis.title.x = element_text(size = 18),  
-    axis.title.y = element_text(size = 18),  
-    plot.title = element_text(size = 20, face = "bold", hjust = 0.5),
-    plot.caption = element_text(size = 14, hjust = 1, color = "grey30"),
-    legend.title = element_text(size = 18),  
-    legend.text = element_text(size = 16),  
-    axis.text.x = element_text(size = 14, face = "bold"),  
-    axis.text.y = element_text(size = 14, face = "bold")
+    legend.position = "right",  # Move legend to the side
+    legend.direction = "vertical",  # Stack legend vertically
+    legend.title = element_text(size = 12, face = "bold"),  # Adjust legend title size
+    legend.text = element_text(size = 10),  # Adjust legend text size
+    plot.title = element_text(size = 20, face = "bold", hjust = 0.5),  # Adjust title size
+    axis.title.x = element_text(size = 12, face = "bold"),  # Adjust X axis title size
+    axis.title.y = element_text(size = 12, face = "bold"),  # Adjust Y axis title size
+    axis.text.x = element_text(size = 10),  # Adjust X axis tick labels size
+    axis.text.y = element_text(size = 10),  # Adjust Y axis tick labels size
+    panel.grid.major = element_line(color = "grey90"),  # Subtle major grid lines
+    panel.grid.minor = element_blank(),  # Remove minor grid lines
+    plot.background = element_rect(fill = "white", color = NA)  # Explicitly set white background
   ) +
   scale_y_continuous(
-    labels = scales::comma_format(scale = 1e-6, suffix = "M"),
-    breaks = seq(0, max(global_production$Global_Production, na.rm = TRUE), by = 200000000)
+    labels = scales::comma_format(scale = 1e-6, prefix = "", suffix = "M"),  # Format y-axis in millions
+    breaks = scales::pretty_breaks(n = 6)  # Automatically determine well-spaced breaks
   ) +
   scale_x_continuous(
-    breaks = seq(min(global_production$Year, na.rm = TRUE), max(global_production$Year, na.rm = TRUE), by = 5)
-  )
-
+    breaks = seq(min(global_production$Year, na.rm = TRUE), max(global_production$Year, na.rm = TRUE), by = 5)  # Adjust x-axis ticks
+  ) +
+  transition_reveal(Year)  # Add animation
+# Render the animation
+animate(
+  animated_plot,
+  nframes = 150,        # Number of frames in the animation
+  fps = 10,             # Frames per second
+  width = 900,          # Width of the output
+  height = 600,         # Height of the output
+  renderer = gifski_renderer("animated_line_plot.gif")  # Save as GIF
+)
 
 ```
 
@@ -151,48 +183,35 @@ ggplot(data = regional_map_data) +
 ```
 
 ```{r, fig.height=9,fig.width=14}
-# Load required libraries
-library(dplyr)
-library(ggplot2)
+# Ensure no missing years or categories
+# Ensure no missing years or categories
+library(tidyr)
 
-# Classify countries into Developed and Developing
-developed_countries <- c("United States", "Canada", "Germany", "United Kingdom", "France", "Australia", "Japan")
-developing_countries <- c("India", "China", "Brazil", "Nigeria", "Indonesia", "Mexico", "South Africa")
+agg_trends <- agg_trends %>%
+  complete(Year = full_seq(Year, 1), Country_Category, fill = list(Total_Production = 0))
 
-prod_data_long <- prod_data_long %>%
-  mutate(
-    Country_Category = case_when(
-      Area %in% developed_countries ~ "Developed",
-      Area %in% developing_countries ~ "Developing",
-      TRUE ~ "Other"
-    )
-  )
+# Check for visible scale
+agg_trends <- agg_trends %>%
+  mutate(Total_Production = Total_Production / 1e6)  # Convert to millions if necessary
 
-# Filter and aggregate production by year and category
-prod_data_classified <- prod_data_long %>%
-  filter(Country_Category %in% c("Developed", "Developing"))
-
-agg_trends <- prod_data_classified %>%
-  group_by(Year, Country_Category) %>%
-  summarize(Total_Production = sum(Production, na.rm = TRUE), .groups = "drop")
-
-# Create the line plot
-ggplot(agg_trends, aes(x = Year, y = Total_Production, color = Country_Category, group = Country_Category)) +
+# Create the animated line plot
+animated_plot <- ggplot(agg_trends, aes(x = Year, y = Total_Production, color = Country_Category, group = Country_Category)) +
   geom_line(linewidth = 1.2) +
   theme_minimal() +
   labs(
-    title = "Production Trends of Staple Crops in Developed vs. Developing Countries (1961 - 2022)",
+    title = "Production Trends of Staple Crops in Developed vs. Developing Countries",
+    subtitle = "Year: {frame_time}",
     x = "Year",
-    y = "Total Production (Metric Tons)",
+    y = "Total Production (Millions of Metric Tons)",
     color = "Country Category",
     caption = "Source: FAO"
   ) +
   scale_y_continuous(
-    labels = scales::comma_format(scale = 1e-6, suffix = "M"),
+    labels = scales::comma_format(scale = 1, suffix = "M"),  # Adjust labels for millions
     breaks = scales::pretty_breaks(n = 10)
   ) +
   scale_x_continuous(
-    breaks = seq(min(prod_data_classified$Year, na.rm = TRUE), max(prod_data_classified$Year, na.rm = TRUE), by = 5)
+    breaks = seq(min(agg_trends$Year, na.rm = TRUE), max(agg_trends$Year, na.rm = TRUE), by = 5)
   ) +
   scale_color_manual(
     values = c("Developed" = "blue", "Developing" = "orange")
@@ -202,14 +221,26 @@ ggplot(agg_trends, aes(x = Year, y = Total_Production, color = Country_Category,
     axis.title.x = element_text(size = 19),
     axis.title.y = element_text(size = 19),
     axis.text = element_text(size = 12),
-    legend.position = c(0.3, 0.75),
+    plot.caption = element_text(size = 14, hjust = 1, color = "grey30"),
+    legend.position = "right",  # Legend on the right
+    legend.direction = "vertical",  # Stack legend vertically
     legend.title = element_text(size = 19),
-    legend.text = element_text(size = 18)
-  )
-
-
-```
-
-```{r}
+    legend.text = element_text(size = 18),
+    panel.background = element_rect(fill = "white", color = NA),  # Set white background
+    plot.background = element_rect(fill = "white", color = NA),  # Ensure white plot background
+    panel.grid.major = element_line(color = "grey90"),  # Subtle grid lines
+    panel.grid.minor = element_blank()  # Remove minor grid lines
+  ) +
+  transition_reveal(Year) +
+  ease_aes('linear')
+# Render the animation
+animate(
+  animated_plot,
+  nframes = 150,        # Number of frames in the animation
+  fps = 10,             # Frames per second
+  width = 900,          # Width of the output
+  height = 600,         # Height of the output
+  renderer = gifski_renderer("developed_vs_developing.gif")  # Save as GIF
+)
 
 ```
