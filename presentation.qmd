@@ -1,9 +1,9 @@
 ---
-title: "Project title"
+title: "Global Trends in Agriculture: Crops and Livestock"
 subtitle: "INFO 526 - Fall 2023 - Project 1"
-author: "Author names"
+author: "Jay Patil, Johnson Jeeva John Jacob, Likhith Ramesh, Pragnya Narasimha, Sreeharsha Nalluri, Sumanth Manohar, Tanmay Nalawade"
 title-slide-attributes:
-  data-background-image: images/watercolour_sys02_img34_teacup-ocean.jpg
+  data-background-image: images/crop_background_image.png
   data-background-size: stretch
   data-background-opacity: "0.7"
   data-slide-number: none
@@ -27,6 +27,20 @@ pacman::p_load(tidymodels,
 ```
 
 ```{r}
+#| label: load-libraries
+#| include: false
+
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(readr)
+library(sf)
+library(rnaturalearth)
+library(viridis)
+library(leaflet)
+```
+
+```{r}
 #| label: setup
 #| include: false
 
@@ -45,26 +59,272 @@ knitr::opts_chunk$set(
 ```{r}
 #| label: load-data
 #| include: false
-# Load data here
-data(mtcars)
-mtcars$speed <- mtcars$hp / mtcars$wt
 
-data("penguins")
+# Load data here
+prod_data <- read.csv("data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_All_Data.csv")
+area_codes <- read.csv("data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_AreaCodes.csv")
+item_codes <- read.csv("data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_ItemCodes.csv")
+elements <- read.csv("data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_Elements.csv")
+
+livestock_data <- read.csv("./data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_All_Data.csv")
+area_codes <- read.csv("./data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_AreaCodes.csv")
+elements <- read.csv("./data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_Elements.csv")
+item_codes <- read.csv("./data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_ItemCodes.csv")
 ```
 
-# Using Quarto for presentations
+```{r, warning=FALSE}
 
-## Quarto
+# Step 2: Extract and filter data for the top 10 staple crops
+# Define the top 10 staple crops based on Item names
+top_crops <- c("Wheat", "Rice", "Maize (corn)", "Potatoes", "Barley", 
+               "Cassava", "Sweet potatoes", "Sorghum", "Oats", "Beans")
 
--   The presentation is created using the Quarto CLI
+# Filter the data for these crops and "Production" element (not "Area harvested")
+prod_data_filtered <- prod_data %>%
+  filter(Item %in% top_crops) %>%
+  filter(Element == "Production") %>%
+  select(Area, Item, Element, Unit, starts_with('Y'))  # Select relevant columns
 
--   `##` sets the start of a new slide
 
-## Layouts
+# Step 3: Preprocess the data
+# Remove columns that have characters like 'F' or 'N' in their names (e.g. Y1961F, Y1961N)
+prod_data_filtered <- prod_data_filtered %>%
+  select(-matches("F$|N$"))  # Remove columns ending with "F" or "N"
 
-You can use plain text
+# Pivot the data so that each year's production is a separate column
+prod_data_long <- prod_data_filtered %>%
+  pivot_longer(cols = starts_with("Y"), 
+               names_to = "Year", 
+               values_to = "Production") %>%
+  filter(!is.na(Production))  # Remove rows with missing production data
 
-::::: columns
+# Convert Year to numeric and Production to numeric
+prod_data_long <- prod_data_long %>%
+  mutate(Year = as.numeric(gsub("Y", "", Year)),  # Extract numeric year from column names
+         Production = as.numeric(Production))  # Ensure production is numeric
+
+
+# Step 5: (Optional) Export the processed data
+# Export the cleaned data to a CSV file
+write.csv(prod_data_long, "data/Processed_Staple_Crops_Production.csv", row.names = FALSE)
+
+```
+
+```{r}
+prod_data_long |>    
+  head() |>   
+  kableExtra::kable() |>   
+  kableExtra::kable_styling()
+```
+
+## Global Production Trends
+
+```{r # Load necessary libraries}
+
+
+
+library(ggplot2)
+library(dplyr)
+library(plotly)
+
+# Summarize global production trends over time
+global_production <- prod_data_long %>%
+  group_by(Year, Item) %>%
+  summarize(Global_Production = sum(Production, na.rm = TRUE), .groups = "drop")
+
+# Create a ggplot
+p <- ggplot(global_production, aes(x = Year, y = Global_Production)) +
+  geom_line(aes(color = Item), linewidth = 1.2) +  # Line plot with thicker lines
+  theme_minimal() +
+  labs(
+    x = "Year", 
+    y = "Global Production (Metric Tons)",  
+    color = "Crop",
+    title = "Global Production Trends of Top 10 Staple Crops (1961 - 2022)",
+    caption = "Source: FAO"
+  ) +
+  scale_color_manual(
+    values = c("Wheat" = "#FF5733", "Rice" = "#33C4FF", "Maize (corn)" = "#FFB533", 
+               "Potatoes" = "#33FF57", "Barley" = "#5A33FF", "Cassava" = "#FF33A1", 
+               "Sweet potatoes" = "#FF8533", "Sorghum" = "#33FFAA", "Oats" = "#FF33CC", 
+               "Beans" = "#7A33FF"),
+    labels = c("Wheat", "Rice", "Maize (corn)", "Potatoes", "Barley", 
+               "Cassava", "Sweet potatoes", "Sorghum", "Oats", "Beans")
+  ) +
+  coord_cartesian(clip = "off") +
+  theme(
+    legend.position = c(0.36, 0.80),  # Slightly move the legend right and down
+    legend.direction = "horizontal",  # Display legend horizontally
+    legend.box = "horizontal",  # Align the legend horizontally
+    axis.title.x = element_text(hjust = 0.5, size = 18),  # Increase X axis title font size
+    axis.title.y = element_text(hjust = 0.5, size = 18),  # Increase Y axis title font size
+    plot.title = element_text(size = 20, face = "bold", hjust = 0.5),  # Increase title font size
+    plot.caption = element_text(size = 14, hjust = 1, color = "grey30"),  # Caption with slightly larger font
+    legend.title = element_text(size = 18),  # Increase legend title font size
+    legend.text = element_text(size = 16),  # Increase legend text font size
+    axis.text.x = element_text(size = 14, face = "bold"),  # Increase and bold X axis tick labels
+    axis.text.y = element_text(size = 14, face = "bold")   # Increase and bold Y axis tick labels
+  ) +
+  scale_y_continuous(
+    labels = scales::comma_format(scale = 1e-6, prefix = "", suffix = "M"),  # Format y-axis in millions with commas
+    breaks = seq(0, max(global_production$Global_Production, na.rm = TRUE), by = 200000000)  # Reduced step size for y-axis ticks
+  ) +
+  scale_x_continuous(
+    breaks = seq(min(global_production$Year, na.rm = TRUE), max(global_production$Year, na.rm = TRUE), by = 5)  # Increase x-axis ticks
+  )
+
+# Convert ggplot to an interactive plotly plot
+interactive_plot <- ggplotly(p)
+
+# Display the interactive plot
+interactive_plot
+
+```
+
+## Geographical dist
+
+```{r, warning=FALSE, fig.height=9,fig.width=12}
+# Load required libraries
+library(dplyr)
+library(ggplot2)
+library(sf)
+library(rnaturalearth)
+library(viridis)
+
+# Step 1: Load the map data (world map)
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+# Step 2: Aggregate production data for the 10 staple crops
+# Define the top 10 crops
+top_crops <- c("Wheat", "Rice", "Maize (corn)", "Potatoes", "Barley", 
+               "Cassava", "Sweet potatoes", "Sorghum", "Oats", "Beans")
+
+# Aggregate total production by country across all years for the top crops
+agg_prod_data <- prod_data_long %>%
+  filter(Item %in% top_crops) %>%
+  group_by(Area) %>%
+  summarize(Total_Production = sum(Production, na.rm = TRUE), .groups = "drop")
+
+# Step 3: Join the aggregated production data with the world map data
+regional_map_data <- world %>%
+  left_join(agg_prod_data, by = c("name" = "Area"))  # Join by country names
+
+# Step 4: Create the choropleth map with a sequential blue palette and custom color for missing data
+ggplot(data = regional_map_data) +
+  geom_sf(aes(fill = Total_Production), color = "black", size = 0.1) +  # Fill countries with production data
+  scale_fill_gradient(
+    low = "#3182bd",  # Light blue
+    high = "#225577", # Dark blue
+    name = "Total Production\n(Metric Tons)",
+    labels = scales::comma_format(scale = 1e-6, suffix = "M"),  # Format in millions
+    na.value = "#e0efff",  # Use the specified color (#e0efff) for missing data
+    guide = guide_colorbar(barwidth = 15, barheight = 1)  # Increase the width of the legend
+  ) +
+  labs(
+    title = "Production of Top 10 Staple Crops",
+    caption = "Source: FAO"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 20, face = "bold", hjust = 0.5),  # Title styling
+    plot.caption = element_text(size = 14, hjust = 1, color = "#e0efff"),  # Caption styling
+    legend.position = "bottom",  # Legend at the bottom
+    legend.title = element_text(size = 16),  # Legend title font size
+    legend.text = element_text(size = 14),  # Legend text font size
+    axis.text = element_blank(),  # Remove axis ticks for cleaner map
+    axis.title = element_blank()  # Remove axis titles
+  )
+
+
+
+```
+
+## Developed vs developing countries
+
+::: columns
+::: {.column width="50%"}
+-   content
+
+-   goes here
+:::
+
+::: {.column width="50%"}
+```{r, warning=FALSE, fig.height=9,fig.width=14}
+# Load required libraries
+library(dplyr)
+library(ggplot2)
+
+# Step 1: Create a classification of countries (Developed vs. Developing)
+# Define lists of developed and developing countries (replace with actual classification)
+developed_countries <- c("United States", "Canada", "Germany", "United Kingdom", "France", "Australia", "Japan")
+developing_countries <- c("India", "China", "Brazil", "Nigeria", "Indonesia", "Mexico", "South Africa")
+
+# Step 2: Add a classification column to the production data
+# Ensure that prod_data_long contains the correct column names like 'Area' for country names, 'Year' for the year, and 'Production' for the data values
+
+prod_data_long <- prod_data_long %>%
+  mutate(
+    Country_Category = case_when(
+      Area %in% developed_countries ~ "Developed",
+      Area %in% developing_countries ~ "Developing",
+      TRUE ~ "Other"  # Classify remaining countries as "Other"
+    )
+  )
+
+# Step 3: Filter for Developed and Developing countries only
+prod_data_classified <- prod_data_long %>%
+  filter(Country_Category %in% c("Developed", "Developing"))
+
+# Step 4: Aggregate production by year and country category
+agg_trends <- prod_data_classified %>%
+  group_by(Year, Country_Category) %>%
+  summarize(Total_Production = sum(Production, na.rm = TRUE), .groups = "drop")
+
+# Step 5: Create the line plot with modified legend position and increased axis/title sizes
+ggplot(agg_trends, aes(x = Year, y = Total_Production, color = Country_Category, group = Country_Category)) +
+  geom_line(linewidth = 1.2) +  # Line plot
+  theme_minimal() +
+  labs(
+    title = "Production Trends of Staple Crops in Developed vs. Developing Countries (1961 - 2022)",
+    x = "Year",
+    y = "Total Production (Metric Tons)",
+    color = "Country Category",
+    caption = "Source: FAO"
+  ) +
+  scale_y_continuous(
+    labels = scales::comma_format(scale = 1e-6, suffix = "M"),  
+    breaks = scales::pretty_breaks(n = 10)  # Add more ticks to y-axis
+  ) +
+  scale_x_continuous(
+    breaks = seq(min(prod_data_classified$Year, na.rm = TRUE), max(prod_data_classified$Year, na.rm = TRUE), by = 5)
+  ) +
+  scale_color_manual(
+    values = c("Developed" = "blue", "Developing" = "orange")
+  ) +
+  theme(
+    plot.title = element_text(size = 22, face = "bold", hjust = 0.5),
+    axis.title.x = element_text(size = 19),  
+    axis.title.y = element_text(size = 19),  
+    axis.text = element_text(size = 12),
+    legend.position = c(0.3, 0.75),  
+    legend.title = element_text(size = 19),  
+    legend.text = element_text(size = 18)  
+  )
+
+
+```
+:::
+:::
+
+# Research Question 2
+
+## What are the production and trade trends in the livestock industry?
+
+## Filtering and preprocessing
+
+content for preprocessing
+
+::: columns
 ::: {.column width="40%"}
 -   or bullet points[^1]
 :::
@@ -72,37 +332,293 @@ You can use plain text
 ::: {.column width="60%"}
 or in two columns
 :::
-:::::
+:::
 
 [^1]: And add footnotes
 
--   like
+-   point 1
 
--   this
+-   point 2
 
-## Code
+```{r Filtering and preprocessing, warning=FALSE}
 
-```{r, echo=FALSE}
-model <- lm(mpg ~ speed, data = mtcars) 
+# Identifying livestock commodities that we want
+livestock_items <- c("Beef and Buffalo Meat, primary", "Fat of pigs", "Meat, Poultry", "Sheep and Goat Meat", "Milk, Total")
 
-model |> tidy()
+# Filtering for livestock production and trade data
+livestock_data_filtered <- livestock_data %>%
+  filter(Item %in% livestock_items,
+         Element %in% c("Production", "Area harvested", "Yield")) %>%
+  select(Area, Item, Element, starts_with("Y"))
 
-model |> glance()
+columns_to_pivot <- grep("^Y[0-9]{4}$", names(livestock_data_filtered), value = TRUE)
 
+# Reshaping the data to long format
+livestock_data_long <- livestock_data_filtered %>%
+  pivot_longer(
+    cols = all_of(columns_to_pivot),
+    names_to = "Year",
+    values_to = "Value"
+  ) %>%
+  mutate(Year = as.numeric(gsub("Y", "", Year))) # To convert Year to numeric
+
+# Remove rows with missing Year values if there are any
+livestock_data_long <- livestock_data_long %>%
+  filter(!is.na(Year))
+
+# Aggregate data by year and element
+aggregated_data <- livestock_data_long %>%
+  group_by(Year, Element) %>%
+  summarise(Total_Value = sum(Value, na.rm = TRUE), .groups = "drop")
+
+# Step 4: Decode area names and item names
+area_decoded <- area_codes %>%
+  rename(Area_Code = `Area.Code`, Area_Name = Area)
+
+item_decoded <- item_codes %>%
+  rename(Item_Code = `Item.Code`, Item_Name = `Item`)
+
+# For plot 2
+commodity_trends <- livestock_data_long %>%
+  filter(Element == "Production") %>%
+  group_by(Year, Item) %>%
+  summarise(Total_Production = sum(Value, na.rm = TRUE), .groups = "drop")
+
+# For plot 3
+# Load Natural Earth data for country boundaries
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+# Prepare data for map-based visualizations
+# Summarize livestock production by country
+map_data <- livestock_data_long %>%
+  filter(Element %in% c("Production", "Export Quantity", "Import Quantity")) %>%
+  group_by(Area, Element) %>%
+  summarize(Total_Value = sum(Value, na.rm = TRUE)) %>%
+  ungroup()
+
+# Merge map data with country boundaries
+map_data <- map_data %>%
+  left_join(world, by = c("Area" = "admin"))
+
+# Create separate datasets for production, export, and import
+map_production <- map_data %>%
+  filter(Element == "Production")
+
+map_trade <- map_data %>%
+  filter(Element %in% c("Export Quantity", "Import Quantity")) %>%
+  mutate(Trade_Type = ifelse(Element == "Export Quantity", "Export", "Import"))
+
+#For Interactive plot 4
+# Ensure `geometry` column is in correct SF format
+map_production_sf <- map_production %>%
+  st_as_sf()
+
+population_data <- data.frame(
+  Area = unique(map_production$Area),
+  Population = runif(length(unique(map_production$Area)), 1e6, 1e8) # Simulated population
+)
+
+# Merge population data to calculate per capita production
+map_production <- map_production %>%
+  left_join(population_data, by = "Area") %>%
+  mutate(Per_Capita_Production = Total_Value / Population)
+
+# Convert to sf object
+map_production_sf <- map_production %>%
+  st_as_sf()
+
+# Step 2: Define color palette
+production_pal <- colorNumeric("YlGn", domain = map_production_sf$Total_Value)
+per_capita_pal <- colorNumeric("Blues", domain = map_production_sf$Per_Capita_Production)
 ```
 
-## Plots
+## Processed Data
+
+Content for dataset for q1
 
 ```{r}
-penguins |>
-  mutate(species = ifelse(species == "Adelie", "Adelie", "Other")) |>
-  ggplot(aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
-  geom_point()
+aggregated_data |>    
+  head() |>   
+  kableExtra::kable() |>   
+  kableExtra::kable_styling()
 ```
+
+## Global Trends in Livestock Production and Trade
+
+```{r, warning=FALSE, fig.height=9,fig.width=16}
+
+# Plot 1: Trends in livestock production and yeids
+ggplot(data = aggregated_data, aes(x = Year, y = Total_Value / 1e6, color = Element)) +
+  geom_line(linewidth = 1.2) +
+  labs(
+    title = "Global Trends in Livestock Production and Trade",
+    x = "Year",
+    y = "Volume (in millions of tons)",
+    color = "Element"
+  ) +
+  theme_minimal() +
+  scale_y_continuous(labels = scales::comma)
+```
+
+## Global Trends in Livestock Production and Trade
+
+-   Description: This plot shows the trends in livestock production, exports, and imports globally over the years.
+
+-   Purpose: To analyze how livestock-related activities (e.g., production, trade) have changed over time.
+
+-   Key Features:\
+    • Different lines represent different elements (production, export, import).\
+    • The y-axis measures the volume in millions of tons.
+
+## Trends in Production of Livestock Commodities
+
+```{r, warning=FALSE, fig.height=9,fig.width=16}
+# Plot 2: Trends in individual livestock commodities (Production Only)
+ggplot(data = commodity_trends, aes(x = Year, y = Total_Production / 1e6, fill = Item)) +
+  geom_area(position = "stack", alpha = 0.7) +
+  labs(
+    title = "Trends in Production of Livestock Commodities",
+    x = "Year",
+    y = "Production Volume (in millions of tons)",
+    fill = "Commodity"
+  ) +
+  theme_minimal()
+```
+
+## Trends in Production of Livestock Commodities
+
+-   Description: This area chart visualizes production trends for individual livestock commodities (e.g., beef, milk, poultry) over the years.
+
+-   Purpose: To identify which commodities contribute most to global livestock production and how their production levels have evolved.
+
+-   Key Features:\
+    • Stacked area layers for each commodity.\
+    • Highlights the proportion and changes in production volume for each commodity.
+
+## Global Livestock Production on a World Map
+
+```{r, warning=FALSE, fig.height=9,fig.width=12}
+# Plot 3: Livestock Production on a World Map
+ggplot() +
+  geom_sf(data = world) +
+  geom_sf(data = map_production, aes(geometry = geometry, fill = Total_Value), color = "black") +
+  scale_fill_viridis_c(name = "Production (tons)", option = "C") +
+  scale_fill_gradient(
+    low = "khaki1", 
+    high = "green4"
+  )+
+  labs(
+    title = "Global Livestock Production",
+    subtitle = "Production volumes (tons) by country",
+    caption = "Source: FAO Livestock Data"
+  ) +
+  theme_minimal()
+```
+
+## Global Livestock Production on a World Map
+
+-   Description: A chloropleth map representing the global distribution of livestock production by country.
+
+-   Purpose: To show which regions or countries contribute the most to livestock production in a given year.
+
+-   Key Features:\
+    • Countries are color-coded based on production volumes.\
+    • Includes geographical context for better visual understanding.
+
+## Interactive Map of Livestock Elements
+
+```{r, warning=FALSE, fig.height=9,fig.width=12}
+
+#Plot 4: Interactive plot 3
+leaflet() %>%
+  # Base map
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  
+  # Production layer
+  addPolygons(
+    data = map_production_sf,
+    fillColor = ~production_pal(Total_Value),
+    color = "black",
+    weight = 1,
+    fillOpacity = 0.7,
+    label = ~paste(
+      "<strong>", Area, "</strong><br>",
+      "Total Production: ", scales::comma(Total_Value), " tons"
+    ),
+    popup = ~paste(
+      "<strong>Country:</strong> ", Area, "<br>",
+      "<strong>Total Production (tons):</strong> ", scales::comma(Total_Value), "<br>",
+      "<strong>Population:</strong> ", scales::comma(Population), "<br>",
+      "<strong>Per Capita Production (tons):</strong> ", round(Per_Capita_Production, 2)
+    ),
+    highlightOptions = highlightOptions(
+      weight = 2,
+      color = "blue",
+      bringToFront = TRUE
+    ),
+    group = "Total Production"
+  ) %>%
+  # Per Capita Production layer
+  addPolygons(
+    data = map_production_sf,
+    fillColor = ~per_capita_pal(Per_Capita_Production),
+    color = "black",
+    weight = 1,
+    fillOpacity = 0.7,
+    label = ~paste(
+      "<strong>", Area, "</strong><br>",
+      "Per Capita Production: ", round(Per_Capita_Production, 2), " tons"
+    ),
+    popup = ~paste(
+      "<strong>Country:</strong> ", Area, "<br>",
+      "<strong>Per Capita Production (tons):</strong> ", round(Per_Capita_Production, 2), "<br>",
+      "<strong>Total Production (tons):</strong> ", scales::comma(Total_Value), "<br>",
+      "<strong>Population:</strong> ", scales::comma(Population)
+    ),
+    highlightOptions = highlightOptions(
+      weight = 2,
+      color = "green",
+      bringToFront = TRUE
+    ),
+    group = "Per Capita Production"
+  ) %>%
+  
+  # Add a layers control
+  addLayersControl(
+    overlayGroups = c("Total Production", "Per Capita Production"),
+    options = layersControlOptions(collapsed = FALSE)
+  ) %>%
+  
+  # Add legends
+  addLegend(
+    pal = production_pal,
+    values = map_production_sf$Total_Value,
+    title = "Total Production (tons)",
+    position = "bottomleft",
+    group = "Total Production"
+  ) %>%
+  addLegend(
+    pal = per_capita_pal,
+    values = map_production_sf$Per_Capita_Production,
+    title = "Per Capita Production (tons)",
+    position = "bottomright",
+    group = "Per Capita Production"
+  )
+```
+
+## Interactive Map of Livestock Elements
+
+-   Description: An interactive map that allows users to explore different livestock-related elements (e.g., production, export quantity, import quantity, yield) by year and country.
+
+-   Purpose: To enable dynamic exploration of global livestock data with the ability to focus on specific elements or regions.
+
+-   Key Features:\
+    • Tool tips display detailed information (country, year, element, and value).\
+    • Interactivity allows users to filter and explore trends in a user-friendly manner.
 
 ## Plot and text
 
-::::: columns
+::: columns
 ::: {.column width="50%"}
 -   Some text
 
@@ -110,16 +626,11 @@ penguins |>
 :::
 
 ::: {.column width="50%"}
-```{r, warning=FALSE, fig.width=5.5}
-penguins |>
-  ggplot(aes(x = bill_length_mm, y = species, color = species)) +
-  geom_boxplot(linewidth = 0.75,
-               outlier.size = 2.5) +
-  theme_minimal(base_size = 15) +
-  theme(legend.key.size = unit(0.8, "cm"))
+```{r, warning=FALSE, fig.height=9,fig.width=14}
+
 ```
 :::
-:::::
+:::
 
 # A new section...
 
@@ -128,33 +639,15 @@ penguins |>
 If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
 
 ```{r}
-penguins |> 
-  head() |>
-  kableExtra::kable() |>
+global_production |>    
+  head() |>   
+  kableExtra::kable() |>   
   kableExtra::kable_styling()
 ```
 
 ## Images
 
-![Image credit: Danielle Navarro, Percolate.](images/watercolour_sys02_img34_teacup-ocean.png){fig-align="center" width="500"}
-
-## Math Expressions {.smaller}
-
-You can write LaTeX math expressions inside a pair of dollar signs, e.g. \$\\alpha+\\beta\$ renders $\alpha + \beta$. You can use the display style with double dollar signs:
-
-```         
-$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
-```
-
-$$
-\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i
-$$
-
-Limitations:
-
-1.  The source code of a LaTeX math expression must be in one line, unless it is inside a pair of double dollar signs, in which case the starting `$$` must appear in the very beginning of a line, followed immediately by a non-space character, and the ending `$$` must be at the end of a line, led by a non-space character;
-
-2.  There should not be spaces after the opening `$` or before the closing `$`.
+![Image credit: Danielle Navarro, Percolate.](images/crop_background_image.png){fig-align="center" width="500"}
 
 # Wrap up
 
