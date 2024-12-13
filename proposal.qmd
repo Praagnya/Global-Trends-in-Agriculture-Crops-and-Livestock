@@ -128,7 +128,7 @@ Despite these concerns, FAOSTAT remains one of the most reliable sources of agri
     Variables:
 
     -   Quantitative Variables: Production volume, Year
-    -   Categorical Variables: Region (e.g., North America, Europe, Asia), Crop type (wheat, maize, rice)
+    -   Categorical Variables: Region (e.g., North America, Europe, Asia), Crop type
 
 2.  **How has the global production and trade of livestock commodities changed in response to rising population and demand for protein?**
 
