@@ -259,7 +259,7 @@ per_capita_pal <- colorNumeric("Blues", domain = map_production_sf$Per_Capita_Pr
 -   **Impact**: The dataset serves as a critical resource for understanding global agricultural production patterns, providing insights into the dynamics of crop and livestock industries and supporting data-driven decision-making in agriculture.
 :::
 
-## DATA SET
+## Dataset
 
 ::: incremental
 -   **Dataset Description**: This report examines the FAOSTAT Crop and Livestock Production dataset, offering comprehensive global agricultural production statistics for over 200 countries.
@@ -631,7 +631,6 @@ leaflet() %>%
 
 ------------------------------------------------------------------------
 
-## 
 
 ## Conclusion
 
