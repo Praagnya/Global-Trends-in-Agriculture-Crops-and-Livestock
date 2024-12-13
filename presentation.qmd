@@ -56,7 +56,20 @@ knitr::opts_chunk$set(
   )
 ```
 
-Introduce the data
+## DATASET DESCRIPTION
+
+1.  **How has the global production of staple crops changed over the past 50 years, and what are the regional trends in production?**
+
+    The dataset encompasses global agricultural production trends, focusing on 278 crop and livestock products. It includes indicators such as production quantities, yields, and processed outputs across various regions from 1961 to 2022. Compiled from FAOSTAT, the dataset is pre-processed for consistency, enabling analysis of global food production and climate impacts.
+
+    *"Source" : [FAO FAOSTAT](https://www.fao.org/faostat/en/#data/QCL/visualize)* .
+
+2.  **How has the global production and trade of livestock commodities changed in response to rising population and demand for protein?**
+
+    The dataset captures global livestock production and trade trends, including volumes of imports, exports, and production for key commodities like *beef*, *pork*, and *milk*. It spans multiple regions (e.g., *North America*, *Europe*, *Asia*) and tracks data across years in response to rising population and protein demand. Quantitative variables include *production volumes*, *trade volumes*, and *population size*, alongside categorical variables such as *region* and *livestock commodity*.
+
+    *"Source" : [FAO FAOSTAT](https://www.fao.org/faostat/en/#data/QCL/visualize)* .
+
 ```{r}
 #| label: load-data
 #| include: false
@@ -111,32 +124,24 @@ write.csv(prod_data_long, "data/Processed_Staple_Crops_Production.csv", row.name
 
 ```
 
-# Exploratory Data Analysis
-
 ```{r}
-prod_data_long |>    
-  head() |>   
-  kableExtra::kable() |>   
-  kableExtra::kable_styling()
+prod_data_long |> 
+  head() |> 
+  kableExtra::kable() |> 
+  kableExtra::kable_styling(full_width = TRUE, position = "center", font_size = 14)
+
 ```
 
+## Research question 1
 
-## Research question 1 
-What are the production trends in the crops?
-
-```{r # Load necessary libraries}
-
-library(ggplot2)
-library(dplyr)
-library(plotly)
-
+```{r, fig.height=9,fig.width=12}
 # Summarize global production trends over time
 global_production <- prod_data_long %>%
   group_by(Year, Item) %>%
   summarize(Global_Production = sum(Production, na.rm = TRUE), .groups = "drop")
 
-# Create a ggplot
-p <- ggplot(global_production, aes(x = Year, y = Global_Production)) +
+# Create a line plot to visualize the global production trends over time
+ggplot(global_production, aes(x = Year, y = Global_Production)) +
   geom_line(aes(color = Item), linewidth = 1.2) +  # Line plot with thicker lines
   theme_minimal() +
   labs(
@@ -170,21 +175,20 @@ p <- ggplot(global_production, aes(x = Year, y = Global_Production)) +
   ) +
   scale_y_continuous(
     labels = scales::comma_format(scale = 1e-6, prefix = "", suffix = "M"),  # Format y-axis in millions with commas
-    breaks = seq(0, max(global_production$Global_Production, na.rm = TRUE), by = 200000000)  # Reduced step size for y-axis ticks
+    breaks = scales::pretty_breaks(n = 10)  # Add more ticks to y-axis
   ) +
   scale_x_continuous(
     breaks = seq(min(global_production$Year, na.rm = TRUE), max(global_production$Year, na.rm = TRUE), by = 5)  # Increase x-axis ticks
+  ) +
+  # Set figure size for output
+  theme(
+    plot.margin = margin(2, 2, 2, 2)  # Increase plot margin if needed
   )
 
-# Convert ggplot to an interactive plotly plot
-interactive_plot <- ggplotly(p)
-
-# Display the interactive plot
-interactive_plot
 
 ```
 
-## Research question 1 
+## Research question 1
 
 ```{r, warning=FALSE, fig.height=9,fig.width=12}
 # Load required libraries
@@ -242,16 +246,8 @@ ggplot(data = regional_map_data) +
 
 ```
 
-## Research question 1 
+## Research question 1
 
-::: columns
-::: {.column width="50%"}
--   content
-
--   goes here
-:::
-
-::: {.column width="50%"}
 ```{r, warning=FALSE, fig.height=9,fig.width=14}
 # Load required libraries
 library(dplyr)
@@ -314,30 +310,7 @@ ggplot(agg_trends, aes(x = Year, y = Total_Production, color = Country_Category,
     legend.text = element_text(size = 18)  
   )
 
-
 ```
-:::
-:::
-
-## Research Question 2
-What are the production and trade trends in the livestock industry?
-
-
-::: columns
-::: {.column width="40%"}
--   or bullet points[^1]
-:::
-
-::: {.column width="60%"}
-or in two columns
-:::
-:::
-
-[^1]: And add footnotes
-
--   point 1
-
--   point 2
 
 ```{r Filtering and preprocessing, warning=FALSE}
 
@@ -431,45 +404,7 @@ production_pal <- colorNumeric("YlGn", domain = map_production_sf$Total_Value)
 per_capita_pal <- colorNumeric("Blues", domain = map_production_sf$Per_Capita_Production)
 ```
 
-## Processed Data
-
-Content for dataset for q1
-
-```{r}
-aggregated_data |>    
-  head() |>   
-  kableExtra::kable() |>   
-  kableExtra::kable_styling()
-```
-
-## Global Trends in Livestock Production and Trade
-
-```{r, warning=FALSE, fig.height=9,fig.width=16}
-
-# Plot 1: Trends in livestock production and yeids
-ggplot(data = aggregated_data, aes(x = Year, y = Total_Value / 1e6, color = Element)) +
-  geom_line(linewidth = 1.2) +
-  labs(
-    title = "Global Trends in Livestock Production and Trade",
-    x = "Year",
-    y = "Volume (in millions of tons)",
-    color = "Element"
-  ) +
-  theme_minimal() +
-  scale_y_continuous(labels = scales::comma)
-```
-
-## Global Trends in Livestock Production and Trade
-
--   Description: This plot shows the trends in livestock production, exports, and imports globally over the years.
-
--   Purpose: To analyze how livestock-related activities (e.g., production, trade) have changed over time.
-
--   Key Features:\
-    • Different lines represent different elements (production, export, import).\
-    • The y-axis measures the volume in millions of tons.
-
-## Trends in Production of Livestock Commodities
+## Research question 2
 
 ```{r, warning=FALSE, fig.height=9,fig.width=16}
 # Plot 2: Trends in individual livestock commodities (Production Only)
@@ -484,7 +419,7 @@ ggplot(data = commodity_trends, aes(x = Year, y = Total_Production / 1e6, fill =
   theme_minimal()
 ```
 
-## Global Livestock Production on a World Map
+## Research question 2
 
 ```{r, warning=FALSE, fig.height=9,fig.width=12}
 # Plot 3: Livestock Production on a World Map
@@ -585,9 +520,12 @@ leaflet() %>%
   )
 ```
 
-
 ## Conclusion
 
--   You are welcomed to use the default styling of the slides. In fact, that's what I expect majority of you will do. You will differentiate yourself with the content of your presentation.
+The global production of the top staple crops has increased significantly over years, with developing countries showing rapid growth compared to the stable yields in developed nations.
 
--   But some of you might want to play around with slide styling. Some solutions for this can be found at https://quarto.org/docs/presentations/revealjs.
+Livestock production has steadily grown globally, with rising demand for protein-rich foods leading to notable increases in key commodities such as Milk, beef and poultry.
+
+**Future Work**
+
+Explore the impact of climate change on crop yields and livestock production by integrating external environmental data, such as temperature, precipitation, and extreme weather events, to understand regional vulnerabilities and adaptive strategies.
