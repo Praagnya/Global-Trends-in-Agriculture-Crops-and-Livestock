@@ -1,4 +1,3 @@
-
 ---
 title:  "Global Trends in Agriculture: Crops and Livestock"
 subtitle: "INFO 526 - Fall 2023 - Project Final"
@@ -16,16 +15,6 @@ format:
 ---
 
 ```{r}
-#| label: load-packages
-#| include: false
-
-# Load packages here
-pacman::p_load(tidymodels,
-               tidyverse)
-
-```
-
-```{r}
 #| label: load-libraries
 #| include: false
 
@@ -38,8 +27,6 @@ library(rnaturalearth)
 library(viridis)
 library(leaflet)
 ```
-
-
 
 ```{css}
     .plot-container {
@@ -65,6 +52,7 @@ pacman::p_load(tidyverse,
                gifski,
                ggimage,
                ggtext,magick,
+               tidymodels,
                animation)
 
 pacman::p_load_gh("BlakeRMills/MoMAColors")
@@ -158,8 +146,6 @@ agg_trends <- prod_data_classified %>%
   summarize(Total_Production = sum(Production, na.rm = TRUE), .groups = "drop")
 
 ```
-
-
 
 ```{r}
 # Identifying livestock commodities that we want
@@ -389,7 +375,7 @@ livestock_items <- c("Beef and Buffalo Meat, primary", "Fat of pigs", "Meat, Pou
 # Filtering for livestock production and trade data
 livestock_data_filtered <- livestock_data %>%
   filter(Item %in% livestock_items,
-         Element %in% c("Production", "Area harvested", "Yield")) %>%
+         Element %in% c("Production", "Area harvested", "Stocks")) %>%
   select(Area, Item, Element, starts_with("Y"))
 
 columns_to_pivot <- grep("^Y[0-9]{4}$", names(livestock_data_filtered), value = TRUE)
@@ -530,95 +516,33 @@ ggplot(data = commodity_trends, aes(x = Year, y = Total_Production / 1e6, fill =
     panel.grid.minor = element_blank()  # Remove minor grid lines
   )
 ```
+
 #### Plot C
 
 ```{r, fig.height=9,fig.width=12 }
 
-library(leaflet)
-library(scales)
-
-# Enhanced Leaflet Map
-leaflet() %>%
-  # Add a base map
-  addProviderTiles(providers$CartoDB.Positron) %>%
-  
-  # Add Total Production Layer
-  addPolygons(
-    data = map_production_sf,
-    fillColor = ~production_pal(Total_Value),
-    color = "black",
-    weight = 1,
-    fillOpacity = ~pmax(Total_Value / max(map_production_sf$Total_Value, na.rm = TRUE), 0.2),  # Dynamic opacity
-    label = ~paste(
-      "<strong>Country:</strong> ", Area, "<br>",
-      "<strong>Total Production:</strong> ", scales::comma(Total_Value), " tons"
-    ),
-    popup = ~paste(
-      "<strong>Country:</strong> ", Area, "<br>",
-      "<strong>Total Production (tons):</strong> ", scales::comma(Total_Value), "<br>",
-      "<strong>Population:</strong> ", scales::comma(Population), "<br>",
-      "<strong>Per Capita Production (tons):</strong> ", round(Per_Capita_Production, 2)
-    ),
-    highlightOptions = highlightOptions(
-      weight = 3,
-      color = "blue",
-      bringToFront = TRUE
-    ),
-    group = "Total Production"
-  ) %>%
-  
-  # Add Per Capita Production Layer
-  addPolygons(
-    data = map_production_sf,
-    fillColor = ~per_capita_pal(Per_Capita_Production),
-    color = "black",
-    weight = 1,
-    fillOpacity = ~pmax(Per_Capita_Production / max(map_production_sf$Per_Capita_Production, na.rm = TRUE), 0.2),  # Dynamic opacity
-    label = ~paste(
-      "<strong>Country:</strong> ", Area, "<br>",
-      "<strong>Per Capita Production:</strong> ", round(Per_Capita_Production, 2), " tons"
-    ),
-    popup = ~paste(
-      "<strong>Country:</strong> ", Area, "<br>",
-      "<strong>Per Capita Production (tons):</strong> ", round(Per_Capita_Production, 2), "<br>",
-      "<strong>Total Production (tons):</strong> ", scales::comma(Total_Value), "<br>",
-      "<strong>Population:</strong> ", scales::comma(Population)
-    ),
-    highlightOptions = highlightOptions(
-      weight = 3,
-      color = "green",
-      bringToFront = TRUE
-    ),
-    group = "Per Capita Production"
-  ) %>%
-  
-  # Add Layer Control
-  addLayersControl(
-    baseGroups = c("Base Map"),
-    overlayGroups = c("Total Production", "Per Capita Production"),
-    options = layersControlOptions(collapsed = FALSE)
-  ) %>%
-  
-  # Add Legend for Total Production
-  addLegend(
-    pal = production_pal,
-    values = map_production_sf$Total_Value,
-    title = "Total Production<br>(in tons)",
-    position = "bottomleft",
-    group = "Total Production"
-  ) %>%
-  
-  # Add Legend for Per Capita Production
-  addLegend(
-    pal = per_capita_pal,
-    values = map_production_sf$Per_Capita_Production,
-    title = "Per Capita<br>Production (tons)",
-    position = "bottomright",
-    group = "Per Capita Production"
+ggplot() +
+  geom_sf(data = world, fill = "gray90", color = "white") + # Add world map base layer
+  geom_sf(data = map_production, aes(geometry = geometry, fill = cut(Total_Value, 
+    breaks = c(0, 1e5, 5e5, 1e6, 5e6, 1e7, Inf), 
+    labels = c("<100K", "100K-500K", "500K-1M", "1M-5M", "5M-10M", ">10M"))), 
+    color = "black") +
+  scale_fill_manual(
+    values = c("khaki1", "gold", "orange", "darkorange", "pink", "red"), # Custom colors
+    name = "Production (tons)" # Legend title
+  ) +
+  labs(
+    title = "Global Livestock Production",
+    subtitle = "Production volumes (tons) by country",
+    caption = "Source: FAO Livestock Data"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom", # Move legend to the bottom
+    legend.title = element_text(size = 12, face = "bold", hjust = 0.5), # Center-align legend title
+    legend.text = element_text(size = 10) # Customize legend text
   )
-
 ```
-
 
 #### Insights
 
@@ -631,7 +555,6 @@ leaflet() %>%
 
 ------------------------------------------------------------------------
 
-
 ## Conclusion
 
 ::: incremental
@@ -639,5 +562,3 @@ leaflet() %>%
 
 -   Livestock production has steadily grown globally, with rising demand for protein-rich foods leading to notable increases in key commodities such as Milk, beef and poultry.
 :::
-
-
