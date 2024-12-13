@@ -40,6 +40,61 @@ library(viridis)
 library(leaflet)
 ```
 
+```{css}
+    .plot-container {
+      width: 800px; /* Adjust width as needed */
+      height:00px; /* Adjust height as needed */
+    }
+```
+
+---
+title: "Unveiling Trends in Data Breaches and Data Hacks"
+subtitle: "INFO 526 - Project Final"
+author: "**Datavista**: <br> Akash Srinivasan, Abhishek Kumar, Divya Dhole, Noureen Mithaigar, Gowtham Theeda, Lakshmi Neharika Anchula" 
+title-slide-attributes:
+  data-background-image: images/dataGettyImages.jpeg
+  data-background-size: stretch
+  data-background-opacity: "0.5"
+  data-slide-number: none
+format:
+  revealjs:
+    theme: sky
+    transition: slide
+    background-transition: fade
+---
+
+```{css}
+    .plot-container {
+      width: 800px; /* Adjust width as needed */
+      height:300px; /* Adjust height as needed */
+    }
+```
+
+------------------------------------------------------------------------
+
+```{r, GETTING THE LIBRARIES}
+if (!require(pacman))
+  install.packages(pacman)
+
+
+pacman::p_load(tidyverse,
+               dplyr,
+               janitor,
+               here,
+               plotly,
+               gganimate,
+               scales,
+               gifski,
+               ggimage,
+               ggtext,magick,
+               animation)
+
+pacman::p_load_gh("BlakeRMills/MoMAColors")
+  message = FALSE
+
+
+```
+
 ```{r}
 #| label: setup
 #| include: false
@@ -49,26 +104,12 @@ ggplot2::theme_set(ggplot2::theme_minimal(base_size = 11))
 
 # For better figure resolution
 knitr::opts_chunk$set(
-  fig.retina = 3, 
-  dpi = 300, 
-  fig.width = 6, 
+  fig.retina = 3,
+  dpi = 300,
+  fig.width = 5, 
   fig.asp = 0.618 
   )
 ```
-
-## DATASET DESCRIPTION
-
-1.  **How has the global production of staple crops changed over the past 50 years, and what are the regional trends in production?**
-
-    The dataset encompasses global agricultural production trends, focusing on 278 crop and livestock products. It includes indicators such as production quantities, yields, and processed outputs across various regions from 1961 to 2022. Compiled from FAOSTAT, the dataset is pre-processed for consistency, enabling analysis of global food production and climate impacts.
-
-    *"Source" : [FAO FAOSTAT](https://www.fao.org/faostat/en/#data/QCL/visualize)* .
-
-2.  **How has the global production and trade of livestock commodities changed in response to rising population and demand for protein?**
-
-    The dataset captures global livestock production and trade trends, including volumes of imports, exports, and production for key commodities like *beef*, *pork*, and *milk*. It spans multiple regions (e.g., *North America*, *Europe*, *Asia*) and tracks data across years in response to rising population and protein demand. Quantitative variables include *production volumes*, *trade volumes*, and *population size*, alongside categorical variables such as *region* and *livestock commodity*.
-
-    *"Source" : [FAO FAOSTAT](https://www.fao.org/faostat/en/#data/QCL/visualize)* .
 
 ```{r}
 #| label: load-data
@@ -86,8 +127,40 @@ elements <- read.csv("./data/Production_Crops_Livestock_E_All_Data/Production_Cr
 item_codes <- read.csv("./data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_ItemCodes.csv")
 ```
 
-```{r, warning=FALSE}
+## Introduction
 
+::: incremental
+-   **Project Description**: This project involves the compilation and analysis of statistical data for 278 crop and livestock products, presented through key indicators such as production quantities, yields, and processed product outputs.\
+-   **Impact**: The dataset serves as a critical resource for understanding global agricultural production patterns, providing insights into the dynamics of crop and livestock industries and supporting data-driven decision-making in agriculture.
+:::
+
+## DATA SET
+
+::: incremental
+-   **Dataset Description**: This report examines the FAOSTAT Crop and Livestock Production dataset, offering comprehensive global agricultural production statistics for over 200 countries.
+-   **Features**: It includes data on crop production volumes, harvested areas, yields, and livestock statistics, aiming to analyze agricultural productivity trends, regional outputs, and sustainable agricultural practices. FAO uses estimation methods. This ensures consistency in the data for over 200 countries and regions. *"Source" : [FAO FAOSTAT](https://www.fao.org/faostat/en/#data/QCL/visualize)*
+:::
+
+## Project Approach
+
+::: incremental
+-   **Data Cleaning:**We cleaned the dataset by removing rows with missing values in key columns such as *Area*, *Item*, and *Element* to ensure completeness. The cleaned data was then structured with *Year* and *Item* as grouping variables and *Value* representing total production or harvested area. This preprocessing step enabled focused and accurate analysis of agricultural trends.
+
+-   **Exploratory Data Analysis (EDA):** Uncover crop production & live stocks patterns and trends using statistical methods and visualizations.
+:::
+
+## Question 1
+
+**(General Assessment)**
+
+-   How has the global production of staple crops changed over the past 50 years, and what are the regional trends in production?
+
+------------------------------------------------------------------------
+
+::: panel-tabset
+#### Plot A
+
+```{r, fig.height=9,fig.width=12}
 # Step 2: Extract and filter data for the top 10 staple crops
 # Define the top 10 staple crops based on Item names
 top_crops <- c("Wheat", "Rice", "Maize (corn)", "Potatoes", "Barley", 
@@ -122,19 +195,6 @@ prod_data_long <- prod_data_long %>%
 # Export the cleaned data to a CSV file
 write.csv(prod_data_long, "data/Processed_Staple_Crops_Production.csv", row.names = FALSE)
 
-```
-
-```{r}
-prod_data_long |> 
-  head() |> 
-  kableExtra::kable() |> 
-  kableExtra::kable_styling(full_width = TRUE, position = "center", font_size = 14)
-
-```
-
-## Research question 1
-
-```{r, fig.height=9,fig.width=12}
 # Summarize global production trends over time
 global_production <- prod_data_long %>%
   group_by(Year, Item) %>%
@@ -175,7 +235,7 @@ ggplot(global_production, aes(x = Year, y = Global_Production)) +
   ) +
   scale_y_continuous(
     labels = scales::comma_format(scale = 1e-6, prefix = "", suffix = "M"),  # Format y-axis in millions with commas
-    breaks = scales::pretty_breaks(n = 10)  # Add more ticks to y-axis
+    breaks = seq(0, max(global_production$Global_Production, na.rm = TRUE), by = 200000000)  # Reduced step size for y-axis ticks
   ) +
   scale_x_continuous(
     breaks = seq(min(global_production$Year, na.rm = TRUE), max(global_production$Year, na.rm = TRUE), by = 5)  # Increase x-axis ticks
@@ -185,12 +245,85 @@ ggplot(global_production, aes(x = Year, y = Global_Production)) +
     plot.margin = margin(2, 2, 2, 2)  # Increase plot margin if needed
   )
 
+```
+
+#### Plot B
+
+```{r, fig.height=9,fig.width=14}
+
+#| label: Total breaches
+#| echo: false
+#| warning: false
+
+
+# Load required libraries
+library(dplyr)
+library(ggplot2)
+
+# Step 1: Create a classification of countries (Developed vs. Developing)
+# Define lists of developed and developing countries (replace with actual classification)
+developed_countries <- c("United States", "Canada", "Germany", "United Kingdom", "France", "Australia", "Japan")
+developing_countries <- c("India", "China", "Brazil", "Nigeria", "Indonesia", "Mexico", "South Africa")
+
+# Step 2: Add a classification column to the production data
+# Ensure that prod_data_long contains the correct column names like 'Area' for country names, 'Year' for the year, and 'Production' for the data values
+
+prod_data_long <- prod_data_long %>%
+  mutate(
+    Country_Category = case_when(
+      Area %in% developed_countries ~ "Developed",
+      Area %in% developing_countries ~ "Developing",
+      TRUE ~ "Other"  # Classify remaining countries as "Other"
+    )
+  )
+
+# Step 3: Filter for Developed and Developing countries only
+prod_data_classified <- prod_data_long %>%
+  filter(Country_Category %in% c("Developed", "Developing"))
+
+# Step 4: Aggregate production by year and country category
+agg_trends <- prod_data_classified %>%
+  group_by(Year, Country_Category) %>%
+  summarize(Total_Production = sum(Production, na.rm = TRUE), .groups = "drop")
+
+# Step 5: Create the line plot with modified legend position and increased axis/title sizes
+ggplot(agg_trends, aes(x = Year, y = Total_Production, color = Country_Category, group = Country_Category)) +
+  geom_line(linewidth = 1.2) +  # Line plot
+  theme_minimal() +
+  labs(
+    title = "Production Trends of Staple Crops in Developed vs. Developing Countries (1961 - 2022)",
+    x = "Year",
+    y = "Total Production (Metric Tons)",
+    color = "Country Category",
+    caption = "Source: FAO"
+  ) +
+  scale_y_continuous(
+    labels = scales::comma_format(scale = 1e-6, suffix = "M"),  # Format y-axis in millions
+    breaks = scales::pretty_breaks(n = 10)  # Add more ticks to y-axis
+  ) +
+  scale_x_continuous(
+    breaks = seq(min(prod_data_classified$Year, na.rm = TRUE), max(prod_data_classified$Year, na.rm = TRUE), by = 5)
+  ) +
+  scale_color_manual(
+    values = c("Developed" = "blue", "Developing" = "orange")
+  ) +
+  theme(
+    plot.title = element_text(size = 22, face = "bold", hjust = 0.5),
+    axis.title.x = element_text(size = 19),  # Increase x-axis title size
+    axis.title.y = element_text(size = 19),  # Increase y-axis title size
+    axis.text = element_text(size = 12),
+     plot.caption = element_text(size = 14, hjust = 1, color = "grey30"),
+    legend.position = c(0.3, 0.75),  # Position the legend to the right
+    legend.title = element_text(size = 19),  # Increase legend title size
+    legend.text = element_text(size = 18)  # Increase legend text size
+  )
+
 
 ```
 
-## Research question 1
+#### Plot C
 
-```{r, warning=FALSE, fig.height=9,fig.width=12}
+```{r, fig.height=9,fig.width=12}
 # Load required libraries
 library(dplyr)
 library(ggplot2)
@@ -242,77 +375,29 @@ ggplot(data = regional_map_data) +
     axis.title = element_blank()  # Remove axis titles
   )
 
-
-
 ```
 
-## Research question 1
+#### Insights
 
-```{r, warning=FALSE, fig.height=9,fig.width=14}
-# Load required libraries
-library(dplyr)
-library(ggplot2)
+-   **Developed vs. Developing:** This line plot contrasts production trends in developed and developing countries from 1961 to 2022.
 
-# Step 1: Create a classification of countries (Developed vs. Developing)
-# Define lists of developed and developing countries (replace with actual classification)
-developed_countries <- c("United States", "Canada", "Germany", "United Kingdom", "France", "Australia", "Japan")
-developing_countries <- c("India", "China", "Brazil", "Nigeria", "Indonesia", "Mexico", "South Africa")
+-   **Steady vs. Growth:** Highlights steady production in developed nations and a steeper growth trajectory in developing countries.
 
-# Step 2: Add a classification column to the production data
-# Ensure that prod_data_long contains the correct column names like 'Area' for country names, 'Year' for the year, and 'Production' for the data values
+-   **Driving Factors:** Reflects rising demand, advancements in agricultural practices, and economic development in developing regions.
+:::
 
-prod_data_long <- prod_data_long %>%
-  mutate(
-    Country_Category = case_when(
-      Area %in% developed_countries ~ "Developed",
-      Area %in% developing_countries ~ "Developing",
-      TRUE ~ "Other"  # Classify remaining countries as "Other"
-    )
-  )
+## Question 2
 
-# Step 3: Filter for Developed and Developing countries only
-prod_data_classified <- prod_data_long %>%
-  filter(Country_Category %in% c("Developed", "Developing"))
+**(Vulnerability Assessment)**
 
-# Step 4: Aggregate production by year and country category
-agg_trends <- prod_data_classified %>%
-  group_by(Year, Country_Category) %>%
-  summarize(Total_Production = sum(Production, na.rm = TRUE), .groups = "drop")
+-   How has the global production and trade of livestock commodities changed in response to rising population and demand for protein?
 
-# Step 5: Create the line plot with modified legend position and increased axis/title sizes
-ggplot(agg_trends, aes(x = Year, y = Total_Production, color = Country_Category, group = Country_Category)) +
-  geom_line(linewidth = 1.2) +  # Line plot
-  theme_minimal() +
-  labs(
-    title = "Production Trends of Staple Crops in Developed vs. Developing Countries (1961 - 2022)",
-    x = "Year",
-    y = "Total Production (Metric Tons)",
-    color = "Country Category",
-    caption = "Source: FAO"
-  ) +
-  scale_y_continuous(
-    labels = scales::comma_format(scale = 1e-6, suffix = "M"),  
-    breaks = scales::pretty_breaks(n = 10)  # Add more ticks to y-axis
-  ) +
-  scale_x_continuous(
-    breaks = seq(min(prod_data_classified$Year, na.rm = TRUE), max(prod_data_classified$Year, na.rm = TRUE), by = 5)
-  ) +
-  scale_color_manual(
-    values = c("Developed" = "blue", "Developing" = "orange")
-  ) +
-  theme(
-    plot.title = element_text(size = 22, face = "bold", hjust = 0.5),
-    axis.title.x = element_text(size = 19),  
-    axis.title.y = element_text(size = 19),  
-    axis.text = element_text(size = 12),
-    legend.position = c(0.3, 0.75),  
-    legend.title = element_text(size = 19),  
-    legend.text = element_text(size = 18)  
-  )
+------------------------------------------------------------------------
 
-```
+::: panel-tabset
+#### Plot A
 
-```{r Filtering and preprocessing, warning=FALSE}
+```{r, fig.height=9,fig.width=12}
 
 # Identifying livestock commodities that we want
 livestock_items <- c("Beef and Buffalo Meat, primary", "Fat of pigs", "Meat, Poultry", "Sheep and Goat Meat", "Milk, Total")
@@ -402,11 +487,26 @@ map_production_sf <- map_production %>%
 # Step 2: Define color palette
 production_pal <- colorNumeric("YlGn", domain = map_production_sf$Total_Value)
 per_capita_pal <- colorNumeric("Blues", domain = map_production_sf$Per_Capita_Production)
+
+#Plot 1: Trends in livestock production and yeids
+ggplot(data = aggregated_data, aes(x = Year, y = Total_Value / 1e6, color = Element)) +
+  geom_line(linewidth = 1.2) +
+  labs(
+    title = "Global Trends in Livestock Production and Trade",
+    x = "Year",
+    y = "Volume (in millions of tons)",
+    color = "Element"
+  ) +
+  theme_minimal() +
+  scale_y_continuous(labels = scales::comma)
+
 ```
 
-## Research question 2
+#### Plot B
 
-```{r, warning=FALSE, fig.height=9,fig.width=16}
+```{r, fig.height=9,fig.width=12 }
+
+
 # Plot 2: Trends in individual livestock commodities (Production Only)
 ggplot(data = commodity_trends, aes(x = Year, y = Total_Production / 1e6, fill = Item)) +
   geom_area(position = "stack", alpha = 0.7) +
@@ -419,113 +519,23 @@ ggplot(data = commodity_trends, aes(x = Year, y = Total_Production / 1e6, fill =
   theme_minimal()
 ```
 
-## Research question 2
+#### Insights
 
-```{r, warning=FALSE, fig.height=9,fig.width=12}
-# Plot 3: Livestock Production on a World Map
-ggplot() +
-  geom_sf(data = world) +
-  geom_sf(data = map_production, aes(geometry = geometry, fill = Total_Value), color = "black") +
-  scale_fill_viridis_c(name = "Production (tons)", option = "C") +
-  scale_fill_gradient(
-    low = "khaki1", 
-    high = "green4"
-  )+
-  labs(
-    title = "Global Livestock Production",
-    subtitle = "Production volumes (tons) by country",
-    caption = "Source: FAO Livestock Data"
-  ) +
-  theme_minimal()
-```
+-   **Visualization:** This area chart displays production trends for individual livestock commodities, such as beef, milk, and poultry.
 
-## Interactive Map of Livestock Elements
+-   **Purpose:** Identifies the major contributors to global livestock production and tracks their production evolution over time.
 
-```{r, warning=FALSE, fig.height=9,fig.width=12}
+-   **Key Features:** Stacked area layers highlight the proportion and changes in production volumes for each commodity.
+:::
 
-#Plot 4: Interactive plot 3
-leaflet() %>%
-  # Base map
-  addProviderTiles(providers$CartoDB.Positron) %>%
-  
-  # Production layer
-  addPolygons(
-    data = map_production_sf,
-    fillColor = ~production_pal(Total_Value),
-    color = "black",
-    weight = 1,
-    fillOpacity = 0.7,
-    label = ~paste(
-      "<strong>", Area, "</strong><br>",
-      "Total Production: ", scales::comma(Total_Value), " tons"
-    ),
-    popup = ~paste(
-      "<strong>Country:</strong> ", Area, "<br>",
-      "<strong>Total Production (tons):</strong> ", scales::comma(Total_Value), "<br>",
-      "<strong>Population:</strong> ", scales::comma(Population), "<br>",
-      "<strong>Per Capita Production (tons):</strong> ", round(Per_Capita_Production, 2)
-    ),
-    highlightOptions = highlightOptions(
-      weight = 2,
-      color = "blue",
-      bringToFront = TRUE
-    ),
-    group = "Total Production"
-  ) %>%
-  # Per Capita Production layer
-  addPolygons(
-    data = map_production_sf,
-    fillColor = ~per_capita_pal(Per_Capita_Production),
-    color = "black",
-    weight = 1,
-    fillOpacity = 0.7,
-    label = ~paste(
-      "<strong>", Area, "</strong><br>",
-      "Per Capita Production: ", round(Per_Capita_Production, 2), " tons"
-    ),
-    popup = ~paste(
-      "<strong>Country:</strong> ", Area, "<br>",
-      "<strong>Per Capita Production (tons):</strong> ", round(Per_Capita_Production, 2), "<br>",
-      "<strong>Total Production (tons):</strong> ", scales::comma(Total_Value), "<br>",
-      "<strong>Population:</strong> ", scales::comma(Population)
-    ),
-    highlightOptions = highlightOptions(
-      weight = 2,
-      color = "green",
-      bringToFront = TRUE
-    ),
-    group = "Per Capita Production"
-  ) %>%
-  
-  # Add a layers control
-  addLayersControl(
-    overlayGroups = c("Total Production", "Per Capita Production"),
-    options = layersControlOptions(collapsed = FALSE)
-  ) %>%
-  
-  # Add legends
-  addLegend(
-    pal = production_pal,
-    values = map_production_sf$Total_Value,
-    title = "Total Production (tons)",
-    position = "bottomleft",
-    group = "Total Production"
-  ) %>%
-  addLegend(
-    pal = per_capita_pal,
-    values = map_production_sf$Per_Capita_Production,
-    title = "Per Capita Production (tons)",
-    position = "bottomright",
-    group = "Per Capita Production"
-  )
-```
+------------------------------------------------------------------------
+
+## 
 
 ## Conclusion
 
-The global production of the top staple crops has increased significantly over years, with developing countries showing rapid growth compared to the stable yields in developed nations.
+::: incremental
+-   The global production of the top staple crops has increased significantly over years, with developing countries showing rapid growth compared to the stable yields in developed nations.
 
-Livestock production has steadily grown globally, with rising demand for protein-rich foods leading to notable increases in key commodities such as Milk, beef and poultry.
-
-**Future Work**
-
-Explore the impact of climate change on crop yields and livestock production by integrating external environmental data, such as temperature, precipitation, and extreme weather events, to understand regional vulnerabilities and adaptive strategies.
+-   Livestock production has steadily grown globally, with rising demand for protein-rich foods leading to notable increases in key commodities such as Milk, beef and poultry.
+:::
