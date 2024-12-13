@@ -56,6 +56,7 @@ knitr::opts_chunk$set(
   )
 ```
 
+Introduce the data
 ```{r}
 #| label: load-data
 #| include: false
@@ -110,6 +111,8 @@ write.csv(prod_data_long, "data/Processed_Staple_Crops_Production.csv", row.name
 
 ```
 
+# Exploratory Data Analysis
+
 ```{r}
 prod_data_long |>    
   head() |>   
@@ -117,11 +120,11 @@ prod_data_long |>
   kableExtra::kable_styling()
 ```
 
-## Global Production Trends
+
+## Research question 1 
+What are the production trends in the crops?
 
 ```{r # Load necessary libraries}
-
-
 
 library(ggplot2)
 library(dplyr)
@@ -181,7 +184,7 @@ interactive_plot
 
 ```
 
-## Geographical dist
+## Research question 1 
 
 ```{r, warning=FALSE, fig.height=9,fig.width=12}
 # Load required libraries
@@ -239,7 +242,7 @@ ggplot(data = regional_map_data) +
 
 ```
 
-## Developed vs developing countries
+## Research question 1 
 
 ::: columns
 ::: {.column width="50%"}
@@ -316,13 +319,9 @@ ggplot(agg_trends, aes(x = Year, y = Total_Production, color = Country_Category,
 :::
 :::
 
-# Research Question 2
+## Research Question 2
+What are the production and trade trends in the livestock industry?
 
-## What are the production and trade trends in the livestock industry?
-
-## Filtering and preprocessing
-
-content for preprocessing
 
 ::: columns
 ::: {.column width="40%"}
@@ -485,16 +484,6 @@ ggplot(data = commodity_trends, aes(x = Year, y = Total_Production / 1e6, fill =
   theme_minimal()
 ```
 
-## Trends in Production of Livestock Commodities
-
--   Description: This area chart visualizes production trends for individual livestock commodities (e.g., beef, milk, poultry) over the years.
-
--   Purpose: To identify which commodities contribute most to global livestock production and how their production levels have evolved.
-
--   Key Features:\
-    • Stacked area layers for each commodity.\
-    • Highlights the proportion and changes in production volume for each commodity.
-
 ## Global Livestock Production on a World Map
 
 ```{r, warning=FALSE, fig.height=9,fig.width=12}
@@ -514,16 +503,6 @@ ggplot() +
   ) +
   theme_minimal()
 ```
-
-## Global Livestock Production on a World Map
-
--   Description: A chloropleth map representing the global distribution of livestock production by country.
-
--   Purpose: To show which regions or countries contribute the most to livestock production in a given year.
-
--   Key Features:\
-    • Countries are color-coded based on production volumes.\
-    • Includes geographical context for better visual understanding.
 
 ## Interactive Map of Livestock Elements
 
@@ -606,52 +585,8 @@ leaflet() %>%
   )
 ```
 
-## Interactive Map of Livestock Elements
 
--   Description: An interactive map that allows users to explore different livestock-related elements (e.g., production, export quantity, import quantity, yield) by year and country.
-
--   Purpose: To enable dynamic exploration of global livestock data with the ability to focus on specific elements or regions.
-
--   Key Features:\
-    • Tool tips display detailed information (country, year, element, and value).\
-    • Interactivity allows users to filter and explore trends in a user-friendly manner.
-
-## Plot and text
-
-::: columns
-::: {.column width="50%"}
--   Some text
-
--   goes here
-:::
-
-::: {.column width="50%"}
-```{r, warning=FALSE, fig.height=9,fig.width=14}
-
-```
-:::
-:::
-
-# A new section...
-
-## Tables
-
-If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
-
-```{r}
-global_production |>    
-  head() |>   
-  kableExtra::kable() |>   
-  kableExtra::kable_styling()
-```
-
-## Images
-
-![Image credit: Danielle Navarro, Percolate.](images/crop_background_image.png){fig-align="center" width="500"}
-
-# Wrap up
-
-## Feeling adventurous?
+## Conclusion
 
 -   You are welcomed to use the default styling of the slides. In fact, that's what I expect majority of you will do. You will differentiate yourself with the content of your presentation.
 
