@@ -1,4 +1,3 @@
-
 ---
 title:  "Global Trends in Agriculture: Crops and Livestock"
 subtitle: "INFO 526 - Fall 2023 - Project Final"
@@ -38,8 +37,6 @@ library(rnaturalearth)
 library(viridis)
 library(leaflet)
 ```
-
-
 
 ```{css}
     .plot-container {
@@ -158,8 +155,6 @@ agg_trends <- prod_data_classified %>%
   summarize(Total_Production = sum(Production, na.rm = TRUE), .groups = "drop")
 
 ```
-
-
 
 ```{r}
 # Identifying livestock commodities that we want
@@ -530,6 +525,7 @@ ggplot(data = commodity_trends, aes(x = Year, y = Total_Production / 1e6, fill =
     panel.grid.minor = element_blank()  # Remove minor grid lines
   )
 ```
+
 #### Plot C
 
 ```{r, fig.height=9,fig.width=12 }
@@ -619,7 +615,6 @@ leaflet() %>%
 
 ```
 
-
 #### Insights
 
 -   **Visualization:** This area chart displays production trends for individual livestock commodities, such as beef, milk, and poultry.
@@ -640,5 +635,3 @@ leaflet() %>%
 
 -   Livestock production has steadily grown globally, with rising demand for protein-rich foods leading to notable increases in key commodities such as Milk, beef and poultry.
 :::
-
-
