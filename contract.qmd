@@ -1,78 +1,119 @@
-Team Project Contract
-Project Title: Visualization of Crop and Livestock products
-Team Members:
-Jay Patil, jayastp@arizona.edu
-Johnson Jeeva John Jacob, johnsonjeeva@arizona.edu
-Likhith Ramesh, likhithr@arizona.edu
-Pragnya Narasimha, pnarasimha@arizona.edu
-Sreeharsha Nalluri, nalluri@arizona.edu
-Sumanth Manohar, sumanthmanohar@arizona.edu
-Tanmay Nalawade, tanmaynalawade@arizona.edu
+---
+title: "Visualization of Crop and Livestock products"
+format: html
+editor: visual
+---
 
-Project Overview
+## Team Members:
 
-Project Description: This project focuses on compiling and analyzing statistical data for a diverse range of 278 crop and livestock products. The dataset will be expressed in key indicators like production quantities, yields, and processed product outputs, making it a valuable resource for understanding global agricultural production patterns across crops and livestock industries.
+|                          |                               |
+|--------------------------|-------------------------------|
+| Jay Patil                | jayastp@arizona.edu           |
+| Johnson Jeeva            | johnsonjeeva@arizona.edu      |
+| John Jacob               | johnsonjeeva@arizona.edu      |
+| Likhith Ramesh           | likhithr@arizona.edu         |
+| Pragnya Narasimha        | pnarasimha@arizona.edu        |
+| Sreeharsha Nalluri       | nalluri@arizona.edu          |
+| Sumanth Manohar          | sumanthmanohar@arizona.edu    |
+| Tanmay Nalawade          | tanmaynalawade@arizona.edu    |
 
-Expected Deliverables: The project deliverables include visualizations such as a choropleth map, bar charts of the top 10 rice producers, a pie chart of regional production shares, and a line chart of global trends. An interactive dashboard will enable data exploration at global and country levels. A comprehensive data analysis report, along with a presentation deck and infographics summarizing key insights, will be provided. The cleaned dataset and metadata documentation will also be included.
+## Project Overview:
 
-Team Goals
-Project Goals: 
-1. Assess global food production with respect to regions.
-2. Analysing climate effect on Crop production.
+This project focuses on compiling and analyzing statistical data for a diverse range of 278 crop and livestock products. The dataset will be expressed in key indicators like production quantities, yields, and processed product outputs, making it a valuable resource for understanding global agricultural production patterns across crops and livestock industries.
 
-Learning Objectives: 
-Data Cleaning: Collect, and transform agricultural data effectively for analysis.
-Exploratory Data Analysis (EDA): Uncover patterns and trends in crop and livestock production.
-Time Series Analysis: Analyze long-term trends, seasonality, and cyclic patterns in agricultural data.
-Data Visualization: Create visualizations to communicate insights (e.g., line charts, heatmaps).Build interactive dashboards and geographical visualizations.
-Statistical Analysis: Conduct correlation analysis and hypothesis testing on production data.
-Data Storytelling: Develop reports and presentations with actionable insights.
+### Expected Deliverables:
 
-Team Roles and Responsibilities
-Roles (change as needed):
+- Proposal
+- Data Visualizations
+- Data Analysis
+- Project Presentation
+- Final Write-Up
+- Peer Reviews
 
-Project Manager: Tanmay Nalawade – Ensures timelines are met, organizes meetings, and manages communications.
-Data Analyst: Pragnya Narasimha, Jay Patil – Responsible for data cleaning, analysis, and exploratory visualizations.
-Visualization Specialist: Sumanth Manohar, Sreeharsha Nalluri – Designs the final visualizations and makes aesthetic choices.
-Documentation Lead: Johnson Jeeva John Jacob, Likhith Ramesh  – Keeps detailed notes, ensures all project decisions are documented, and handles the final report.
-Responsibilities:
-General Responsibilities: Each team member is responsible for:
-Participating actively in all meetings.
-Completing their assigned tasks on time.
-Communicating openly and promptly if issues arise.
-Communication Plan
+### Team Goals:
 
-Meeting Schedule: Weekly on Monday and Wednesday at 3:15 pm via in-person and Google Meet.
+- Assess global food production with respect to regions.
+- Analyze the climate effect on crop production.
 
-Primary Communication Platform: WhatsApp and Google Meet
+### Learning Objectives:
 
-Decision-Making Process: Decisions will be made by consensus; if a consensus cannot be reached, a vote will be taken.
+1. Collect and transform agricultural data effectively for analysis.
+2. Uncover patterns and trends in crop and livestock production.
+3. Analyze long-term trends, seasonality, and cyclic patterns in agricultural data.
+4. Create visualizations to communicate insights (e.g., line charts, heatmaps).
+5. Build interactive dashboards and geographical visualizations.
+6. Conduct correlation analysis and hypothesis testing on production data.
+7. Develop reports and presentations with actionable insights.
 
-Work Plan and Timeline
-Milestones:
-Data Collection and Cleaning: Completed by 10/14/24.
-Exploratory Data Analysis: Completed by 10/28/24.
-Design of Visualizations: Completed by 11/15/24.
-Final Presentation and Report: Completed by 11/29/24.
+## Team Roles and Responsibilities:
 
-Accountability and Expectations
-Attendance Policy: All team members are expected to attend scheduled meetings unless previously discussed.
+- **Project Manager**: Tanmay Nalawade – Ensures timelines are met, organizes meetings, and manages communications.
+- **Data Analyst**: Pragnya Narasimha, Jay Patil – Responsible for data cleaning, analysis, and exploratory visualizations.
+- **Visualization Specialist**: Sumanth Manohar, Sreeharsha Nalluri – Designs the final visualizations and makes aesthetic choices.
+- **Documentation Lead**: Johnson Jeeva, John Jacob, Likhith Ramesh – Keeps detailed notes, ensures all project decisions are documented, and handles the final report.
 
-Quality of Work: All deliverables should be completed to a professional standard.
-Deadlines: All members are responsible for meeting deadlines. If someone cannot meet a deadline, they must notify the team in advance.
+### Responsibilities:
 
-Conflict Resolution Plan
-Conflict Management: If a conflict arises, team members will:
-Discuss the issue openly during a team meeting.
-Attempt to resolve the issue through compromise.
-If the conflict persists, consult the project supervisor for guidance.
-Signatures
+Each team member is responsible for:
+- Participating actively in all meetings.
+- Completing their assigned tasks on time.
+- Communicating openly and promptly if issues arise.
+
+## Communication Plan:
+
+### Meeting Schedule:
+- Weekly on Monday and Wednesday at 3:15 pm via in-person and Google Meet.
+
+### Primary Communication Platform:
+- WhatsApp and Google Meet.
+
+### Decision-Making Process:
+- Decisions will be made by consensus; if a consensus cannot be reached, a vote will be taken.
+
+## Work Plan and Timeline Milestones:
+
+- **Data Collection and Cleaning**: Completed by 10/14/24.
+- **Exploratory Data Analysis**: Completed by 10/28/24.
+- **Design of Visualizations**: Completed by 11/15/24.
+- **Final Presentation and Report**: Completed by 11/29/24.
+
+### Task Assignments:
+
+| Task Description           | Team Member                             | Due Date     |
+|----------------------------|-----------------------------------------|--------------|
+| Data Collection and Cleaning | All Team Members                        | 10/14/24     |
+| Exploratory Data Analysis  | Pragnya Narasimha, Jay Patil           | 10/28/24     |
+| Design of Visualizations   | Sumanth Manohar, Sreeharsha Nalluri    | 11/15/24     |
+| Final Presentation and Report | All Team Members                       | 11/29/24     |
+
+## Accountability and Expectations:
+
+### Attendance Policy:
+- All team members are expected to attend scheduled meetings unless previously discussed.
+
+### Quality of Work:
+- All deliverables should be completed to a professional standard.
+
+### Deadlines:
+- All members are responsible for meeting deadlines. If someone cannot meet a deadline, they must notify the team in advance.
+
+## Conflict Resolution Plan:
+
+### Conflict Management:
+If a conflict arises, team members will:
+- Discuss the issue openly during a team meeting.
+- Attempt to resolve the issue through compromise.
+- If the conflict persists, consult the project supervisor for guidance.
+
+## Signatures:
+
 By signing below, each team member agrees to the terms of this contract and commits to working together effectively and respectfully.
 
-Sumanth Manohar (09/30/24)
-Likhith Ramesh (09/30/24)
-Johnson Jeeva John Jacob (09/30/24)
-Pragnya Narasimha (09/30/24)
-Jay Patil (09/30/24)
-Tanmay Nalawade (09/30/24)
-Sreeharsha Nalluri (10/01/24)
+- **Sumanth Manohar** Date: 09/30/24
+- **Likhith Ramesh** Date: 09/30/24
+- **Johnson Jeeva** Date: 09/30/24
+- **John Jacob** Date: 09/30/24
+- **Pragnya Narasimha** Date: 09/30/24
+- **Jay Patil** Date: 09/30/24
+- **Tanmay Nalawade** Date: 09/30/24
+- **Sreeharsha Nalluri** Date: 10/01/24

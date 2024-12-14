@@ -2,7 +2,7 @@ project:
   type: website
 
 website:
-  title: Project Title 
+  title: Visualization of Crop and Livestock products 
   navbar:
     right:
       - icon: github
@@ -16,6 +16,8 @@ website:
         href: presentation.qmd
       - text: About
         href: about.qmd
+      - text: Contract
+        href: contract.qmd
 
 format:
   html:

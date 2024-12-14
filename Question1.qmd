@@ -13,6 +13,7 @@ prod_data <- read.csv("data/Production_Crops_Livestock_E_All_Data/Production_Cro
 area_codes <- read.csv("data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_AreaCodes.csv")
 item_codes <- read.csv("data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_ItemCodes.csv")
 elements <- read.csv("data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_Elements.csv")
+prod_data_long <- read.csv("data/Processed_Staple_Crops_Production.csv")
 ```
 
 ```{r, fig.height=9,fig.width=12}

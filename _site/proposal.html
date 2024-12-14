@@ -9,7 +9,7 @@
 <meta name="author" content="Vizcats">
 <meta name="description" content="This project focuses on compiling and analyzing statistical data for a diverse range of 278 crop and livestock products. The dataset will be expressed in key indicators like production quantities, yields, and processed product outputs, making it a valuable resource for understanding global agricultural production patterns across crops and livestock industries.">
 
-<title>Visualization of Crop and Livestock products – Project Title</title>
+<title>Visualization of Crop and Livestock products</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -4754,7 +4754,7 @@ vertical-align: -.125em;
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Project Title</span>
+    <span class="navbar-title">Visualization of Crop and Livestock products</span>
     </a>
   </div>
             <div id="quarto-search" class title="Search"></div>
@@ -4778,6 +4778,10 @@ vertical-align: -.125em;
   <li class="nav-item">
     <a class="nav-link" href="./about.html"> 
 <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./contract.html"> 
+<span class="menu-text">Contract</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
@@ -4865,627 +4869,8 @@ vertical-align: -.125em;
 </header>
 
 
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Install required packages</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="co"># Define a function to check and install packages</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a>check_and_install <span class="ot">&lt;-</span> <span class="cf">function</span>(package_name) {</span>
-<span id="cb1-5"><a href="#cb1-5"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(package_name, <span class="at">character.only =</span> <span class="cn">TRUE</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb1-6"><a href="#cb1-6"></a>    <span class="fu">install.packages</span>(package_name, <span class="at">dependencies =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb1-7"><a href="#cb1-7"></a>                     <span class="at">repos =</span> <span class="st">&quot;https://cloud.r-project.org/&quot;</span>)</span>
-<span id="cb1-8"><a href="#cb1-8"></a>    <span class="fu">library</span>(package_name, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-9"><a href="#cb1-9"></a>  }</span>
-<span id="cb1-10"><a href="#cb1-10"></a>}</span>
-<span id="cb1-11"><a href="#cb1-11"></a></span>
-<span id="cb1-12"><a href="#cb1-12"></a><span class="co"># Check and install necessary packages</span></span>
-<span id="cb1-13"><a href="#cb1-13"></a><span class="fu">check_and_install</span>(<span class="st">&quot;tidyverse&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <section id="crop-and-livestock-data" class="level1">
 <h1>1. Crop and Livestock Data</h1>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>data <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">&quot;data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_All_Data.csv&quot;</span>)</span>
-<span id="cb2-2"><a href="#cb2-2"></a></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="co"># Display basic information about the dataset</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="fu">dim</span>(data)  <span class="co"># Dimensions of the dataset</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 79381   195</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">glimpse</span>(data)  <span class="co"># Quick overview of the data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 79,381
-Columns: 195
-$ Area.Code       &lt;int&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, …
-$ Area.Code..M49. &lt;chr&gt; &quot;&#39;004&quot;, &quot;&#39;004&quot;, &quot;&#39;004&quot;, &quot;&#39;004&quot;, &quot;&#39;004&quot;, &quot;&#39;004&quot;, &quot;&#39;004&quot;…
-$ Area            &lt;chr&gt; &quot;Afghanistan&quot;, &quot;Afghanistan&quot;, &quot;Afghanistan&quot;, &quot;Afghanis…
-$ Item.Code       &lt;int&gt; 221, 221, 221, 711, 711, 711, 515, 515, 515, 526, 526,…
-$ Item.Code..CPC. &lt;chr&gt; &quot;&#39;01371&quot;, &quot;&#39;01371&quot;, &quot;&#39;01371&quot;, &quot;&#39;01654&quot;, &quot;&#39;01654&quot;, &quot;&#39;01…
-$ Item            &lt;chr&gt; &quot;Almonds, in shell&quot;, &quot;Almonds, in shell&quot;, &quot;Almonds, in…
-$ Element.Code    &lt;int&gt; 5312, 5412, 5510, 5312, 5412, 5510, 5312, 5412, 5510, …
-$ Element         &lt;chr&gt; &quot;Area harvested&quot;, &quot;Yield&quot;, &quot;Production&quot;, &quot;Area harvest…
-$ Unit            &lt;chr&gt; &quot;ha&quot;, &quot;kg/ha&quot;, &quot;t&quot;, &quot;ha&quot;, &quot;kg/ha&quot;, &quot;t&quot;, &quot;ha&quot;, &quot;kg/ha&quot;,…
-$ Y1961           &lt;dbl&gt; 0.00, NA, 0.00, 0.00, NA, 0.00, 2220.00, 6801.80, 1510…
-$ Y1961F          &lt;chr&gt; &quot;A&quot;, &quot;&quot;, &quot;A&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;X&quot;, &quot;E&quot;, &quot;E&quot;, &quot;…
-$ Y1961N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;Unofficial figure&quot;, &quot;…
-$ Y1962           &lt;dbl&gt; 0.00, NA, 0.00, 0.00, NA, 0.00, 2220.00, 6801.80, 1510…
-$ Y1962F          &lt;chr&gt; &quot;A&quot;, &quot;&quot;, &quot;A&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;…
-$ Y1962N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y1963           &lt;dbl&gt; 0.00, NA, 0.00, 0.00, NA, 0.00, 2220.00, 6801.80, 1510…
-$ Y1963F          &lt;chr&gt; &quot;A&quot;, &quot;&quot;, &quot;A&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;…
-$ Y1963N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y1964           &lt;dbl&gt; 0.00, NA, 0.00, 0.00, NA, 0.00, 2350.00, 7829.80, 1840…
-$ Y1964F          &lt;chr&gt; &quot;A&quot;, &quot;&quot;, &quot;A&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;…
-$ Y1964N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y1965           &lt;dbl&gt; 0.00, NA, 0.00, 0.00, NA, 0.00, 2480.00, 8225.80, 2040…
-$ Y1965F          &lt;chr&gt; &quot;A&quot;, &quot;&quot;, &quot;A&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;…
-$ Y1965N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y1966           &lt;dbl&gt; 0.00, NA, 0.00, 0.00, NA, 0.00, 2740.00, 8321.20, 2280…
-$ Y1966F          &lt;chr&gt; &quot;A&quot;, &quot;&quot;, &quot;A&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;…
-$ Y1966N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y1967           &lt;dbl&gt; 0.00, NA, 0.00, 0.00, NA, 0.00, 3060.00, 9019.60, 2760…
-$ Y1967F          &lt;chr&gt; &quot;A&quot;, &quot;&quot;, &quot;A&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;…
-$ Y1967N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y1968           &lt;dbl&gt; 0.00, NA, 0.00, 0.00, NA, 0.00, 2990.00, 9331.10, 2790…
-$ Y1968F          &lt;chr&gt; &quot;A&quot;, &quot;&quot;, &quot;A&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;…
-$ Y1968N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y1969           &lt;dbl&gt; 0.00, NA, 0.00, 0.00, NA, 0.00, 3040.00, 9276.30, 2820…
-$ Y1969F          &lt;chr&gt; &quot;A&quot;, &quot;&quot;, &quot;A&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;…
-$ Y1969N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y1970           &lt;dbl&gt; 0.00, NA, 0.00, 0.00, NA, 0.00, 3060.00, 8921.60, 2730…
-$ Y1970F          &lt;chr&gt; &quot;A&quot;, &quot;&quot;, &quot;A&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;…
-$ Y1970N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y1971           &lt;dbl&gt; 0.00, NA, 0.00, 0.00, NA, 0.00, 3060.00, 7026.10, 2150…
-$ Y1971F          &lt;chr&gt; &quot;A&quot;, &quot;&quot;, &quot;A&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;…
-$ Y1971N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y1972           &lt;dbl&gt; 0.00, NA, 0.00, 0.00, NA, 0.00, 3150.00, 8444.40, 2660…
-$ Y1972F          &lt;chr&gt; &quot;A&quot;, &quot;&quot;, &quot;A&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;…
-$ Y1972N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y1973           &lt;dbl&gt; 0.00, NA, 0.00, 0.00, NA, 0.00, 3210.00, 8598.10, 2760…
-$ Y1973F          &lt;chr&gt; &quot;A&quot;, &quot;&quot;, &quot;A&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;…
-$ Y1973N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y1974           &lt;dbl&gt; 0.00, NA, 0.00, 0.00, NA, 0.00, 3270.00, 8501.50, 2780…
-$ Y1974F          &lt;chr&gt; &quot;A&quot;, &quot;&quot;, &quot;A&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;…
-$ Y1974N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y1975           &lt;dbl&gt; 0.00, NA, 0.00, 0.00, NA, 0.00, 3270.00, 8532.10, 2790…
-$ Y1975F          &lt;chr&gt; &quot;E&quot;, &quot;&quot;, &quot;E&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;…
-$ Y1975N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y1976           &lt;dbl&gt; 5900.00, 1661.00, 9800.00, 0.00, NA, 0.00, 3270.00, 80…
-$ Y1976F          &lt;chr&gt; &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, …
-$ Y1976N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y1977           &lt;dbl&gt; 6000.00, 1500.00, 9000.00, 0.00, NA, 0.00, 3280.00, 47…
-$ Y1977F          &lt;chr&gt; &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, …
-$ Y1977N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y1978           &lt;dbl&gt; 6000.0, 2000.0, 12000.0, 0.0, NA, 0.0, 3250.0, 6984.6,…
-$ Y1978F          &lt;chr&gt; &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, …
-$ Y1978N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;Unoff…
-$ Y1979           &lt;dbl&gt; 6000.00, 1750.00, 10500.00, 0.00, NA, 0.00, 3150.00, 6…
-$ Y1979F          &lt;chr&gt; &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, …
-$ Y1979N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;Unoff…
-$ Y1980           &lt;dbl&gt; 5800.00, 1706.90, 9900.00, 0.00, NA, 0.00, 3150.00, 70…
-$ Y1980F          &lt;chr&gt; &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, …
-$ Y1980N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;Unoff…
-$ Y1981           &lt;dbl&gt; 5800.00, 1379.30, 8000.00, 0.00, NA, 0.00, 3080.00, 71…
-$ Y1981F          &lt;chr&gt; &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, …
-$ Y1981N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;Unoff…
-$ Y1982           &lt;dbl&gt; 5800.00, 1896.60, 11000.00, 0.00, NA, 0.00, 2960.00, 7…
-$ Y1982F          &lt;chr&gt; &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, …
-$ Y1982N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;Unoff…
-$ Y1983           &lt;dbl&gt; 5700.00, 1701.80, 9700.00, 0.00, NA, 0.00, 2850.00, 72…
-$ Y1983F          &lt;chr&gt; &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, …
-$ Y1983N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;U…
-$ Y1984           &lt;dbl&gt; 5700.00, 1842.10, 10500.00, 0.00, NA, 0.00, 2730.00, 7…
-$ Y1984F          &lt;chr&gt; &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, …
-$ Y1984N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;U…
-$ Y1985           &lt;dbl&gt; 5600.00, 1607.10, 9000.00, 0.00, NA, 0.00, 2660.00, 71…
-$ Y1985F          &lt;chr&gt; &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;M&quot;, &quot;&quot;, &quot;M&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, …
-$ Y1985N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;U…
-$ Y1986           &lt;dbl&gt; 5500.00, 1818.20, 10000.00, 700.00, 714.30, 500.00, 25…
-$ Y1986F          &lt;chr&gt; &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;,…
-$ Y1986N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;Unoff…
-$ Y1987           &lt;dbl&gt; 5500.00, 1636.40, 9000.00, 700.00, 714.30, 500.00, 223…
-$ Y1987F          &lt;chr&gt; &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;,…
-$ Y1987N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y1988           &lt;dbl&gt; 5400.00, 1666.70, 9000.00, 300.00, 666.70, 200.00, 233…
-$ Y1988F          &lt;chr&gt; &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;,…
-$ Y1988N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;U…
-$ Y1989           &lt;dbl&gt; 5400.00, 1629.60, 8800.00, 1100.00, 727.30, 800.00, 23…
-$ Y1989F          &lt;chr&gt; &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;,…
-$ Y1989N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;U…
-$ Y1990           &lt;dbl&gt; 6037.00, 1573.60, 9500.00, 1300.00, 769.20, 1000.00, 2…
-$ Y1990F          &lt;chr&gt; &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;,…
-$ Y1990N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;U…
-$ Y1991           &lt;dbl&gt; 5500.00, 1636.40, 9000.00, 1882.00, 707.20, 1331.24, 2…
-$ Y1991F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;I&quot;, &quot;E&quot;, &quot;I&quot;, &quot;I&quot;, &quot;E&quot;, &quot;I&quot;, &quot;I&quot;, &quot;E&quot;,…
-$ Y1991N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;U…
-$ Y1992           &lt;dbl&gt; 5500.00, 1800.00, 9900.00, 700.00, 714.30, 500.00, 230…
-$ Y1992F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;I&quot;, &quot;E&quot;, &quot;E&quot;, &quot;I&quot;, &quot;E&quot;,…
-$ Y1992N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;U…
-$ Y1993           &lt;dbl&gt; 5500.00, 1636.40, 9000.00, 2270.00, 685.40, 1556.06, 2…
-$ Y1993F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;I&quot;, &quot;E&quot;, &quot;I&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;,…
-$ Y1993N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;U…
-$ Y1994           &lt;dbl&gt; 5500.00, 1636.40, 9000.00, 2871.00, 676.10, 1940.65, 2…
-$ Y1994F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;I&quot;, &quot;E&quot;, &quot;I&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;I&quot;, &quot;E&quot;,…
-$ Y1994N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;U…
-$ Y1995           &lt;dbl&gt; 5500.00, 1636.40, 9000.00, 3000.00, 666.70, 2000.00, 2…
-$ Y1995F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;I&quot;, &quot;E&quot;, &quot;I&quot;, &quot;E&quot;, &quot;E&quot;,…
-$ Y1995N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;Unoff…
-$ Y1996           &lt;dbl&gt; 5500.00, 1636.40, 9000.00, 7000.00, 600.00, 4200.00, 3…
-$ Y1996F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;I&quot;, &quot;E&quot;, &quot;I&quot;, &quot;I&quot;, &quot;E&quot;,…
-$ Y1996N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;Unoff…
-$ Y1997           &lt;dbl&gt; 5500.00, 1636.40, 9000.00, 4000.00, 625.00, 2500.00, 3…
-$ Y1997F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;I&quot;, &quot;E&quot;, &quot;I&quot;, &quot;I&quot;, &quot;E&quot;,…
-$ Y1997N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;Unoff…
-$ Y1998           &lt;dbl&gt; 5500.00, 1636.40, 9000.00, 12000.00, 591.70, 7100.00, …
-$ Y1998F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;I&quot;, &quot;E&quot;, &quot;I&quot;, &quot;I&quot;, &quot;E&quot;,…
-$ Y1998N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;Unoff…
-$ Y1999           &lt;dbl&gt; 5500.00, 2000.00, 11000.00, 11311.00, 618.90, 7000.00,…
-$ Y1999F          &lt;chr&gt; &quot;A&quot;, &quot;E&quot;, &quot;E&quot;, &quot;I&quot;, &quot;E&quot;, &quot;E&quot;, &quot;I&quot;, &quot;E&quot;, &quot;I&quot;, &quot;I&quot;, &quot;E&quot;,…
-$ Y1999N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y2000           &lt;dbl&gt; 7000.00, 1714.30, 12000.00, 4000.00, 625.00, 2500.00, …
-$ Y2000F          &lt;chr&gt; &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;I&quot;, &quot;E&quot;, &quot;I&quot;, &quot;I&quot;, &quot;E&quot;,…
-$ Y2000N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y2001           &lt;dbl&gt; 9000.00, 1666.70, 15000.00, 1600.00, 625.00, 1000.00, …
-$ Y2001F          &lt;chr&gt; &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;I&quot;, &quot;E&quot;, &quot;I&quot;, &quot;E&quot;, &quot;E&quot;,…
-$ Y2001N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y2002           &lt;dbl&gt; 5500.00, 2140.70, 11773.99, 3300.00, 606.10, 2000.00, …
-$ Y2002F          &lt;chr&gt; &quot;A&quot;, &quot;E&quot;, &quot;I&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;I&quot;, &quot;E&quot;, &quot;I&quot;, &quot;I&quot;, &quot;E&quot;,…
-$ Y2002N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y2003           &lt;dbl&gt; 5700.00, 2456.10, 14000.00, 6800.00, 602.90, 4100.00, …
-$ Y2003F          &lt;chr&gt; &quot;A&quot;, &quot;E&quot;, &quot;X&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;A&quot;, &quot;E&quot;, &quot;I&quot;, &quot;A&quot;, &quot;E&quot;,…
-$ Y2003N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;Unofficial figure&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;…
-$ Y2004           &lt;dbl&gt; 12000.00, 1225.00, 14700.00, 15000.00, 600.00, 9000.00…
-$ Y2004F          &lt;chr&gt; &quot;X&quot;, &quot;X&quot;, &quot;X&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;A&quot;, &quot;E&quot;, &quot;I&quot;, &quot;E&quot;, &quot;E&quot;,…
-$ Y2004N          &lt;chr&gt; &quot;Unofficial figure&quot;, &quot;&quot;, &quot;Unofficial figure&quot;, &quot;&quot;, &quot;&quot;, …
-$ Y2005           &lt;dbl&gt; 11768.00, 1328.10, 15630.00, 16000.00, 625.00, 10000.0…
-$ Y2005F          &lt;chr&gt; &quot;I&quot;, &quot;E&quot;, &quot;X&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;A&quot;, &quot;E&quot;, &quot;I&quot;, &quot;I&quot;, &quot;E&quot;,…
-$ Y2005N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;Unofficial figure&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;…
-$ Y2006           &lt;dbl&gt; 12000.00, 1666.70, 20000.00, 17432.00, 622.20, 10846.1…
-$ Y2006F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;I&quot;, &quot;E&quot;, &quot;I&quot;, &quot;A&quot;, &quot;E&quot;, &quot;E&quot;, &quot;A&quot;, &quot;E&quot;,…
-$ Y2006N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y2007           &lt;dbl&gt; 12000.00, 2623.40, 31481.00, 28000.00, 607.10, 17000.0…
-$ Y2007F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;A&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;,…
-$ Y2007N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y2008           &lt;dbl&gt; 12000.00, 3500.00, 42000.00, 15000.00, 600.00, 9000.00…
-$ Y2008F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;A&quot;, &quot;E&quot;, &quot;I&quot;, &quot;A&quot;, &quot;E&quot;,…
-$ Y2008N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y2009           &lt;dbl&gt; 11029.00, 3915.40, 43183.00, 17748.00, 620.30, 11008.4…
-$ Y2009F          &lt;chr&gt; &quot;A&quot;, &quot;E&quot;, &quot;X&quot;, &quot;I&quot;, &quot;E&quot;, &quot;I&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;E&quot;,…
-$ Y2009N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;Unofficial figure&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;…
-$ Y2010           &lt;dbl&gt; 11210.00, 4995.50, 56000.00, 17000.00, 600.00, 10200.0…
-$ Y2010F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;,…
-$ Y2010N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y2011           &lt;dbl&gt; 13469.00, 4500.00, 60611.00, 19500.00, 641.40, 12508.0…
-$ Y2011F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;I&quot;, &quot;E&quot;, &quot;I&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;E&quot;,…
-$ Y2011N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y2012           &lt;dbl&gt; 13490.00, 4596.00, 62000.00, 18500.00, 675.70, 12500.0…
-$ Y2012F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;,…
-$ Y2012N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y2013           &lt;dbl&gt; 14114.00, 2991.00, 42215.00, 18500.00, 675.70, 12500.0…
-$ Y2013F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;,…
-$ Y2013N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y2014           &lt;dbl&gt; 13703.00, 1999.60, 27400.00, 30000.00, 716.70, 21500.0…
-$ Y2014F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;E&quot;,…
-$ Y2014N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y2015           &lt;dbl&gt; 14676.00, 1652.10, 24246.00, 25000.00, 720.00, 18000.0…
-$ Y2015F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;,…
-$ Y2015N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y2016           &lt;dbl&gt; 19481.00, 1685.90, 32843.00, 24500.00, 707.50, 17333.3…
-$ Y2016F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;,…
-$ Y2016N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y2017           &lt;dbl&gt; 19793.00, 1378.80, 27291.00, 26160.00, 697.00, 18234.1…
-$ Y2017F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;I&quot;, &quot;E&quot;, &quot;I&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;,…
-$ Y2017N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y2018           &lt;dbl&gt; 20053.00, 1716.10, 34413.00, 25220.00, 708.00, 17855.8…
-$ Y2018F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;,…
-$ Y2018N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y2019           &lt;dbl&gt; 29203.00, 1308.30, 38205.00, 25293.00, 704.10, 17807.7…
-$ Y2019F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;,…
-$ Y2019N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y2020           &lt;dbl&gt; 22134.00, 1775.90, 39307.00, 25558.00, 703.00, 17965.9…
-$ Y2020F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;,…
-$ Y2020N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y2021           &lt;dbl&gt; 36862.00, 1743.20, 64256.00, 25357.00, 705.00, 17876.4…
-$ Y2021F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;,…
-$ Y2021N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
-$ Y2022           &lt;dbl&gt; 37000.00, 1729.70, 64000.00, 25403.00, 704.00, 17883.3…
-$ Y2022F          &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;I&quot;, &quot;E&quot;,…
-$ Y2022N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;U…</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">summary</span>(data)  <span class="co"># Summary statistics</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   Area.Code    Area.Code..M49.        Area             Item.Code      
- Min.   :   1   Length:79381       Length:79381       Min.   :   15.0  
- 1st Qu.:  89   Class :character   Class :character   1st Qu.:  358.0  
- Median : 170   Mode  :character   Mode  :character   Median :  592.0  
- Mean   :1316                                         Mean   :  867.9  
- 3rd Qu.: 272                                         3rd Qu.: 1037.0  
- Max.   :5817                                         Max.   :17530.0  
-                                                                       
- Item.Code..CPC.        Item            Element.Code    Element         
- Length:79381       Length:79381       Min.   :5111   Length:79381      
- Class :character   Class :character   1st Qu.:5312   Class :character  
- Mode  :character   Mode  :character   Median :5412   Mode  :character  
-                                       Mean   :5409                     
-                                       3rd Qu.:5510                     
-                                       Max.   :5513                     
-                                                                        
-     Unit               Y1961              Y1961F             Y1961N         
- Length:79381       Min.   :0.000e+00   Length:79381       Length:79381      
- Class :character   1st Qu.:5.230e+02   Class :character   Class :character  
- Mode  :character   Median :6.000e+03   Mode  :character   Mode  :character  
-                    Mean   :1.430e+06                                        
-                    3rd Qu.:5.600e+04                                        
-                    Max.   :1.342e+09                                        
-                    NA&#39;s   :18612                                            
-     Y1962              Y1962F             Y1962N              Y1963          
- Min.   :0.000e+00   Length:79381       Length:79381       Min.   :0.000e+00  
- 1st Qu.:5.500e+02   Class :character   Class :character   1st Qu.:5.660e+02  
- Median :6.127e+03   Mode  :character   Mode  :character   Median :6.300e+03  
- Mean   :1.463e+06                                         Mean   :1.494e+06  
- 3rd Qu.:5.800e+04                                         3rd Qu.:6.000e+04  
- Max.   :1.360e+09                                         Max.   :1.369e+09  
- NA&#39;s   :18602                                             NA&#39;s   :18603      
-    Y1963F             Y1963N              Y1964              Y1964F         
- Length:79381       Length:79381       Min.   :0.000e+00   Length:79381      
- Class :character   Class :character   1st Qu.:5.800e+02   Class :character  
- Mode  :character   Mode  :character   Median :6.500e+03   Mode  :character  
-                                       Mean   :1.539e+06                     
-                                       3rd Qu.:6.150e+04                     
-                                       Max.   :1.381e+09                     
-                                       NA&#39;s   :18588                         
-    Y1964N              Y1965              Y1965F             Y1965N         
- Length:79381       Min.   :0.000e+00   Length:79381       Length:79381      
- Class :character   1st Qu.:5.970e+02   Class :character   Class :character  
- Mode  :character   Median :6.600e+03   Mode  :character   Mode  :character  
-                    Mean   :1.571e+06                                        
-                    3rd Qu.:6.224e+04                                        
-                    Max.   :1.398e+09                                        
-                    NA&#39;s   :18591                                            
-     Y1966              Y1966F             Y1966N              Y1967          
- Min.   :0.000e+00   Length:79381       Length:79381       Min.   :0.000e+00  
- 1st Qu.:6.000e+02   Class :character   Class :character   1st Qu.:6.200e+02  
- Median :6.818e+03   Mode  :character   Mode  :character   Median :7.000e+03  
- Mean   :1.609e+06                                         Mean   :1.651e+06  
- 3rd Qu.:6.473e+04                                         3rd Qu.:6.610e+04  
- Max.   :1.409e+09                                         Max.   :1.429e+09  
- NA&#39;s   :18532                                             NA&#39;s   :18526      
-    Y1967F             Y1967N              Y1968              Y1968F         
- Length:79381       Length:79381       Min.   :0.000e+00   Length:79381      
- Class :character   Class :character   1st Qu.:6.220e+02   Class :character  
- Mode  :character   Mode  :character   Median :7.100e+03   Mode  :character  
-                                       Mean   :1.678e+06                     
-                                       3rd Qu.:6.720e+04                     
-                                       Max.   :1.450e+09                     
-                                       NA&#39;s   :18494                         
-    Y1968N              Y1969              Y1969F             Y1969N         
- Length:79381       Min.   :0.000e+00   Length:79381       Length:79381      
- Class :character   1st Qu.:6.330e+02   Class :character   Class :character  
- Mode  :character   Median :7.211e+03   Mode  :character   Mode  :character  
-                    Mean   :1.682e+06                                        
-                    3rd Qu.:6.900e+04                                        
-                    Max.   :1.458e+09                                        
-                    NA&#39;s   :18488                                            
-     Y1970              Y1970F             Y1970N              Y1971          
- Min.   :0.000e+00   Length:79381       Length:79381       Min.   :0.000e+00  
- 1st Qu.:6.500e+02   Class :character   Class :character   1st Qu.:6.800e+02  
- Median :7.334e+03   Mode  :character   Mode  :character   Median :7.450e+03  
- Mean   :1.718e+06                                         Mean   :1.755e+06  
- 3rd Qu.:7.024e+04                                         3rd Qu.:7.199e+04  
- Max.   :1.440e+09                                         Max.   :1.447e+09  
- NA&#39;s   :18437                                             NA&#39;s   :18418      
-    Y1971F             Y1971N              Y1972              Y1972F         
- Length:79381       Length:79381       Min.   :0.000e+00   Length:79381      
- Class :character   Class :character   1st Qu.:6.780e+02   Class :character  
- Mode  :character   Mode  :character   Median :7.562e+03   Mode  :character  
-                                       Mean   :1.759e+06                     
-                                       3rd Qu.:7.300e+04                     
-                                       Max.   :1.422e+09                     
-                                       NA&#39;s   :18403                         
-    Y1972N              Y1973              Y1973F             Y1973N         
- Length:79381       Min.   :0.000e+00   Length:79381       Length:79381      
- Class :character   1st Qu.:6.830e+02   Class :character   Class :character  
- Mode  :character   Median :7.659e+03   Mode  :character   Mode  :character  
-                    Mean   :1.804e+06                                        
-                    3rd Qu.:7.456e+04                                        
-                    Max.   :1.402e+09                                        
-                    NA&#39;s   :18398                                            
-     Y1974              Y1974F             Y1974N              Y1975          
- Min.   :0.000e+00   Length:79381       Length:79381       Min.   :0.000e+00  
- 1st Qu.:7.110e+02   Class :character   Class :character   1st Qu.:7.230e+02  
- Median :7.900e+03   Mode  :character   Mode  :character   Median :8.000e+03  
- Mean   :1.819e+06                                         Mean   :1.854e+06  
- 3rd Qu.:7.600e+04                                         3rd Qu.:7.800e+04  
- Max.   :1.422e+09                                         Max.   :1.452e+09  
- NA&#39;s   :18367                                             NA&#39;s   :18318      
-    Y1975F             Y1975N              Y1976              Y1976F         
- Length:79381       Length:79381       Min.   :0.000e+00   Length:79381      
- Class :character   Class :character   1st Qu.:7.330e+02   Class :character  
- Mode  :character   Mode  :character   Median :8.000e+03   Mode  :character  
-                                       Mean   :1.890e+06                     
-                                       3rd Qu.:7.943e+04                     
-                                       Max.   :1.464e+09                     
-                                       NA&#39;s   :18288                         
-    Y1976N              Y1977              Y1977F             Y1977N         
- Length:79381       Min.   :0.000e+00   Length:79381       Length:79381      
- Class :character   1st Qu.:7.490e+02   Class :character   Class :character  
- Mode  :character   Median :8.071e+03   Mode  :character   Mode  :character  
-                    Mean   :1.922e+06                                        
-                    3rd Qu.:8.039e+04                                        
-                    Max.   :1.459e+09                                        
-                    NA&#39;s   :18211                                            
-     Y1978              Y1978F             Y1978N              Y1979          
- Min.   :0.000e+00   Length:79381       Length:79381       Min.   :0.000e+00  
- 1st Qu.:7.700e+02   Class :character   Class :character   1st Qu.:7.930e+02  
- Median :8.287e+03   Mode  :character   Mode  :character   Median :8.418e+03  
- Mean   :1.981e+06                                         Mean   :2.000e+06  
- 3rd Qu.:8.300e+04                                         3rd Qu.:8.360e+04  
- Max.   :1.582e+09                                         Max.   :1.538e+09  
- NA&#39;s   :18200                                             NA&#39;s   :18135      
-    Y1979F             Y1979N              Y1980              Y1980F         
- Length:79381       Length:79381       Min.   :0.000e+00   Length:79381      
- Class :character   Class :character   1st Qu.:8.100e+02   Class :character  
- Mode  :character   Mode  :character   Median :8.523e+03   Mode  :character  
-                                       Mean   :2.018e+06                     
-                                       3rd Qu.:8.481e+04                     
-                                       Max.   :1.562e+09                     
-                                       NA&#39;s   :18011                         
-    Y1980N              Y1981              Y1981F             Y1981N         
- Length:79381       Min.   :0.000e+00   Length:79381       Length:79381      
- Class :character   1st Qu.:8.330e+02   Class :character   Class :character  
- Mode  :character   Median :8.617e+03   Mode  :character   Mode  :character  
-                    Mean   :2.067e+06                                        
-                    3rd Qu.:8.588e+04                                        
-                    Max.   :1.632e+09                                        
-                    NA&#39;s   :17958                                            
-     Y1982              Y1982F             Y1982N              Y1983          
- Min.   :0.000e+00   Length:79381       Length:79381       Min.   :0.000e+00  
- 1st Qu.:8.420e+02   Class :character   Class :character   1st Qu.:8.500e+02  
- Median :8.883e+03   Mode  :character   Mode  :character   Median :8.900e+03  
- Mean   :2.112e+06                                         Mean   :2.120e+06  
- 3rd Qu.:8.733e+04                                         3rd Qu.:8.885e+04  
- Max.   :1.693e+09                                         Max.   :1.627e+09  
- NA&#39;s   :17921                                             NA&#39;s   :17891      
-    Y1983F             Y1983N              Y1984              Y1984F         
- Length:79381       Length:79381       Min.   :0.000e+00   Length:79381      
- Class :character   Class :character   1st Qu.:8.720e+02   Class :character  
- Mode  :character   Mode  :character   Median :9.167e+03   Mode  :character  
-                                       Mean   :2.176e+06                     
-                                       3rd Qu.:9.120e+04                     
-                                       Max.   :1.787e+09                     
-                                       NA&#39;s   :17854                         
-    Y1984N              Y1985              Y1985F             Y1985N         
- Length:79381       Min.   :0.000e+00   Length:79381       Length:79381      
- Class :character   1st Qu.:1.000e+03   Class :character   Class :character  
- Mode  :character   Median :9.000e+03   Mode  :character   Mode  :character  
-                    Mean   :2.169e+06                                        
-                    3rd Qu.:9.000e+04                                        
-                    Max.   :1.821e+09                                        
-                    NA&#39;s   :16846                                            
-     Y1986              Y1986F             Y1986N              Y1987          
- Min.   :0.000e+00   Length:79381       Length:79381       Min.   :0.000e+00  
- 1st Qu.:1.000e+03   Class :character   Class :character   1st Qu.:1.000e+03  
- Median :9.094e+03   Mode  :character   Mode  :character   Median :9.250e+03  
- Mean   :2.197e+06                                         Mean   :2.224e+06  
- 3rd Qu.:9.238e+04                                         3rd Qu.:9.350e+04  
- Max.   :1.834e+09                                         Max.   :1.772e+09  
- NA&#39;s   :16770                                             NA&#39;s   :16704      
-    Y1987F             Y1987N              Y1988              Y1988F         
- Length:79381       Length:79381       Min.   :0.000e+00   Length:79381      
- Class :character   Class :character   1st Qu.:1.020e+03   Class :character  
- Mode  :character   Mode  :character   Median :9.372e+03   Mode  :character  
-                                       Mean   :2.250e+06                     
-                                       3rd Qu.:9.523e+04                     
-                                       Max.   :1.728e+09                     
-                                       NA&#39;s   :16633                         
-    Y1988N              Y1989              Y1989F             Y1989N         
- Length:79381       Min.   :0.000e+00   Length:79381       Length:79381      
- Class :character   1st Qu.:1.043e+03   Class :character   Class :character  
- Mode  :character   Median :9.565e+03   Mode  :character   Mode  :character  
-                    Mean   :2.315e+06                                        
-                    3rd Qu.:9.634e+04                                        
-                    Max.   :1.871e+09                                        
-                    NA&#39;s   :16530                                            
-     Y1990              Y1990F             Y1990N              Y1991          
- Min.   :0.000e+00   Length:79381       Length:79381       Min.   :0.000e+00  
- 1st Qu.:1.081e+03   Class :character   Class :character   1st Qu.:1.093e+03  
- Median :9.520e+03   Mode  :character   Mode  :character   Median :9.419e+03  
- Mean   :2.334e+06                                         Mean   :2.315e+06  
- 3rd Qu.:9.400e+04                                         3rd Qu.:9.433e+04  
- Max.   :1.953e+09                                         Max.   :1.894e+09  
- NA&#39;s   :15763                                             NA&#39;s   :15477      
-    Y1991F             Y1991N              Y1992              Y1992F         
- Length:79381       Length:79381       Min.   :0.000e+00   Length:79381      
- Class :character   Class :character   1st Qu.:1.048e+03   Class :character  
- Mode  :character   Mode  :character   Median :9.040e+03   Mode  :character  
-                                       Mean   :2.168e+06                     
-                                       3rd Qu.:8.811e+04                     
-                                       Max.   :1.969e+09                     
-                                       NA&#39;s   :9596                          
-    Y1992N              Y1993              Y1993F             Y1993N         
- Length:79381       Min.   :0.000e+00   Length:79381       Length:79381      
- Class :character   1st Qu.:1.050e+03   Class :character   Class :character  
- Mode  :character   Median :9.000e+03   Mode  :character   Mode  :character  
-                    Mean   :2.147e+06                                        
-                    3rd Qu.:8.575e+04                                        
-                    Max.   :1.901e+09                                        
-                    NA&#39;s   :8951                                             
-     Y1994              Y1994F             Y1994N              Y1995          
- Min.   :0.000e+00   Length:79381       Length:79381       Min.   :0.000e+00  
- 1st Qu.:1.052e+03   Class :character   Class :character   1st Qu.:1.065e+03  
- Median :9.036e+03   Mode  :character   Mode  :character   Median :9.072e+03  
- Mean   :2.185e+06                                         Mean   :2.217e+06  
- 3rd Qu.:8.633e+04                                         3rd Qu.:8.768e+04  
- Max.   :1.967e+09                                         Max.   :1.888e+09  
- NA&#39;s   :8693                                              NA&#39;s   :8539       
-    Y1995F             Y1995N              Y1996              Y1996F         
- Length:79381       Length:79381       Min.   :0.000e+00   Length:79381      
- Class :character   Class :character   1st Qu.:1.097e+03   Class :character  
- Mode  :character   Mode  :character   Median :9.210e+03   Mode  :character  
-                                       Mean   :2.265e+06                     
-                                       3rd Qu.:8.865e+04                     
-                                       Max.   :2.053e+09                     
-                                       NA&#39;s   :8471                          
-    Y1996N              Y1997              Y1997F             Y1997N         
- Length:79381       Min.   :0.000e+00   Length:79381       Length:79381      
- Class :character   1st Qu.:1.095e+03   Class :character   Class :character  
- Mode  :character   Median :9.341e+03   Mode  :character   Mode  :character  
-                    Mean   :2.281e+06                                        
-                    3rd Qu.:8.980e+04                                        
-                    Max.   :2.100e+09                                        
-                    NA&#39;s   :8371                                             
-     Y1998              Y1998F             Y1998N              Y1999          
- Min.   :0.000e+00   Length:79381       Length:79381       Min.   :0.000e+00  
- 1st Qu.:1.109e+03   Class :character   Class :character   1st Qu.:1.125e+03  
- Median :9.429e+03   Mode  :character   Mode  :character   Median :9.614e+03  
- Mean   :2.324e+06                                         Mean   :2.371e+06  
- 3rd Qu.:9.000e+04                                         3rd Qu.:9.255e+04  
- Max.   :2.083e+09                                         Max.   :2.081e+09  
- NA&#39;s   :8290                                              NA&#39;s   :8151       
-    Y1999F             Y1999N              Y2000              Y2000F         
- Length:79381       Length:79381       Min.   :0.000e+00   Length:79381      
- Class :character   Class :character   1st Qu.:1.130e+03   Class :character  
- Mode  :character   Mode  :character   Median :9.642e+03   Mode  :character  
-                                       Mean   :2.382e+06                     
-                                       3rd Qu.:9.201e+04                     
-                                       Max.   :2.060e+09                     
-                                       NA&#39;s   :7755                          
-    Y2000N              Y2001              Y2001F             Y2001N         
- Length:79381       Min.   :0.000e+00   Length:79381       Length:79381      
- Class :character   1st Qu.:1.150e+03   Class :character   Class :character  
- Mode  :character   Median :9.687e+03   Mode  :character   Mode  :character  
-                    Mean   :2.397e+06                                        
-                    3rd Qu.:9.381e+04                                        
-                    Max.   :2.105e+09                                        
-                    NA&#39;s   :7684                                             
-     Y2002              Y2002F             Y2002N              Y2003          
- Min.   :0.000e+00   Length:79381       Length:79381       Min.   :0.000e+00  
- 1st Qu.:1.167e+03   Class :character   Class :character   1st Qu.:1.186e+03  
- Median :9.794e+03   Mode  :character   Mode  :character   Median :9.869e+03  
- Mean   :2.433e+06                                         Mean   :2.477e+06  
- 3rd Qu.:9.452e+04                                         3rd Qu.:9.550e+04  
- Max.   :2.054e+09                                         Max.   :2.074e+09  
- NA&#39;s   :7631                                              NA&#39;s   :7466       
-    Y2003F             Y2003N              Y2004              Y2004F         
- Length:79381       Length:79381       Min.   :0.000e+00   Length:79381      
- Class :character   Class :character   1st Qu.:1.200e+03   Class :character  
- Mode  :character   Mode  :character   Median :1.000e+04   Mode  :character  
-                                       Mean   :2.548e+06                     
-                                       3rd Qu.:9.700e+04                     
-                                       Max.   :2.286e+09                     
-                                       NA&#39;s   :7348                          
-    Y2004N              Y2005              Y2005F             Y2005N         
- Length:79381       Min.   :0.000e+00   Length:79381       Length:79381      
- Class :character   1st Qu.:1.221e+03   Class :character   Class :character  
- Mode  :character   Median :1.001e+04   Mode  :character   Mode  :character  
-                    Mean   :2.588e+06                                        
-                    3rd Qu.:9.881e+04                                        
-                    Max.   :2.267e+09                                        
-                    NA&#39;s   :7301                                             
-     Y2006              Y2006F             Y2006N              Y2007          
- Min.   :0.000e+00   Length:79381       Length:79381       Min.   :0.000e+00  
- 1st Qu.:1.220e+03   Class :character   Class :character   1st Qu.:1.255e+03  
- Median :1.010e+04   Mode  :character   Mode  :character   Median :1.046e+04  
- Mean   :2.627e+06                                         Mean   :2.733e+06  
- 3rd Qu.:9.869e+04                                         3rd Qu.:1.040e+05  
- Max.   :2.255e+09                                         Max.   :2.347e+09  
- NA&#39;s   :7056                                              NA&#39;s   :7853       
-    Y2007F             Y2007N              Y2008              Y2008F         
- Length:79381       Length:79381       Min.   :0.000e+00   Length:79381      
- Class :character   Class :character   1st Qu.:1.294e+03   Class :character  
- Mode  :character   Mode  :character   Median :1.048e+04   Mode  :character  
-                                       Mean   :2.807e+06                     
-                                       3rd Qu.:1.048e+05                     
-                                       Max.   :2.521e+09                     
-                                       NA&#39;s   :7841                          
-    Y2008N              Y2009              Y2009F             Y2009N         
- Length:79381       Min.   :0.000e+00   Length:79381       Length:79381      
- Class :character   1st Qu.:1.300e+03   Class :character   Class :character  
- Mode  :character   Median :1.068e+04   Mode  :character   Mode  :character  
-                    Mean   :2.825e+06                                        
-                    3rd Qu.:1.060e+05                                        
-                    Max.   :2.489e+09                                        
-                    NA&#39;s   :7824                                             
-     Y2010              Y2010F             Y2010N              Y2011          
- Min.   :0.000e+00   Length:79381       Length:79381       Min.   :0.000e+00  
- 1st Qu.:1.236e+03   Class :character   Class :character   1st Qu.:1.265e+03  
- Median :1.047e+04   Mode  :character   Mode  :character   Median :1.065e+04  
- Mean   :2.858e+06                                         Mean   :2.931e+06  
- 3rd Qu.:1.056e+05                                         3rd Qu.:1.078e+05  
- Max.   :2.463e+09                                         Max.   :2.585e+09  
- NA&#39;s   :7116                                              NA&#39;s   :7099       
-    Y2011F             Y2011N              Y2012              Y2012F         
- Length:79381       Length:79381       Min.   :0.000e+00   Length:79381      
- Class :character   Class :character   1st Qu.:1.250e+03   Class :character  
- Mode  :character   Mode  :character   Median :1.069e+04   Mode  :character  
-                                       Mean   :2.954e+06                     
-                                       3rd Qu.:1.100e+05                     
-                                       Max.   :2.557e+09                     
-                                       NA&#39;s   :6824                          
-    Y2012N              Y2013              Y2013F             Y2013N         
- Length:79381       Min.   :0.000e+00   Length:79381       Length:79381      
- Class :character   1st Qu.:1.269e+03   Class :character   Class :character  
- Mode  :character   Median :1.080e+04   Mode  :character   Mode  :character  
-                    Mean   :3.035e+06                                        
-                    3rd Qu.:1.103e+05                                        
-                    Max.   :2.763e+09                                        
-                    NA&#39;s   :6787                                             
-     Y2014              Y2014F             Y2014N              Y2015          
- Min.   :0.000e+00   Length:79381       Length:79381       Min.   :0.000e+00  
- 1st Qu.:1.306e+03   Class :character   Class :character   1st Qu.:1.324e+03  
- Median :1.111e+04   Mode  :character   Mode  :character   Median :1.129e+04  
- Mean   :3.089e+06                                         Mean   :3.116e+06  
- 3rd Qu.:1.129e+05                                         3rd Qu.:1.137e+05  
- Max.   :2.818e+09                                         Max.   :2.838e+09  
- NA&#39;s   :6855                                              NA&#39;s   :6809       
-    Y2015F             Y2015N              Y2016              Y2016F         
- Length:79381       Length:79381       Min.   :0.000e+00   Length:79381      
- Class :character   Class :character   1st Qu.:1.330e+03   Class :character  
- Mode  :character   Mode  :character   Median :1.138e+04   Mode  :character  
-                                       Mean   :3.157e+06                     
-                                       3rd Qu.:1.150e+05                     
-                                       Max.   :2.915e+09                     
-                                       NA&#39;s   :6721                          
-    Y2016N              Y2017              Y2017F             Y2017N         
- Length:79381       Min.   :0.000e+00   Length:79381       Length:79381      
- Class :character   1st Qu.:1.332e+03   Class :character   Class :character  
- Mode  :character   Median :1.140e+04   Mode  :character   Mode  :character  
-                    Mean   :3.204e+06                                        
-                    3rd Qu.:1.160e+05                                        
-                    Max.   :2.967e+09                                        
-                    NA&#39;s   :6534                                             
-     Y2018              Y2018F             Y2018N              Y2019          
- Min.   :0.000e+00   Length:79381       Length:79381       Min.   :0.000e+00  
- 1st Qu.:1.261e+03   Class :character   Class :character   1st Qu.:1.272e+03  
- Median :1.150e+04   Mode  :character   Mode  :character   Median :1.156e+04  
- Mean   :3.273e+06                                         Mean   :3.293e+06  
- 3rd Qu.:1.183e+05                                         3rd Qu.:1.206e+05  
- Max.   :2.915e+09                                         Max.   :2.964e+09  
- NA&#39;s   :7594                                              NA&#39;s   :7583       
-    Y2019F             Y2019N              Y2020              Y2020F         
- Length:79381       Length:79381       Min.   :0.000e+00   Length:79381      
- Class :character   Class :character   1st Qu.:1.279e+03   Class :character  
- Mode  :character   Mode  :character   Median :1.150e+04   Mode  :character  
-                                       Mean   :3.312e+06                     
-                                       3rd Qu.:1.210e+05                     
-                                       Max.   :3.004e+09                     
-                                       NA&#39;s   :7495                          
-    Y2020N              Y2021              Y2021F             Y2021N         
- Length:79381       Min.   :0.000e+00   Length:79381       Length:79381      
- Class :character   1st Qu.:1.295e+03   Class :character   Class :character  
- Mode  :character   Median :1.161e+04   Mode  :character   Mode  :character  
-                    Mean   :3.396e+06                                        
-                    3rd Qu.:1.231e+05                                        
-                    Max.   :3.071e+09                                        
-                    NA&#39;s   :7670                                             
-     Y2022              Y2022F             Y2022N         
- Min.   :0.000e+00   Length:79381       Length:79381      
- 1st Qu.:1.243e+03   Class :character   Class :character  
- Median :1.096e+04   Mode  :character   Mode  :character  
- Mean   :3.626e+06                                        
- 3rd Qu.:1.174e+05                                        
- Max.   :3.060e+09                                        
- NA&#39;s   :12534                                            </code></pre>
-</div>
-</div>
 <p><strong>Dataset Description:</strong></p>
 <p><strong>Crop and Livestock Data:</strong> The dataset we’re working with is the FAOSTAT Crop and Livestock Production data. This dataset provides global statistics on agricultural production, focusing on crops and livestock. It tracks production volumes, harvested areas, and yields for various commodities.</p>
 <p><strong>Provenance:</strong> This dataset is curated by the Food and Agriculture Organization (FAO) of the United Nations. It collects data from official government sources, surveys, and FAO estimates, covering over 200 countries.</p>
@@ -5646,102 +5031,6 @@ $ Y2022N          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&q
 </section>
 <section id="coffee-quality-data" class="level1">
 <h1>2. Coffee Quality Data</h1>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>data <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">&quot;data/Coffee_Data/coffee.csv&quot;</span>)</span>
-<span id="cb12-2"><a href="#cb12-2"></a></span>
-<span id="cb12-3"><a href="#cb12-3"></a><span class="co"># Display basic information about the dataset</span></span>
-<span id="cb12-4"><a href="#cb12-4"></a><span class="fu">dim</span>(data)  <span class="co"># Dimensions of the dataset</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 989  23</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">glimpse</span>(data)  <span class="co"># Quick overview of the data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 989
-Columns: 23
-$ Location.Country               &lt;chr&gt; &quot;United States&quot;, &quot;Brazil&quot;, &quot;Brazil&quot;, &quot;E…
-$ Location.Region                &lt;chr&gt; &quot;kona&quot;, &quot;sul de minas - carmo de minas&quot;…
-$ Location.Altitude.Min          &lt;int&gt; 0, 12, 12, 0, 0, 0, 1300, 0, 0, 640, 12…
-$ Location.Altitude.Max          &lt;int&gt; 0, 12, 12, 0, 0, 0, 1400, 0, 0, 1400, 1…
-$ Location.Altitude.Average      &lt;int&gt; 0, 12, 12, 0, 0, 0, 1350, 0, 0, 1020, 1…
-$ Year                           &lt;int&gt; 2010, 2010, 2010, 2010, 2010, 2010, 201…
-$ Data.Owner                     &lt;chr&gt; &quot;kona pacific farmers cooperative&quot;, &quot;ja…
-$ Data.Type.Species              &lt;chr&gt; &quot;Arabica&quot;, &quot;Arabica&quot;, &quot;Arabica&quot;, &quot;Arabi…
-$ Data.Type.Variety              &lt;chr&gt; &quot;nan&quot;, &quot;Yellow Bourbon&quot;, &quot;Yellow Bourbo…
-$ Data.Type.Processing.method    &lt;chr&gt; &quot;nan&quot;, &quot;nan&quot;, &quot;nan&quot;, &quot;nan&quot;, &quot;nan&quot;, &quot;nan…
-$ Data.Production.Number.of.bags &lt;int&gt; 25, 300, 300, 360, 300, 12, 10, 360, 30…
-$ Data.Production.Bag.weight     &lt;dbl&gt; 45.35920, 60.00000, 60.00000, 6.00000, …
-$ Data.Scores.Aroma              &lt;dbl&gt; 8.25, 8.17, 8.42, 7.67, 7.58, 7.50, 7.6…
-$ Data.Scores.Flavor             &lt;dbl&gt; 8.42, 7.92, 7.92, 8.00, 7.83, 7.92, 7.5…
-$ Data.Scores.Aftertaste         &lt;dbl&gt; 8.08, 7.92, 8.00, 7.83, 7.58, 7.42, 7.5…
-$ Data.Scores.Acidity            &lt;dbl&gt; 7.75, 7.75, 7.75, 8.00, 8.00, 7.67, 7.5…
-$ Data.Scores.Body               &lt;dbl&gt; 7.67, 8.33, 7.92, 7.92, 7.83, 7.83, 7.6…
-$ Data.Scores.Balance            &lt;dbl&gt; 7.83, 8.00, 8.00, 7.83, 7.50, 7.58, 7.5…
-$ Data.Scores.Uniformity         &lt;dbl&gt; 10.00, 10.00, 10.00, 10.00, 10.00, 10.0…
-$ Data.Scores.Sweetness          &lt;dbl&gt; 10.00, 10.00, 10.00, 10.00, 10.00, 10.0…
-$ Data.Scores.Moisture           &lt;dbl&gt; 0.00, 0.08, 0.01, 0.00, 0.10, 0.01, 0.0…
-$ Data.Scores.Total              &lt;dbl&gt; 86.25, 86.17, 86.17, 85.08, 83.83, 83.4…
-$ Data.Color                     &lt;chr&gt; &quot;Unknown&quot;, &quot;Unknown&quot;, &quot;Unknown&quot;, &quot;Unkno…</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">summary</span>(data)  <span class="co"># Summary statistics</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> Location.Country   Location.Region    Location.Altitude.Min
- Length:989         Length:989         Min.   :     0       
- Class :character   Class :character   1st Qu.:   905       
- Mode  :character   Mode  :character   Median :  1300       
-                                       Mean   :  1640       
-                                       3rd Qu.:  1550       
-                                       Max.   :190164       
- Location.Altitude.Max Location.Altitude.Average      Year     
- Min.   :     0        Min.   :     0            Min.   :2010  
- 1st Qu.:   950        1st Qu.:   950            1st Qu.:2012  
- Median :  1310        Median :  1300            Median :2013  
- Mean   :  1676        Mean   :  1658            Mean   :2014  
- 3rd Qu.:  1600        3rd Qu.:  1600            3rd Qu.:2015  
- Max.   :190164        Max.   :190164            Max.   :2018  
-  Data.Owner        Data.Type.Species  Data.Type.Variety 
- Length:989         Length:989         Length:989        
- Class :character   Class :character   Class :character  
- Mode  :character   Mode  :character   Mode  :character  
-                                                         
-                                                         
-                                                         
- Data.Type.Processing.method Data.Production.Number.of.bags
- Length:989                  Min.   :  1.0                 
- Class :character            1st Qu.: 15.0                 
- Mode  :character            Median :170.0                 
-                             Mean   :151.8                 
-                             3rd Qu.:275.0                 
-                             Max.   :600.0                 
- Data.Production.Bag.weight Data.Scores.Aroma Data.Scores.Flavor
- Min.   :    0.0            Min.   :0.000     Min.   :0.000     
- 1st Qu.:    1.0            1st Qu.:7.420     1st Qu.:7.330     
- Median :   60.0            Median :7.580     Median :7.500     
- Mean   :  210.5            Mean   :7.573     Mean   :7.515     
- 3rd Qu.:   69.0            3rd Qu.:7.750     3rd Qu.:7.750     
- Max.   :19200.0            Max.   :8.750     Max.   :8.830     
- Data.Scores.Aftertaste Data.Scores.Acidity Data.Scores.Body
- Min.   :0.000          Min.   :0.00        Min.   :0.000   
- 1st Qu.:7.250          1st Qu.:7.33        1st Qu.:7.330   
- Median :7.420          Median :7.58        Median :7.500   
- Mean   :7.387          Mean   :7.54        Mean   :7.506   
- 3rd Qu.:7.580          3rd Qu.:7.75        3rd Qu.:7.670   
- Max.   :8.670          Max.   :8.75        Max.   :8.500   
- Data.Scores.Balance Data.Scores.Uniformity Data.Scores.Sweetness
- Min.   :0.00        Min.   : 0.000         Min.   : 0.00        
- 1st Qu.:7.33        1st Qu.:10.000         1st Qu.:10.00        
- Median :7.50        Median :10.000         Median :10.00        
- Mean   :7.50        Mean   : 9.824         Mean   : 9.83        
- 3rd Qu.:7.75        3rd Qu.:10.000         3rd Qu.:10.00        
- Max.   :8.58        Max.   :10.000         Max.   :10.00        
- Data.Scores.Moisture Data.Scores.Total  Data.Color       
- Min.   :0.0000       Min.   : 0.00     Length:989        
- 1st Qu.:0.1000       1st Qu.:81.08     Class :character  
- Median :0.1100       Median :82.50     Mode  :character  
- Mean   :0.0939       Mean   :81.97                       
- 3rd Qu.:0.1200       3rd Qu.:83.58                       
- Max.   :0.2800       Max.   :90.58                       </code></pre>
-</div>
-</div>
 <pre><code>Dataset Description:</code></pre>
 <pre><code>**Coffee Quality Data:** This dataset provides insights into the quality of coffee produced in various regions around the world. It includes key metrics such as flavor, aftertaste, acidity, and body, along with environmental factors like altitude and region of origin. The data allows us to explore how these factors influence the overall quality of coffee.
 
@@ -5899,55 +5188,6 @@ $ Data.Color                     &lt;chr&gt; &quot;Unknown&quot;, &quot;Unknown&
 </section>
 <section id="trash-wheel-data" class="level1">
 <h1>3. Trash Wheel Data</h1>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>data <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">&quot;data/Trash_Wheel/Trash_Wheel.csv&quot;</span>)</span>
-<span id="cb25-2"><a href="#cb25-2"></a></span>
-<span id="cb25-3"><a href="#cb25-3"></a><span class="co"># Display basic information about the dataset</span></span>
-<span id="cb25-4"><a href="#cb25-4"></a><span class="fu">dim</span>(data)  <span class="co"># Dimensions of the dataset</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 654  16</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">glimpse</span>(data)  <span class="co"># Quick overview of the data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 654
-Columns: 16
-$ X    &lt;chr&gt; &quot;Dumpster&quot;, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;, &quot;7&quot;, &quot;8&quot;, &quot;9&quot;, &quot;10&quot;, &quot;1…
-$ X.1  &lt;chr&gt; &quot;Month&quot;, &quot;May &quot;, &quot;May &quot;, &quot;May&quot;, &quot;May&quot;, &quot;May&quot;, &quot;May&quot;, &quot;May&quot;, &quot;May&quot;…
-$ X.2  &lt;chr&gt; &quot;Year&quot;, &quot;2014&quot;, &quot;2014&quot;, &quot;2014&quot;, &quot;2014&quot;, &quot;2014&quot;, &quot;2014&quot;, &quot;2014&quot;, &quot;…
-$ X.3  &lt;chr&gt; &quot;Date&quot;, &quot;5/16/2014&quot;, &quot;5/16/2014&quot;, &quot;5/16/2014&quot;, &quot;5/17/2014&quot;, &quot;5/17…
-$ X.4  &lt;chr&gt; &quot;Weight (tons)&quot;, &quot;4.31&quot;, &quot;2.74&quot;, &quot;3.45&quot;, &quot;3.10&quot;, &quot;4.06&quot;, &quot;2.71&quot;, …
-$ X.5  &lt;chr&gt; &quot;Volume (cubic yards)&quot;, &quot;18&quot;, &quot;13&quot;, &quot;15&quot;, &quot;15&quot;, &quot;18&quot;, &quot;13&quot;, &quot;8&quot;, …
-$ X.6  &lt;chr&gt; &quot;Plastic Bottles&quot;, &quot;1,450&quot;, &quot;1,120&quot;, &quot;2,450&quot;, &quot;2,380&quot;, &quot;980&quot;, &quot;1,…
-$ X.7  &lt;chr&gt; &quot;Polystyrene&quot;, &quot;1,820&quot;, &quot;1,030&quot;, &quot;3,100&quot;, &quot;2,730&quot;, &quot;870&quot;, &quot;2,140&quot;…
-$ X.8  &lt;chr&gt; &quot;Cigarette Butts&quot;, &quot;126,000&quot;, &quot;91,000&quot;, &quot;105,000&quot;, &quot;100,000&quot;, &quot;12…
-$ X.9  &lt;chr&gt; &quot;Glass Bottles&quot;, &quot;72&quot;, &quot;42&quot;, &quot;50&quot;, &quot;52&quot;, &quot;72&quot;, &quot;46&quot;, &quot;32&quot;, &quot;58&quot;, …
-$ X.10 &lt;chr&gt; &quot;Plastic Bags&quot;, &quot;584&quot;, &quot;496&quot;, &quot;1,080&quot;, &quot;896&quot;, &quot;368&quot;, &quot;672&quot;, &quot;416&quot;…
-$ X.11 &lt;chr&gt; &quot;Wrappers&quot;, &quot;1,162&quot;, &quot;874&quot;, &quot;2,032&quot;, &quot;1,971&quot;, &quot;753&quot;, &quot;1,144&quot;, &quot;69…
-$ X.12 &lt;chr&gt; &quot;Sports Balls&quot;, &quot;7&quot;, &quot;5&quot;, &quot;6&quot;, &quot;6&quot;, &quot;7&quot;, &quot;5&quot;, &quot;3&quot;, &quot;6&quot;, &quot;6&quot;, &quot;7&quot;,…
-$ X.13 &lt;chr&gt; &quot;Homes Powered*&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0…
-$ X.14 &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ X.15 &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">summary</span>(data)  <span class="co"># Summary statistics</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>      X                 X.1                X.2                X.3           
- Length:654         Length:654         Length:654         Length:654        
- Class :character   Class :character   Class :character   Class :character  
- Mode  :character   Mode  :character   Mode  :character   Mode  :character  
-     X.4                X.5                X.6                X.7           
- Length:654         Length:654         Length:654         Length:654        
- Class :character   Class :character   Class :character   Class :character  
- Mode  :character   Mode  :character   Mode  :character   Mode  :character  
-     X.8                X.9                X.10               X.11          
- Length:654         Length:654         Length:654         Length:654        
- Class :character   Class :character   Class :character   Class :character  
- Mode  :character   Mode  :character   Mode  :character   Mode  :character  
-     X.12               X.13             X.14           X.15        
- Length:654         Length:654         Mode:logical   Mode:logical  
- Class :character   Class :character   NA&#39;s:654       NA&#39;s:654      
- Mode  :character   Mode  :character                                </code></pre>
-</div>
-</div>
 <pre><code>  Dataset Description:
 
   **Trash Wheel Data:** This dataset provides insights into the amount of trash collected by trash wheels in rivers and harbors. It includes key metrics such as the type of waste collected, weight, volume, and environmental factors like water flow and rainfall.
@@ -6761,397 +6001,340 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class>
-<div class="sourceCode" id="cb36" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb36-1"><a href="#cb36-1"></a><span class="co">---</span></span>
-<span id="cb36-2"><a href="#cb36-2"></a><span class="an">title:</span><span class="co"> &quot;Visualization of Crop and Livestock products&quot;</span></span>
-<span id="cb36-3"><a href="#cb36-3"></a><span class="an">subtitle:</span><span class="co"> &quot;Proposal&quot;</span></span>
-<span id="cb36-4"><a href="#cb36-4"></a><span class="an">author:</span><span class="co"> </span></span>
-<span id="cb36-5"><a href="#cb36-5"></a><span class="co">  - name: &quot;Vizcats&quot;</span></span>
-<span id="cb36-6"><a href="#cb36-6"></a><span class="co">    affiliations:</span></span>
-<span id="cb36-7"><a href="#cb36-7"></a><span class="co">      - name: &quot;School of Information, University of Arizona&quot;</span></span>
-<span id="cb36-8"><a href="#cb36-8"></a><span class="an">description:</span><span class="co"> &quot;This project focuses on compiling and analyzing statistical data for a diverse range of 278 crop and livestock products. The dataset will be expressed in key indicators like production quantities, yields, and processed product outputs, making it a valuable resource for understanding global agricultural production patterns across crops and livestock industries.&quot;</span></span>
-<span id="cb36-9"><a href="#cb36-9"></a><span class="an">format:</span></span>
-<span id="cb36-10"><a href="#cb36-10"></a><span class="co">  html:</span></span>
-<span id="cb36-11"><a href="#cb36-11"></a><span class="co">    code-tools: true</span></span>
-<span id="cb36-12"><a href="#cb36-12"></a><span class="co">    code-overflow: wrap</span></span>
-<span id="cb36-13"><a href="#cb36-13"></a><span class="co">    code-line-numbers: true</span></span>
-<span id="cb36-14"><a href="#cb36-14"></a><span class="co">    embed-resources: true</span></span>
-<span id="cb36-15"><a href="#cb36-15"></a><span class="an">editor:</span><span class="co"> visual</span></span>
-<span id="cb36-16"><a href="#cb36-16"></a><span class="an">code-annotations:</span><span class="co"> hover</span></span>
-<span id="cb36-17"><a href="#cb36-17"></a><span class="an">execute:</span></span>
-<span id="cb36-18"><a href="#cb36-18"></a><span class="co">  warning: false</span></span>
-<span id="cb36-19"><a href="#cb36-19"></a><span class="co">---</span></span>
-<span id="cb36-20"><a href="#cb36-20"></a></span>
-<span id="cb36-23"><a href="#cb36-23"></a><span class="in">```{r}</span></span>
-<span id="cb36-24"><a href="#cb36-24"></a><span class="co">#| label: load-pkgs</span></span>
-<span id="cb36-25"><a href="#cb36-25"></a><span class="co">#| message: false</span></span>
-<span id="cb36-26"><a href="#cb36-26"></a><span class="co">#| </span></span>
-<span id="cb36-27"><a href="#cb36-27"></a><span class="co"># Install required packages</span></span>
-<span id="cb36-28"><a href="#cb36-28"></a></span>
-<span id="cb36-29"><a href="#cb36-29"></a><span class="co"># Define a function to check and install packages</span></span>
-<span id="cb36-30"><a href="#cb36-30"></a>check_and_install <span class="ot">&lt;-</span> <span class="cf">function</span>(package_name) {</span>
-<span id="cb36-31"><a href="#cb36-31"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(package_name, <span class="at">character.only =</span> <span class="cn">TRUE</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb36-32"><a href="#cb36-32"></a>    <span class="fu">install.packages</span>(package_name, <span class="at">dependencies =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb36-33"><a href="#cb36-33"></a>                     <span class="at">repos =</span> <span class="st">&quot;https://cloud.r-project.org/&quot;</span>)</span>
-<span id="cb36-34"><a href="#cb36-34"></a>    <span class="fu">library</span>(package_name, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb36-35"><a href="#cb36-35"></a>  }</span>
-<span id="cb36-36"><a href="#cb36-36"></a>}</span>
-<span id="cb36-37"><a href="#cb36-37"></a></span>
-<span id="cb36-38"><a href="#cb36-38"></a><span class="co"># Check and install necessary packages</span></span>
-<span id="cb36-39"><a href="#cb36-39"></a><span class="fu">check_and_install</span>(<span class="st">&quot;tidyverse&quot;</span>)</span>
-<span id="cb36-40"><a href="#cb36-40"></a><span class="in">```</span></span>
-<span id="cb36-41"><a href="#cb36-41"></a></span>
-<span id="cb36-42"><a href="#cb36-42"></a><span class="fu"># 1. Crop and Livestock Data</span></span>
-<span id="cb36-43"><a href="#cb36-43"></a></span>
-<span id="cb36-46"><a href="#cb36-46"></a><span class="in">```{r}</span></span>
-<span id="cb36-47"><a href="#cb36-47"></a><span class="co">#| label: load-dataset</span></span>
-<span id="cb36-48"><a href="#cb36-48"></a><span class="co">#| message: false</span></span>
-<span id="cb36-49"><a href="#cb36-49"></a></span>
-<span id="cb36-50"><a href="#cb36-50"></a>data <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">&quot;data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_All_Data.csv&quot;</span>)</span>
-<span id="cb36-51"><a href="#cb36-51"></a></span>
-<span id="cb36-52"><a href="#cb36-52"></a><span class="co"># Display basic information about the dataset</span></span>
-<span id="cb36-53"><a href="#cb36-53"></a><span class="fu">dim</span>(data)  <span class="co"># Dimensions of the dataset</span></span>
-<span id="cb36-54"><a href="#cb36-54"></a><span class="fu">glimpse</span>(data)  <span class="co"># Quick overview of the data</span></span>
-<span id="cb36-55"><a href="#cb36-55"></a><span class="fu">summary</span>(data)  <span class="co"># Summary statistics</span></span>
-<span id="cb36-56"><a href="#cb36-56"></a></span>
-<span id="cb36-57"><a href="#cb36-57"></a><span class="in">```</span></span>
-<span id="cb36-58"><a href="#cb36-58"></a></span>
-<span id="cb36-59"><a href="#cb36-59"></a>**Dataset Description:**</span>
-<span id="cb36-60"><a href="#cb36-60"></a></span>
-<span id="cb36-61"><a href="#cb36-61"></a>**Crop and Livestock Data:** The dataset we’re working with is the FAOSTAT Crop and Livestock Production data. This dataset provides global statistics on agricultural production, focusing on crops and livestock. It tracks production volumes, harvested areas, and yields for various commodities.</span>
-<span id="cb36-62"><a href="#cb36-62"></a></span>
-<span id="cb36-63"><a href="#cb36-63"></a>**Provenance:** This dataset is curated by the Food and Agriculture Organization (FAO) of the United Nations. It collects data from official government sources, surveys, and FAO estimates, covering over 200 countries.</span>
-<span id="cb36-64"><a href="#cb36-64"></a></span>
-<span id="cb36-65"><a href="#cb36-65"></a>**Dimentions**: The dataset consists of **79,381** **rows** and **195 columns**. Each row represents production data for a specific commodity in a given year and country.</span>
-<span id="cb36-66"><a href="#cb36-66"></a></span>
-<span id="cb36-67"><a href="#cb36-67"></a>**Column Overview:**</span>
-<span id="cb36-68"><a href="#cb36-68"></a></span>
-<span id="cb36-69"><a href="#cb36-69"></a><span class="ss">1.  </span>**Area Code:** Numeric code representing the country or region.</span>
-<span id="cb36-70"><a href="#cb36-70"></a><span class="ss">2.  </span>**Area:** Name of the country or region.</span>
-<span id="cb36-71"><a href="#cb36-71"></a><span class="ss">3.  </span>**Item Code:** Numeric code representing the commodity (e.g., wheat, rice).</span>
-<span id="cb36-72"><a href="#cb36-72"></a><span class="ss">4.  </span>**Item:** Name of the commodity (e.g., wheat, rice).</span>
-<span id="cb36-73"><a href="#cb36-73"></a><span class="ss">5.  </span>**Element Code:** Numeric code representing the type of data (e.g., production, area harvested).</span>
-<span id="cb36-74"><a href="#cb36-74"></a><span class="ss">6.  </span>**Element:** Type of data collected (e.g., production, area harvested, yield).</span>
-<span id="cb36-75"><a href="#cb36-75"></a><span class="ss">7.  </span>**Unit:** Unit of measurement (e.g., tons, hectares).</span>
-<span id="cb36-76"><a href="#cb36-76"></a><span class="ss">8.  </span>**Year:** The year of the recorded data.</span>
-<span id="cb36-77"><a href="#cb36-77"></a><span class="ss">9.  </span>**Yxxxx:** Columns representing the data for each year (e.g., Y1961, Y1962), where xxxx is the year.</span>
-<span id="cb36-78"><a href="#cb36-78"></a><span class="ss">10. </span>**Value:** The recorded value for the respective commodity and year.</span>
-<span id="cb36-79"><a href="#cb36-79"></a></span>
-<span id="cb36-80"><a href="#cb36-80"></a>Reason for Choosing This Dataset:</span>
-<span id="cb36-81"><a href="#cb36-81"></a></span>
-<span id="cb36-82"><a href="#cb36-82"></a>This dataset was selected for its rich insights into global agricultural production and its impact on food security and sustainability. Possible areas of investigation include:</span>
-<span id="cb36-83"><a href="#cb36-83"></a></span>
-<span id="cb36-84"><a href="#cb36-84"></a><span class="ss">-   </span>**Crop Production Trends:** Analyzing changes in crop yields and production volumes over time to understand global food supply dynamics.</span>
-<span id="cb36-85"><a href="#cb36-85"></a><span class="ss">-   </span>**Regional Comparisons:** Comparing the agricultural output of different regions to identify which areas contribute the most to global food production and how efficient they are.</span>
-<span id="cb36-86"><a href="#cb36-86"></a><span class="ss">-   </span>**Sustainability Insights:** Exploring the relationship between harvested areas and yields to assess agricultural efficiency and potential environmental impacts.</span>
-<span id="cb36-87"><a href="#cb36-87"></a></span>
-<span id="cb36-88"><a href="#cb36-88"></a>The dataset offers a broad view of global agricultural practices, making it valuable for visualizing trends and informing agricultural policy.</span>
-<span id="cb36-89"><a href="#cb36-89"></a></span>
-<span id="cb36-90"><a href="#cb36-90"></a><span class="fu">## Introduction and Data:</span></span>
-<span id="cb36-91"><a href="#cb36-91"></a></span>
-<span id="cb36-92"><a href="#cb36-92"></a><span class="in">```         </span></span>
-<span id="cb36-93"><a href="#cb36-93"></a><span class="in">Source of the Data:</span></span>
-<span id="cb36-94"><a href="#cb36-94"></a><span class="in">```</span></span>
-<span id="cb36-95"><a href="#cb36-95"></a></span>
-<span id="cb36-96"><a href="#cb36-96"></a>The dataset is provided by FAOSTAT, the statistical database of the Food and Agriculture Organization (FAO) of the United Nations. FAOSTAT offers comprehensive data on global agricultural production, covering over 200 countries and territories. It is a key resource for understanding trends in food production and consumption on a global scale.</span>
-<span id="cb36-97"><a href="#cb36-97"></a></span>
-<span id="cb36-98"><a href="#cb36-98"></a><span class="in">```         </span></span>
-<span id="cb36-99"><a href="#cb36-99"></a><span class="in">Data Collection:</span></span>
-<span id="cb36-100"><a href="#cb36-100"></a><span class="in">```</span></span>
-<span id="cb36-101"><a href="#cb36-101"></a></span>
-<span id="cb36-102"><a href="#cb36-102"></a>The data has been collected annually since 1961 through various official channels. FAO gathers data from national statistical offices, government reports, and annual surveys. In cases where official data is missing or incomplete, FAO uses estimation methods based on modeling and available statistics to ensure global consistency. The dataset captures detailed agricultural metrics, including production volumes, harvested areas, and yields for a broad range of crops and livestock.</span>
-<span id="cb36-103"><a href="#cb36-103"></a></span>
-<span id="cb36-104"><a href="#cb36-104"></a><span class="in">```         </span></span>
-<span id="cb36-105"><a href="#cb36-105"></a><span class="in">Description of Observations:</span></span>
-<span id="cb36-106"><a href="#cb36-106"></a><span class="in">```</span></span>
-<span id="cb36-107"><a href="#cb36-107"></a></span>
-<span id="cb36-108"><a href="#cb36-108"></a>The dataset offers a granular view of global agricultural activities, with observations spanning multiple decades. Each record represents data from a specific country, commodity (e.g., wheat, maize, cattle), and year. Key metrics include the production volumes (measured in tons), harvested area (in hectares), and yield (tons per hectare), allowing for comprehensive analysis of trends in agricultural efficiency and food supply. The data covers a wide array of agricultural products, including both primary crops (such as grains, fruits, and vegetables) and livestock products (such as meat and dairy).</span>
-<span id="cb36-109"><a href="#cb36-109"></a></span>
-<span id="cb36-110"><a href="#cb36-110"></a><span class="in">```         </span></span>
-<span id="cb36-111"><a href="#cb36-111"></a><span class="in">Ethical Concerns:</span></span>
-<span id="cb36-112"><a href="#cb36-112"></a><span class="in">```</span></span>
-<span id="cb36-113"><a href="#cb36-113"></a></span>
-<span id="cb36-114"><a href="#cb36-114"></a><span class="ss">-   </span>**Data Accuracy:** Since some countries may not provide complete or timely data, FAO often relies on estimations and imputation methods to fill gaps. This could introduce inaccuracies, especially in regions with limited statistical resources.</span>
-<span id="cb36-115"><a href="#cb36-115"></a></span>
-<span id="cb36-116"><a href="#cb36-116"></a><span class="ss">-   </span>**Regional Bias***:* Countries with well-developed statistical infrastructures may provide more accurate and detailed data, while those with less robust systems may report less reliable information. This could lead to potential biases in global comparisons and policy-making.</span>
-<span id="cb36-117"><a href="#cb36-117"></a></span>
-<span id="cb36-118"><a href="#cb36-118"></a>Despite these concerns, FAOSTAT remains one of the most reliable sources of agricultural data worldwide, helping researchers and policymakers better understand global food production and its implications for food security and sustainability.</span>
-<span id="cb36-119"><a href="#cb36-119"></a></span>
-<span id="cb36-120"><a href="#cb36-120"></a><span class="fu">## Research Questions</span></span>
-<span id="cb36-121"><a href="#cb36-121"></a></span>
-<span id="cb36-122"><a href="#cb36-122"></a><span class="ss">1.  </span>**How has the global production of staple crops changed over the past 50 years, and what are the regional trends in production?**</span>
-<span id="cb36-123"><a href="#cb36-123"></a></span>
-<span id="cb36-124"><a href="#cb36-124"></a>    Importance:</span>
-<span id="cb36-125"><a href="#cb36-125"></a></span>
-<span id="cb36-126"><a href="#cb36-126"></a>    Understanding long-term changes in agricultural productivity and regional contributions to global crop output is essential. Policymakers and academics can assess how global supply dynamics may shift due to factors like climate change or technological advancements, identifying which regions are becoming more self-sufficient or reliant on imports.</span>
-<span id="cb36-127"><a href="#cb36-127"></a></span>
-<span id="cb36-128"><a href="#cb36-128"></a>    Hypothesis:</span>
-<span id="cb36-129"><a href="#cb36-129"></a></span>
-<span id="cb36-130"><a href="#cb36-130"></a>    While global production of staple crops has increased due to improved agricultural practices and technology, developed regions may show slower growth, whereas developing regions could exhibit significant increases from expanding agricultural practices.</span>
-<span id="cb36-131"><a href="#cb36-131"></a></span>
-<span id="cb36-132"><a href="#cb36-132"></a>    Variables:</span>
-<span id="cb36-133"><a href="#cb36-133"></a></span>
-<span id="cb36-134"><a href="#cb36-134"></a><span class="ss">    -   </span>Quantitative Variables: Production volume, Year</span>
-<span id="cb36-135"><a href="#cb36-135"></a><span class="ss">    -   </span>Categorical Variables: Region (e.g., North America, Europe, Asia), Crop type</span>
-<span id="cb36-136"><a href="#cb36-136"></a></span>
-<span id="cb36-137"><a href="#cb36-137"></a><span class="ss">2.  </span>**How has the global production and trade of livestock commodities changed in response to rising population and demand for protein?**</span>
-<span id="cb36-138"><a href="#cb36-138"></a></span>
-<span id="cb36-139"><a href="#cb36-139"></a>    Importance:</span>
-<span id="cb36-140"><a href="#cb36-140"></a></span>
-<span id="cb36-141"><a href="#cb36-141"></a>    Understanding how livestock production and trade have responded to rising protein demand is crucial for sustainability and meeting global nutritional needs. It also sheds light on the economic factors driving trade and the environmental impact of increased livestock output.</span>
-<span id="cb36-142"><a href="#cb36-142"></a></span>
-<span id="cb36-143"><a href="#cb36-143"></a>    Hypothesis:</span>
-<span id="cb36-144"><a href="#cb36-144"></a></span>
-<span id="cb36-145"><a href="#cb36-145"></a>    As global population and income levels have risen, livestock production and international trade have increased to meet the growing demand for protein-rich foods.</span>
-<span id="cb36-146"><a href="#cb36-146"></a></span>
-<span id="cb36-147"><a href="#cb36-147"></a>    Variables:</span>
-<span id="cb36-148"><a href="#cb36-148"></a></span>
-<span id="cb36-149"><a href="#cb36-149"></a><span class="ss">    -   </span>Quantitative Variables: Livestock production volumes (tons), Trade volumes (imports and exports), Population size, Year</span>
-<span id="cb36-150"><a href="#cb36-150"></a><span class="ss">    -   </span>Categorical Variables:<span class="sc">\*</span> Region (e.g., North America, Europe, Asia), Livestock commodity (e.g., beef, pork, milk)</span>
-<span id="cb36-151"><a href="#cb36-151"></a></span>
-<span id="cb36-152"><a href="#cb36-152"></a><span class="fu">## Analysis plan</span></span>
-<span id="cb36-153"><a href="#cb36-153"></a></span>
-<span id="cb36-154"><a href="#cb36-154"></a><span class="ss">-   </span>A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).</span>
-<span id="cb36-155"><a href="#cb36-155"></a></span>
-<span id="cb36-156"><a href="#cb36-156"></a>| *Task Name* | *Status* | *Assignee* | *Due* | *Priority* | *Summary* |</span>
-<span id="cb36-157"><a href="#cb36-157"></a>|------------|------------|------------|------------|------------|------------|</span>
-<span id="cb36-158"><a href="#cb36-158"></a>| *Data Loading and Cleaning* | In Progress | Jay Patil, Johnson Jeeva John Jacob | Week 1 | High | Load the dataset, handle missing values, format columns, and clean data for analysis. |</span>
-<span id="cb36-159"><a href="#cb36-159"></a>| *Exploratory Data Analysis* | In Progress | Pragnya Narasimha, Sumanth Manohar | Week 2 | High | Analyze basic statistics, explore production trends for crops and livestock, visualize initial insights. |</span>
-<span id="cb36-160"><a href="#cb36-160"></a>| *Question 1 Feature Engineering* | Not Started | Sreeharsha Nalluri, Jay Patil | Week 3 | High | Preprocess the data by extracting relevant features, including handling outliers, creating time-based and regional attributes. |</span>
-<span id="cb36-161"><a href="#cb36-161"></a>| *Question 1 Visualization* | Not Started | Tanmay Nalawade, Johnson Jeeva John Jacob | Week 4 | High | Create visualizations, such as line charts for crop production trends over time and bar charts comparing regional outputs. |</span>
-<span id="cb36-162"><a href="#cb36-162"></a>| *Question 2 Feature Engineering* | Not Started | Sreeharsha Nalluri, Likhith Ramesh | Week 3 | High | Calculate and compare livestock production metrics, including trade data, population-related variables, and regional indicators. |</span>
-<span id="cb36-163"><a href="#cb36-163"></a>| *Question 2 Visualization* | Not Started | Tanmay Nalawade, Sumanth Manohar | Week 4 | High | Create visualizations, including bar charts comparing regional livestock production and line charts for trends in production and trade. |</span>
-<span id="cb36-164"><a href="#cb36-164"></a>| *Drafting and Reviewing Results* | Not Started | Likhith Ramesh, Pragnya Narasimha | Week 5 | Moderate | Compile findings, draft the report, and review the results for insights into global agricultural trends. |</span>
-<span id="cb36-165"><a href="#cb36-165"></a>| *Final Report and Presentation* | Not Started | Pragnya Narasimha, Sumanth Manohar | Week 6 | High | Finalize the report, prepare presentation materials, and present findings on global agricultural production and trade trends. |</span>
-<span id="cb36-166"><a href="#cb36-166"></a></span>
-<span id="cb36-167"><a href="#cb36-167"></a><span class="fu"># 2. Coffee Quality Data</span></span>
-<span id="cb36-168"><a href="#cb36-168"></a></span>
-<span id="cb36-171"><a href="#cb36-171"></a><span class="in">```{r}</span></span>
-<span id="cb36-172"><a href="#cb36-172"></a><span class="co">#| label: load-dataset1</span></span>
-<span id="cb36-173"><a href="#cb36-173"></a><span class="co">#| message: false</span></span>
-<span id="cb36-174"><a href="#cb36-174"></a></span>
-<span id="cb36-175"><a href="#cb36-175"></a>data <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">&quot;data/Coffee_Data/coffee.csv&quot;</span>)</span>
-<span id="cb36-176"><a href="#cb36-176"></a></span>
-<span id="cb36-177"><a href="#cb36-177"></a><span class="co"># Display basic information about the dataset</span></span>
-<span id="cb36-178"><a href="#cb36-178"></a><span class="fu">dim</span>(data)  <span class="co"># Dimensions of the dataset</span></span>
-<span id="cb36-179"><a href="#cb36-179"></a><span class="fu">glimpse</span>(data)  <span class="co"># Quick overview of the data</span></span>
-<span id="cb36-180"><a href="#cb36-180"></a><span class="fu">summary</span>(data)  <span class="co"># Summary statistics</span></span>
-<span id="cb36-181"><a href="#cb36-181"></a><span class="in">```</span></span>
-<span id="cb36-182"><a href="#cb36-182"></a></span>
-<span id="cb36-183"><a href="#cb36-183"></a><span class="in">```      </span></span>
-<span id="cb36-184"><a href="#cb36-184"></a><span class="in">Dataset Description:</span></span>
-<span id="cb36-185"><a href="#cb36-185"></a><span class="in">```</span></span>
-<span id="cb36-186"><a href="#cb36-186"></a></span>
-<span id="cb36-187"><a href="#cb36-187"></a><span class="in">```         </span></span>
-<span id="cb36-188"><a href="#cb36-188"></a><span class="in">**Coffee Quality Data:** This dataset provides insights into the quality of coffee produced in various regions around the world. It includes key metrics such as flavor, aftertaste, acidity, and body, along with environmental factors like altitude and region of origin. The data allows us to explore how these factors influence the overall quality of coffee.</span></span>
-<span id="cb36-189"><a href="#cb36-189"></a></span>
-<span id="cb36-190"><a href="#cb36-190"></a><span class="in">**Provenance:** The dataset includes coffee quality evaluations and environmental factors from coffee producers globally. It is collected from cupping sessions and other quality assessments performed by coffee professionals.</span></span>
-<span id="cb36-191"><a href="#cb36-191"></a></span>
-<span id="cb36-192"><a href="#cb36-192"></a><span class="in">**Dimensions:** The dataset consists of 989 rows and 23 columns that provide information about the coffee’s origin, environmental conditions, and quality scores.</span></span>
-<span id="cb36-193"><a href="#cb36-193"></a><span class="in">```</span></span>
-<span id="cb36-194"><a href="#cb36-194"></a></span>
-<span id="cb36-195"><a href="#cb36-195"></a><span class="in">```         </span></span>
-<span id="cb36-196"><a href="#cb36-196"></a><span class="in">Column Overview:</span></span>
-<span id="cb36-197"><a href="#cb36-197"></a><span class="in">```</span></span>
-<span id="cb36-198"><a href="#cb36-198"></a></span>
-<span id="cb36-199"><a href="#cb36-199"></a><span class="ss">1.  </span>**Location.Country:** Name of the country where the coffee was produced.</span>
-<span id="cb36-200"><a href="#cb36-200"></a><span class="ss">2.  </span>**Location.Region:** Specific region of production within the country.</span>
-<span id="cb36-201"><a href="#cb36-201"></a><span class="ss">3.  </span>**Location.Altitude.Min:** Minimum altitude where the coffee was grown.</span>
-<span id="cb36-202"><a href="#cb36-202"></a><span class="ss">4.  </span>**Location.Altitude.Max:** Maximum altitude where the coffee was grown.</span>
-<span id="cb36-203"><a href="#cb36-203"></a><span class="ss">5.  </span>**Data.Owner:** Organization or individual that provided the coffee sample.</span>
-<span id="cb36-204"><a href="#cb36-204"></a><span class="ss">6.  </span>**Data.Type.Species:** Species of coffee (e.g., Arabica).</span>
-<span id="cb36-205"><a href="#cb36-205"></a><span class="ss">7.  </span>**Data.Scores.Flavor:** Flavor score (e.g., a number between 0 and 10).</span>
-<span id="cb36-206"><a href="#cb36-206"></a><span class="ss">8.  </span>**Data.Scores.Aftertaste:** Aftertaste score (e.g., a number between 0 and 10).</span>
-<span id="cb36-207"><a href="#cb36-207"></a><span class="ss">9.  </span>**Data.Scores.Acidity:** Acidity score (e.g., a number between 0 and 10).</span>
-<span id="cb36-208"><a href="#cb36-208"></a><span class="ss">10. </span>**Data.Scores.Body:** Body score (e.g., a number between 0 and 10).</span>
-<span id="cb36-209"><a href="#cb36-209"></a><span class="ss">11. </span>**Data.Scores.Balance:** Balance score (e.g., a number between 0 and 10).</span>
-<span id="cb36-210"><a href="#cb36-210"></a><span class="ss">12. </span>**Data.Scores.Total:** Total score combining all aspects of coffee quality.</span>
-<span id="cb36-211"><a href="#cb36-211"></a></span>
-<span id="cb36-212"><a href="#cb36-212"></a>------------------------------------------------------------------------</span>
-<span id="cb36-213"><a href="#cb36-213"></a></span>
-<span id="cb36-214"><a href="#cb36-214"></a><span class="fu">## Introduction and Data:</span></span>
-<span id="cb36-215"><a href="#cb36-215"></a></span>
-<span id="cb36-216"><a href="#cb36-216"></a><span class="in">```         </span></span>
-<span id="cb36-217"><a href="#cb36-217"></a><span class="in">Source of the Data:</span></span>
-<span id="cb36-218"><a href="#cb36-218"></a><span class="in">```</span></span>
-<span id="cb36-219"><a href="#cb36-219"></a></span>
-<span id="cb36-220"><a href="#cb36-220"></a>The dataset is composed of coffee quality evaluations, collected from cupping sessions conducted by coffee producers or quality testers. It captures detailed metrics on the sensory attributes of coffee, including flavor, acidity, and aftertaste, as well as geographic and environmental factors like region and altitude.</span>
-<span id="cb36-221"><a href="#cb36-221"></a></span>
-<span id="cb36-222"><a href="#cb36-222"></a><span class="in">```         </span></span>
-<span id="cb36-223"><a href="#cb36-223"></a><span class="in">Data Collection:</span></span>
-<span id="cb36-224"><a href="#cb36-224"></a><span class="in">```</span></span>
-<span id="cb36-225"><a href="#cb36-225"></a></span>
-<span id="cb36-226"><a href="#cb36-226"></a>The data was probably gathered from various coffee-producing regions and may have been assessed by professional coffee tasters. The key attributes measured include coffee species, altitude, and sensory scores for quality, offering a comprehensive view of global coffee production and quality trends.</span>
-<span id="cb36-227"><a href="#cb36-227"></a></span>
-<span id="cb36-228"><a href="#cb36-228"></a><span class="in">```         </span></span>
-<span id="cb36-229"><a href="#cb36-229"></a><span class="in">Description of Observations:</span></span>
-<span id="cb36-230"><a href="#cb36-230"></a><span class="in">```</span></span>
-<span id="cb36-231"><a href="#cb36-231"></a></span>
-<span id="cb36-232"><a href="#cb36-232"></a>Each record represents a coffee sample evaluated for specific quality metrics, such as flavor, aftertaste, acidity, and body. These metrics provide insight into the overall quality of coffee produced in different regions. Additional details about the environment, such as altitude and region, allow for analysis of how these factors impact coffee quality.</span>
-<span id="cb36-233"><a href="#cb36-233"></a></span>
-<span id="cb36-234"><a href="#cb36-234"></a><span class="in">```         </span></span>
-<span id="cb36-235"><a href="#cb36-235"></a><span class="in">Ethical Concerns:</span></span>
-<span id="cb36-236"><a href="#cb36-236"></a><span class="in">```</span></span>
-<span id="cb36-237"><a href="#cb36-237"></a></span>
-<span id="cb36-238"><a href="#cb36-238"></a><span class="ss">-   </span>**Producer Privacy:** The dataset may include the names of coffee producers, which could reveal sensitive business information.</span>
-<span id="cb36-239"><a href="#cb36-239"></a><span class="ss">-   </span>**Data Accuracy:** There may be variability in the evaluation methods used across regions, which could affect the consistency of quality scores.</span>
-<span id="cb36-240"><a href="#cb36-240"></a></span>
-<span id="cb36-241"><a href="#cb36-241"></a>------------------------------------------------------------------------</span>
-<span id="cb36-242"><a href="#cb36-242"></a></span>
-<span id="cb36-243"><a href="#cb36-243"></a><span class="fu">## Research Questions</span></span>
-<span id="cb36-244"><a href="#cb36-244"></a></span>
-<span id="cb36-245"><a href="#cb36-245"></a><span class="ss">1.  </span>**How do environmental factors, such as altitude and geographic region, affect coffee quality?**</span>
-<span id="cb36-246"><a href="#cb36-246"></a></span>
-<span id="cb36-247"><a href="#cb36-247"></a>    Importance: Environmental factors like altitude and region are often considered crucial in determining coffee quality. Understanding how these factors influence sensory metrics like flavor, aftertaste, and acidity is important for both coffee producers and consumers. This analysis could provide insights into optimal growing conditions for high-quality coffee.</span>
-<span id="cb36-248"><a href="#cb36-248"></a></span>
-<span id="cb36-249"><a href="#cb36-249"></a>    Hypothesis: Coffee grown at higher altitudes will generally receive higher flavor and overall quality scores due to favorable growing conditions.</span>
-<span id="cb36-250"><a href="#cb36-250"></a></span>
-<span id="cb36-251"><a href="#cb36-251"></a>    Variables:</span>
-<span id="cb36-252"><a href="#cb36-252"></a></span>
-<span id="cb36-253"><a href="#cb36-253"></a><span class="ss">    -   </span>Quantitative: Altitude, Flavor score, Acidity score</span>
-<span id="cb36-254"><a href="#cb36-254"></a><span class="ss">    -   </span>Categorical: Region, Country, Coffee species</span>
-<span id="cb36-255"><a href="#cb36-255"></a></span>
-<span id="cb36-256"><a href="#cb36-256"></a>------------------------------------------------------------------------</span>
-<span id="cb36-257"><a href="#cb36-257"></a></span>
-<span id="cb36-258"><a href="#cb36-258"></a><span class="ss">2.  </span>**Do coffees with higher sweetness scores also score higher in overall quality, or is there an inverse relationship?**</span>
-<span id="cb36-259"><a href="#cb36-259"></a></span>
-<span id="cb36-260"><a href="#cb36-260"></a>    Importance: Sweetness is a desirable quality in coffee, but it’s important to assess whether a high sweetness score correlates with higher overall quality or whether it sometimes detracts from other attributes.</span>
-<span id="cb36-261"><a href="#cb36-261"></a></span>
-<span id="cb36-262"><a href="#cb36-262"></a>    Hypothesis: Coffees with higher sweetness scores will generally have higher total quality scores, although some very sweet coffees may score lower due to imbalances in other attributes.</span>
-<span id="cb36-263"><a href="#cb36-263"></a></span>
-<span id="cb36-264"><a href="#cb36-264"></a>    Variables:</span>
-<span id="cb36-265"><a href="#cb36-265"></a></span>
-<span id="cb36-266"><a href="#cb36-266"></a><span class="ss">    -   </span>Quantitative: Sweetness score, Total quality score</span>
-<span id="cb36-267"><a href="#cb36-267"></a><span class="ss">    -   </span>Categorical: Coffee species, Region</span>
-<span id="cb36-268"><a href="#cb36-268"></a></span>
-<span id="cb36-269"><a href="#cb36-269"></a>------------------------------------------------------------------------</span>
-<span id="cb36-270"><a href="#cb36-270"></a></span>
-<span id="cb36-271"><a href="#cb36-271"></a><span class="fu">## Analysis Plan</span></span>
-<span id="cb36-272"><a href="#cb36-272"></a></span>
-<span id="cb36-273"><a href="#cb36-273"></a><span class="ss">-   </span>A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).</span>
-<span id="cb36-274"><a href="#cb36-274"></a></span>
-<span id="cb36-275"><a href="#cb36-275"></a>| **Task Name** | **Status** | **Assignee** | **Due** | **Priority** | **Summary** |</span>
-<span id="cb36-276"><a href="#cb36-276"></a>|------------|------------|------------|------------|------------|------------|</span>
-<span id="cb36-277"><a href="#cb36-277"></a>| Data Loading and Cleaning | Not started | Jay Patil, Johnson Jeeva John Jacob | Week 1 | High | Load the dataset, handle missing values, format columns, and clean data for analysis. |</span>
-<span id="cb36-278"><a href="#cb36-278"></a>| Exploratory Data Analysis | Not started | Pragnya Narasimha, Sumanth Manohar | Week 2 | High | Analyze basic statistics, explore production trends for coffee quality, visualize initial insights. |</span>
-<span id="cb36-279"><a href="#cb36-279"></a>| Question 1 Feature Engineering | Not Started | Sreeharsha Nalluri, Jay Patil | Week 3 | High | Preprocess the data by extracting relevant features, including handling outliers, creating time-based and regional attributes. |</span>
-<span id="cb36-280"><a href="#cb36-280"></a>| Question 1 Visualization | Not Started | Tanmay Nalawade, Johnson Jeeva John Jacob | Week 4 | High | Create visualizations, such as scatter plots for altitude vs flavor scores and bar charts comparing regional coffee quality. |</span>
-<span id="cb36-281"><a href="#cb36-281"></a>| Question 2 Feature Engineering | Not Started | Sreeharsha Nalluri, Likhith Ramesh | Week 3 | High | Calculate and compare processing methods, and extract metrics related to flavor and balance. |</span>
-<span id="cb36-282"><a href="#cb36-282"></a>| Question 2 Visualization | Not Started | Tanmay Nalawade, Sumanth Manohar | Week 4 | High | Create visualizations, including bar charts comparing processing methods and their effect on flavor and balance scores. |</span>
-<span id="cb36-283"><a href="#cb36-283"></a>| Drafting and Reviewing Results | Not Started | Likhith Ramesh, Pragnya Narasimha | Week 5 | Moderate | Compile findings, draft the report, and review the results for insights into global coffee quality trends. |</span>
-<span id="cb36-284"><a href="#cb36-284"></a>| Final Report and Presentation | Not Started | Jeeva John Jacob, Sumanth Manohar | Week 6 | High | Finalize the report, prepare presentation materials, and present findings on coffee quality and environmental influences. |</span>
-<span id="cb36-285"><a href="#cb36-285"></a></span>
-<span id="cb36-286"><a href="#cb36-286"></a><span class="fu"># 3. Trash Wheel Data</span></span>
-<span id="cb36-287"><a href="#cb36-287"></a></span>
-<span id="cb36-290"><a href="#cb36-290"></a><span class="in">```{r}</span></span>
-<span id="cb36-291"><a href="#cb36-291"></a><span class="co">#| label: load-dataset2</span></span>
-<span id="cb36-292"><a href="#cb36-292"></a><span class="co">#| message: false</span></span>
-<span id="cb36-293"><a href="#cb36-293"></a></span>
-<span id="cb36-294"><a href="#cb36-294"></a>data <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">&quot;data/Trash_Wheel/Trash_Wheel.csv&quot;</span>)</span>
-<span id="cb36-295"><a href="#cb36-295"></a></span>
-<span id="cb36-296"><a href="#cb36-296"></a><span class="co"># Display basic information about the dataset</span></span>
-<span id="cb36-297"><a href="#cb36-297"></a><span class="fu">dim</span>(data)  <span class="co"># Dimensions of the dataset</span></span>
-<span id="cb36-298"><a href="#cb36-298"></a><span class="fu">glimpse</span>(data)  <span class="co"># Quick overview of the data</span></span>
-<span id="cb36-299"><a href="#cb36-299"></a><span class="fu">summary</span>(data)  <span class="co"># Summary statistics</span></span>
-<span id="cb36-300"><a href="#cb36-300"></a><span class="in">```</span></span>
-<span id="cb36-301"><a href="#cb36-301"></a></span>
-<span id="cb36-302"><a href="#cb36-302"></a><span class="in">```         </span></span>
-<span id="cb36-303"><a href="#cb36-303"></a><span class="in">  Dataset Description:</span></span>
-<span id="cb36-304"><a href="#cb36-304"></a></span>
-<span id="cb36-305"><a href="#cb36-305"></a><span class="in">  **Trash Wheel Data:** This dataset provides insights into the amount of trash collected by trash wheels in rivers and harbors. It includes key metrics such as the type of waste collected, weight, volume, and environmental factors like water flow and rainfall.</span></span>
-<span id="cb36-306"><a href="#cb36-306"></a></span>
-<span id="cb36-307"><a href="#cb36-307"></a><span class="in">**Provenance:** The dataset includes trash collection data from various trash wheels deployed in different locations, focusing on environmental cleanup efforts in urban waterways.</span></span>
-<span id="cb36-308"><a href="#cb36-308"></a></span>
-<span id="cb36-309"><a href="#cb36-309"></a><span class="in">**Dimensions:** The dataset consists of multiple rows and columns detailing the type of waste collected (plastic, organic, etc.), location, and environmental metrics.</span></span>
-<span id="cb36-310"><a href="#cb36-310"></a></span>
-<span id="cb36-311"><a href="#cb36-311"></a><span class="in">Column Overview:</span></span>
-<span id="cb36-312"><a href="#cb36-312"></a><span class="in">```</span></span>
-<span id="cb36-313"><a href="#cb36-313"></a></span>
-<span id="cb36-314"><a href="#cb36-314"></a><span class="ss">1.  </span>**Dumpster:** Identification of the dumpster where trash was collected.</span>
-<span id="cb36-315"><a href="#cb36-315"></a><span class="ss">2.  </span>**Month:** The month when the data was recorded.</span>
-<span id="cb36-316"><a href="#cb36-316"></a><span class="ss">3.  </span>**Year:** The year when the data was recorded.</span>
-<span id="cb36-317"><a href="#cb36-317"></a><span class="ss">4.  </span>**Date:** Specific date of trash collection.</span>
-<span id="cb36-318"><a href="#cb36-318"></a><span class="ss">5.  </span>**Weight (tons):** Weight of trash collected (in tons).</span>
-<span id="cb36-319"><a href="#cb36-319"></a><span class="ss">6.  </span>**Volume (cubic yards):** Volume of trash collected (in cubic yards).</span>
-<span id="cb36-320"><a href="#cb36-320"></a><span class="ss">7.  </span>**Plastic Bottles:** Number of plastic bottles collected.</span>
-<span id="cb36-321"><a href="#cb36-321"></a><span class="ss">8.  </span>**Polystyrene:** Amount of polystyrene collected.</span>
-<span id="cb36-322"><a href="#cb36-322"></a><span class="ss">9.  </span>**Cigarette Butts:** Number of cigarette butts collected.</span>
-<span id="cb36-323"><a href="#cb36-323"></a><span class="ss">10. </span>**Glass Bottles:** Number of glass bottles collected.</span>
-<span id="cb36-324"><a href="#cb36-324"></a><span class="ss">11. </span>**Plastic Bags:** Number of plastic bags collected.</span>
-<span id="cb36-325"><a href="#cb36-325"></a><span class="ss">12. </span>**Wrappers:** Number of wrappers collected.</span>
-<span id="cb36-326"><a href="#cb36-326"></a><span class="ss">13. </span>**Sports Balls:** Number of sports balls collected.</span>
-<span id="cb36-327"><a href="#cb36-327"></a><span class="ss">14. </span>**Homes Powered:** Number of homes that could be powered by the energy produced from the collected waste.</span>
-<span id="cb36-328"><a href="#cb36-328"></a></span>
-<span id="cb36-329"><a href="#cb36-329"></a>------------------------------------------------------------------------</span>
-<span id="cb36-330"><a href="#cb36-330"></a></span>
-<span id="cb36-331"><a href="#cb36-331"></a><span class="fu">## Introduction and Data:</span></span>
-<span id="cb36-332"><a href="#cb36-332"></a></span>
-<span id="cb36-333"><a href="#cb36-333"></a><span class="in">```         </span></span>
-<span id="cb36-334"><a href="#cb36-334"></a><span class="in">Source of the Data:</span></span>
-<span id="cb36-335"><a href="#cb36-335"></a><span class="in">```</span></span>
-<span id="cb36-336"><a href="#cb36-336"></a></span>
-<span id="cb36-337"><a href="#cb36-337"></a>This dataset is composed of information on trash collection by trash wheels deployed in various urban waterways. The data captures details on the types of trash collected, environmental factors such as rainfall and water flow, and other metrics associated with trash collection operations.</span>
-<span id="cb36-338"><a href="#cb36-338"></a></span>
-<span id="cb36-339"><a href="#cb36-339"></a><span class="in">```         </span></span>
-<span id="cb36-340"><a href="#cb36-340"></a><span class="in">Data Collection:</span></span>
-<span id="cb36-341"><a href="#cb36-341"></a><span class="in">```</span></span>
-<span id="cb36-342"><a href="#cb36-342"></a></span>
-<span id="cb36-343"><a href="#cb36-343"></a>The data was gathered from trash wheels installed in urban rivers and harbors. Key attributes measured include waste types, collection weight, and environmental factors like rainfall and water flow, offering insights into the impact of environmental conditions on waste accumulation.</span>
-<span id="cb36-344"><a href="#cb36-344"></a></span>
-<span id="cb36-345"><a href="#cb36-345"></a><span class="in">```         </span></span>
-<span id="cb36-346"><a href="#cb36-346"></a><span class="in">Description of Observations:</span></span>
-<span id="cb36-347"><a href="#cb36-347"></a><span class="in">```</span></span>
-<span id="cb36-348"><a href="#cb36-348"></a></span>
-<span id="cb36-349"><a href="#cb36-349"></a>Each record represents a specific collection event where waste was removed from the water by a trash wheel. The data includes metrics like the weight and volume of trash, categorized by type, as well as environmental factors that may influence the quantity of trash collected.</span>
-<span id="cb36-350"><a href="#cb36-350"></a></span>
-<span id="cb36-351"><a href="#cb36-351"></a><span class="in">```         </span></span>
-<span id="cb36-352"><a href="#cb36-352"></a><span class="in">Ethical Concerns:</span></span>
-<span id="cb36-353"><a href="#cb36-353"></a><span class="in">```</span></span>
-<span id="cb36-354"><a href="#cb36-354"></a></span>
-<span id="cb36-355"><a href="#cb36-355"></a><span class="ss">-   </span>**Data Transparency:** The data should ensure that it accurately reflects the amount of waste collected without manipulation or misrepresentation.</span>
-<span id="cb36-356"><a href="#cb36-356"></a><span class="ss">-   </span>**Environmental Impact:** The dataset should promote positive environmental actions without stigmatizing certain areas for waste pollution.</span>
-<span id="cb36-357"><a href="#cb36-357"></a></span>
-<span id="cb36-358"><a href="#cb36-358"></a>------------------------------------------------------------------------</span>
-<span id="cb36-359"><a href="#cb36-359"></a></span>
-<span id="cb36-360"><a href="#cb36-360"></a><span class="fu">## Research Questions</span></span>
-<span id="cb36-361"><a href="#cb36-361"></a></span>
-<span id="cb36-362"><a href="#cb36-362"></a><span class="ss">1.  </span>**How do environmental factors such as rainfall and water flow affect the volume of trash collected by trash wheels?**</span>
-<span id="cb36-363"><a href="#cb36-363"></a></span>
-<span id="cb36-364"><a href="#cb36-364"></a>    Importance: Environmental factors like rainfall and water flow are critical in understanding the behavior of waste in waterways. This analysis could provide insights into how trash wheels perform under different environmental conditions.</span>
-<span id="cb36-365"><a href="#cb36-365"></a></span>
-<span id="cb36-366"><a href="#cb36-366"></a>    Hypothesis: Higher rainfall and water flow will result in a larger volume of trash collected by trash wheels due to increased debris being washed into waterways.</span>
-<span id="cb36-367"><a href="#cb36-367"></a></span>
-<span id="cb36-368"><a href="#cb36-368"></a>    Variables:</span>
-<span id="cb36-369"><a href="#cb36-369"></a></span>
-<span id="cb36-370"><a href="#cb36-370"></a><span class="ss">    -   </span>Quantitative: Rainfall, Water flow, Trash volume</span>
-<span id="cb36-371"><a href="#cb36-371"></a><span class="ss">    -   </span>Categorical: City, Body of water</span>
-<span id="cb36-372"><a href="#cb36-372"></a></span>
-<span id="cb36-373"><a href="#cb36-373"></a>------------------------------------------------------------------------</span>
-<span id="cb36-374"><a href="#cb36-374"></a></span>
-<span id="cb36-375"><a href="#cb36-375"></a><span class="ss">2.  </span>**How do the weight and volume of collected trash correlate with specific trash items, and what impact does this have on energy generation?**</span>
-<span id="cb36-376"><a href="#cb36-376"></a></span>
-<span id="cb36-377"><a href="#cb36-377"></a>Importance: Understanding how specific waste types (e.g., plastic bottles, cigarette butts) affect the total weight and volume helps identify major contributors to trash. Additionally, evaluating the relationship between trash weight and energy generation (&quot;Homes Powered&quot;) can provide insights into waste-to-energy efficiency.</span>
-<span id="cb36-378"><a href="#cb36-378"></a></span>
-<span id="cb36-379"><a href="#cb36-379"></a>Hypothesis: Higher amounts of glass bottles will strongly correlate with greater weight and volume, and heavier trash will generate more energy.</span>
-<span id="cb36-380"><a href="#cb36-380"></a></span>
-<span id="cb36-381"><a href="#cb36-381"></a>Variables: - Quantitative: Weight, Volume, Plastic bottles, Cigarette butts, Homes Powered - Categorical: Waste type</span>
-<span id="cb36-382"><a href="#cb36-382"></a></span>
-<span id="cb36-383"><a href="#cb36-383"></a>------------------------------------------------------------------------</span>
-<span id="cb36-384"><a href="#cb36-384"></a></span>
-<span id="cb36-385"><a href="#cb36-385"></a><span class="fu">## Analysis Plan</span></span>
-<span id="cb36-386"><a href="#cb36-386"></a></span>
-<span id="cb36-387"><a href="#cb36-387"></a>| **Task Name** | **Status** | **Assignee** | **Due** | **Priority** | **Summary** |</span>
-<span id="cb36-388"><a href="#cb36-388"></a>|------------|------------|------------|------------|------------|------------|</span>
-<span id="cb36-389"><a href="#cb36-389"></a>| Data Loading and Cleaning | In Progress | Jay Patil, Johnson Jeeva John Jacob | Week 1 | High | Load the dataset, handle missing values, format columns, and clean data for analysis. |</span>
-<span id="cb36-390"><a href="#cb36-390"></a>| Exploratory Data Analysis | In Progress | Pragnya Narasimha, Sumanth Manohar | Week 2 | High | Analyze basic statistics, explore trends in trash collection, and visualize initial insights. |</span>
-<span id="cb36-391"><a href="#cb36-391"></a>| Question 1 Feature Engineering | Not Started | Sreeharsha Nalluri, Jay Patil | Week 3 | High | Preprocess the data by extracting relevant features, handling outliers, and merging external environmental data. |</span>
-<span id="cb36-392"><a href="#cb36-392"></a>| Question 1 Visualization | Not Started | Tanmay Nalawade, Johnson Jeeva John Jacob | Week 4 | High | Create visualizations, such as scatter plots for rainfall vs trash volume and bar charts comparing city vs. rural trash types. |</span>
-<span id="cb36-393"><a href="#cb36-393"></a>| Question 2 Feature Engineering | Not Started | Sreeharsha Nalluri, Likhith Ramesh | Week 3 | High | Create features related to waste type, perform comparisons across regions, and analyze trash composition. |</span>
-<span id="cb36-394"><a href="#cb36-394"></a>| Question 2 Visualization | Not Started | Tanmay Nalawade, Sumanth Manohar | Week 4 | High | Create visualizations, including pie charts for trash types and stacked bar charts comparing trash types across cities. |</span>
-<span id="cb36-395"><a href="#cb36-395"></a>| Drafting and Reviewing Results | Not Started | Likhith Ramesh, Pragnya Narasimha | Week 5 | Moderate | Compile findings, draft the report, and review results for trends in trash collection and environmental factors. |</span>
-<span id="cb36-396"><a href="#cb36-396"></a>| Final Report and Presentation | Not Started | Sreeharsha Nalluri, Sumanth Manohar | Week 6 | High | Finalize the report, prepare presentation materials, and present findings on trash collection and environmental influences. |</span>
-<span id="cb36-397"><a href="#cb36-397"></a></span>
-<span id="cb36-398"><a href="#cb36-398"></a>After careful consideration of the available datasets, we have chosen to proceed with the **FAOSTAT Crop and Livestock Production dataset** for the remainder of the project. This dataset was selected due to its rich potential for uncovering global agricultural trends, its strong alignment with our research questions, and the significance of the insights it can provide on food production and sustainability. By concentrating on this dataset, we aim to perform an in-depth analysis and thoroughly address the research objectives of our project.</span>
-</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb17-1"><a href="#cb17-1"></a><span class="co">---</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="an">title:</span><span class="co"> &quot;Visualization of Crop and Livestock products&quot;</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="an">subtitle:</span><span class="co"> &quot;Proposal&quot;</span></span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="an">author:</span><span class="co"> </span></span>
+<span id="cb17-5"><a href="#cb17-5"></a><span class="co">  - name: &quot;Vizcats&quot;</span></span>
+<span id="cb17-6"><a href="#cb17-6"></a><span class="co">    affiliations:</span></span>
+<span id="cb17-7"><a href="#cb17-7"></a><span class="co">      - name: &quot;School of Information, University of Arizona&quot;</span></span>
+<span id="cb17-8"><a href="#cb17-8"></a><span class="an">description:</span><span class="co"> &quot;This project focuses on compiling and analyzing statistical data for a diverse range of 278 crop and livestock products. The dataset will be expressed in key indicators like production quantities, yields, and processed product outputs, making it a valuable resource for understanding global agricultural production patterns across crops and livestock industries.&quot;</span></span>
+<span id="cb17-9"><a href="#cb17-9"></a><span class="an">format:</span></span>
+<span id="cb17-10"><a href="#cb17-10"></a><span class="co">  html:</span></span>
+<span id="cb17-11"><a href="#cb17-11"></a><span class="co">    code-tools: true</span></span>
+<span id="cb17-12"><a href="#cb17-12"></a><span class="co">    code-overflow: wrap</span></span>
+<span id="cb17-13"><a href="#cb17-13"></a><span class="co">    code-line-numbers: true</span></span>
+<span id="cb17-14"><a href="#cb17-14"></a><span class="co">    embed-resources: true</span></span>
+<span id="cb17-15"><a href="#cb17-15"></a><span class="an">editor:</span><span class="co"> visual</span></span>
+<span id="cb17-16"><a href="#cb17-16"></a><span class="an">code-annotations:</span><span class="co"> hover</span></span>
+<span id="cb17-17"><a href="#cb17-17"></a><span class="an">execute:</span></span>
+<span id="cb17-18"><a href="#cb17-18"></a><span class="co">  warning: false</span></span>
+<span id="cb17-19"><a href="#cb17-19"></a><span class="co">---</span></span>
+<span id="cb17-20"><a href="#cb17-20"></a></span>
+<span id="cb17-21"><a href="#cb17-21"></a><span class="fu"># 1. Crop and Livestock Data</span></span>
+<span id="cb17-22"><a href="#cb17-22"></a></span>
+<span id="cb17-23"><a href="#cb17-23"></a>**Dataset Description:**</span>
+<span id="cb17-24"><a href="#cb17-24"></a></span>
+<span id="cb17-25"><a href="#cb17-25"></a>**Crop and Livestock Data:** The dataset we’re working with is the FAOSTAT Crop and Livestock Production data. This dataset provides global statistics on agricultural production, focusing on crops and livestock. It tracks production volumes, harvested areas, and yields for various commodities.</span>
+<span id="cb17-26"><a href="#cb17-26"></a></span>
+<span id="cb17-27"><a href="#cb17-27"></a>**Provenance:** This dataset is curated by the Food and Agriculture Organization (FAO) of the United Nations. It collects data from official government sources, surveys, and FAO estimates, covering over 200 countries.</span>
+<span id="cb17-28"><a href="#cb17-28"></a></span>
+<span id="cb17-29"><a href="#cb17-29"></a>**Dimentions**: The dataset consists of **79,381** **rows** and **195 columns**. Each row represents production data for a specific commodity in a given year and country.</span>
+<span id="cb17-30"><a href="#cb17-30"></a></span>
+<span id="cb17-31"><a href="#cb17-31"></a>**Column Overview:**</span>
+<span id="cb17-32"><a href="#cb17-32"></a></span>
+<span id="cb17-33"><a href="#cb17-33"></a><span class="ss">1.  </span>**Area Code:** Numeric code representing the country or region.</span>
+<span id="cb17-34"><a href="#cb17-34"></a><span class="ss">2.  </span>**Area:** Name of the country or region.</span>
+<span id="cb17-35"><a href="#cb17-35"></a><span class="ss">3.  </span>**Item Code:** Numeric code representing the commodity (e.g., wheat, rice).</span>
+<span id="cb17-36"><a href="#cb17-36"></a><span class="ss">4.  </span>**Item:** Name of the commodity (e.g., wheat, rice).</span>
+<span id="cb17-37"><a href="#cb17-37"></a><span class="ss">5.  </span>**Element Code:** Numeric code representing the type of data (e.g., production, area harvested).</span>
+<span id="cb17-38"><a href="#cb17-38"></a><span class="ss">6.  </span>**Element:** Type of data collected (e.g., production, area harvested, yield).</span>
+<span id="cb17-39"><a href="#cb17-39"></a><span class="ss">7.  </span>**Unit:** Unit of measurement (e.g., tons, hectares).</span>
+<span id="cb17-40"><a href="#cb17-40"></a><span class="ss">8.  </span>**Year:** The year of the recorded data.</span>
+<span id="cb17-41"><a href="#cb17-41"></a><span class="ss">9.  </span>**Yxxxx:** Columns representing the data for each year (e.g., Y1961, Y1962), where xxxx is the year.</span>
+<span id="cb17-42"><a href="#cb17-42"></a><span class="ss">10. </span>**Value:** The recorded value for the respective commodity and year.</span>
+<span id="cb17-43"><a href="#cb17-43"></a></span>
+<span id="cb17-44"><a href="#cb17-44"></a>Reason for Choosing This Dataset:</span>
+<span id="cb17-45"><a href="#cb17-45"></a></span>
+<span id="cb17-46"><a href="#cb17-46"></a>This dataset was selected for its rich insights into global agricultural production and its impact on food security and sustainability. Possible areas of investigation include:</span>
+<span id="cb17-47"><a href="#cb17-47"></a></span>
+<span id="cb17-48"><a href="#cb17-48"></a><span class="ss">-   </span>**Crop Production Trends:** Analyzing changes in crop yields and production volumes over time to understand global food supply dynamics.</span>
+<span id="cb17-49"><a href="#cb17-49"></a><span class="ss">-   </span>**Regional Comparisons:** Comparing the agricultural output of different regions to identify which areas contribute the most to global food production and how efficient they are.</span>
+<span id="cb17-50"><a href="#cb17-50"></a><span class="ss">-   </span>**Sustainability Insights:** Exploring the relationship between harvested areas and yields to assess agricultural efficiency and potential environmental impacts.</span>
+<span id="cb17-51"><a href="#cb17-51"></a></span>
+<span id="cb17-52"><a href="#cb17-52"></a>The dataset offers a broad view of global agricultural practices, making it valuable for visualizing trends and informing agricultural policy.</span>
+<span id="cb17-53"><a href="#cb17-53"></a></span>
+<span id="cb17-54"><a href="#cb17-54"></a><span class="fu">## Introduction and Data:</span></span>
+<span id="cb17-55"><a href="#cb17-55"></a></span>
+<span id="cb17-56"><a href="#cb17-56"></a><span class="in">```         </span></span>
+<span id="cb17-57"><a href="#cb17-57"></a><span class="in">Source of the Data:</span></span>
+<span id="cb17-58"><a href="#cb17-58"></a><span class="in">```</span></span>
+<span id="cb17-59"><a href="#cb17-59"></a></span>
+<span id="cb17-60"><a href="#cb17-60"></a>The dataset is provided by FAOSTAT, the statistical database of the Food and Agriculture Organization (FAO) of the United Nations. FAOSTAT offers comprehensive data on global agricultural production, covering over 200 countries and territories. It is a key resource for understanding trends in food production and consumption on a global scale.</span>
+<span id="cb17-61"><a href="#cb17-61"></a></span>
+<span id="cb17-62"><a href="#cb17-62"></a><span class="in">```         </span></span>
+<span id="cb17-63"><a href="#cb17-63"></a><span class="in">Data Collection:</span></span>
+<span id="cb17-64"><a href="#cb17-64"></a><span class="in">```</span></span>
+<span id="cb17-65"><a href="#cb17-65"></a></span>
+<span id="cb17-66"><a href="#cb17-66"></a>The data has been collected annually since 1961 through various official channels. FAO gathers data from national statistical offices, government reports, and annual surveys. In cases where official data is missing or incomplete, FAO uses estimation methods based on modeling and available statistics to ensure global consistency. The dataset captures detailed agricultural metrics, including production volumes, harvested areas, and yields for a broad range of crops and livestock.</span>
+<span id="cb17-67"><a href="#cb17-67"></a></span>
+<span id="cb17-68"><a href="#cb17-68"></a><span class="in">```         </span></span>
+<span id="cb17-69"><a href="#cb17-69"></a><span class="in">Description of Observations:</span></span>
+<span id="cb17-70"><a href="#cb17-70"></a><span class="in">```</span></span>
+<span id="cb17-71"><a href="#cb17-71"></a></span>
+<span id="cb17-72"><a href="#cb17-72"></a>The dataset offers a granular view of global agricultural activities, with observations spanning multiple decades. Each record represents data from a specific country, commodity (e.g., wheat, maize, cattle), and year. Key metrics include the production volumes (measured in tons), harvested area (in hectares), and yield (tons per hectare), allowing for comprehensive analysis of trends in agricultural efficiency and food supply. The data covers a wide array of agricultural products, including both primary crops (such as grains, fruits, and vegetables) and livestock products (such as meat and dairy).</span>
+<span id="cb17-73"><a href="#cb17-73"></a></span>
+<span id="cb17-74"><a href="#cb17-74"></a><span class="in">```         </span></span>
+<span id="cb17-75"><a href="#cb17-75"></a><span class="in">Ethical Concerns:</span></span>
+<span id="cb17-76"><a href="#cb17-76"></a><span class="in">```</span></span>
+<span id="cb17-77"><a href="#cb17-77"></a></span>
+<span id="cb17-78"><a href="#cb17-78"></a><span class="ss">-   </span>**Data Accuracy:** Since some countries may not provide complete or timely data, FAO often relies on estimations and imputation methods to fill gaps. This could introduce inaccuracies, especially in regions with limited statistical resources.</span>
+<span id="cb17-79"><a href="#cb17-79"></a></span>
+<span id="cb17-80"><a href="#cb17-80"></a><span class="ss">-   </span>**Regional Bias***:* Countries with well-developed statistical infrastructures may provide more accurate and detailed data, while those with less robust systems may report less reliable information. This could lead to potential biases in global comparisons and policy-making.</span>
+<span id="cb17-81"><a href="#cb17-81"></a></span>
+<span id="cb17-82"><a href="#cb17-82"></a>Despite these concerns, FAOSTAT remains one of the most reliable sources of agricultural data worldwide, helping researchers and policymakers better understand global food production and its implications for food security and sustainability.</span>
+<span id="cb17-83"><a href="#cb17-83"></a></span>
+<span id="cb17-84"><a href="#cb17-84"></a><span class="fu">## Research Questions</span></span>
+<span id="cb17-85"><a href="#cb17-85"></a></span>
+<span id="cb17-86"><a href="#cb17-86"></a><span class="ss">1.  </span>**How has the global production of staple crops changed over the past 50 years, and what are the regional trends in production?**</span>
+<span id="cb17-87"><a href="#cb17-87"></a></span>
+<span id="cb17-88"><a href="#cb17-88"></a>    Importance:</span>
+<span id="cb17-89"><a href="#cb17-89"></a></span>
+<span id="cb17-90"><a href="#cb17-90"></a>    Understanding long-term changes in agricultural productivity and regional contributions to global crop output is essential. Policymakers and academics can assess how global supply dynamics may shift due to factors like climate change or technological advancements, identifying which regions are becoming more self-sufficient or reliant on imports.</span>
+<span id="cb17-91"><a href="#cb17-91"></a></span>
+<span id="cb17-92"><a href="#cb17-92"></a>    Hypothesis:</span>
+<span id="cb17-93"><a href="#cb17-93"></a></span>
+<span id="cb17-94"><a href="#cb17-94"></a>    While global production of staple crops has increased due to improved agricultural practices and technology, developed regions may show slower growth, whereas developing regions could exhibit significant increases from expanding agricultural practices.</span>
+<span id="cb17-95"><a href="#cb17-95"></a></span>
+<span id="cb17-96"><a href="#cb17-96"></a>    Variables:</span>
+<span id="cb17-97"><a href="#cb17-97"></a></span>
+<span id="cb17-98"><a href="#cb17-98"></a><span class="ss">    -   </span>Quantitative Variables: Production volume, Year</span>
+<span id="cb17-99"><a href="#cb17-99"></a><span class="ss">    -   </span>Categorical Variables: Region (e.g., North America, Europe, Asia), Crop type</span>
+<span id="cb17-100"><a href="#cb17-100"></a></span>
+<span id="cb17-101"><a href="#cb17-101"></a><span class="ss">2.  </span>**How has the global production and trade of livestock commodities changed in response to rising population and demand for protein?**</span>
+<span id="cb17-102"><a href="#cb17-102"></a></span>
+<span id="cb17-103"><a href="#cb17-103"></a>    Importance:</span>
+<span id="cb17-104"><a href="#cb17-104"></a></span>
+<span id="cb17-105"><a href="#cb17-105"></a>    Understanding how livestock production and trade have responded to rising protein demand is crucial for sustainability and meeting global nutritional needs. It also sheds light on the economic factors driving trade and the environmental impact of increased livestock output.</span>
+<span id="cb17-106"><a href="#cb17-106"></a></span>
+<span id="cb17-107"><a href="#cb17-107"></a>    Hypothesis:</span>
+<span id="cb17-108"><a href="#cb17-108"></a></span>
+<span id="cb17-109"><a href="#cb17-109"></a>    As global population and income levels have risen, livestock production and international trade have increased to meet the growing demand for protein-rich foods.</span>
+<span id="cb17-110"><a href="#cb17-110"></a></span>
+<span id="cb17-111"><a href="#cb17-111"></a>    Variables:</span>
+<span id="cb17-112"><a href="#cb17-112"></a></span>
+<span id="cb17-113"><a href="#cb17-113"></a><span class="ss">    -   </span>Quantitative Variables: Livestock production volumes (tons), Trade volumes (imports and exports), Population size, Year</span>
+<span id="cb17-114"><a href="#cb17-114"></a><span class="ss">    -   </span>Categorical Variables:<span class="sc">\*</span> Region (e.g., North America, Europe, Asia), Livestock commodity (e.g., beef, pork, milk)</span>
+<span id="cb17-115"><a href="#cb17-115"></a></span>
+<span id="cb17-116"><a href="#cb17-116"></a><span class="fu">## Analysis plan</span></span>
+<span id="cb17-117"><a href="#cb17-117"></a></span>
+<span id="cb17-118"><a href="#cb17-118"></a><span class="ss">-   </span>A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).</span>
+<span id="cb17-119"><a href="#cb17-119"></a></span>
+<span id="cb17-120"><a href="#cb17-120"></a>| *Task Name* | *Status* | *Assignee* | *Due* | *Priority* | *Summary* |</span>
+<span id="cb17-121"><a href="#cb17-121"></a>|------------|------------|------------|------------|------------|------------|</span>
+<span id="cb17-122"><a href="#cb17-122"></a>| *Data Loading and Cleaning* | In Progress | Jay Patil, Johnson Jeeva John Jacob | Week 1 | High | Load the dataset, handle missing values, format columns, and clean data for analysis. |</span>
+<span id="cb17-123"><a href="#cb17-123"></a>| *Exploratory Data Analysis* | In Progress | Pragnya Narasimha, Sumanth Manohar | Week 2 | High | Analyze basic statistics, explore production trends for crops and livestock, visualize initial insights. |</span>
+<span id="cb17-124"><a href="#cb17-124"></a>| *Question 1 Feature Engineering* | Not Started | Sreeharsha Nalluri, Jay Patil | Week 3 | High | Preprocess the data by extracting relevant features, including handling outliers, creating time-based and regional attributes. |</span>
+<span id="cb17-125"><a href="#cb17-125"></a>| *Question 1 Visualization* | Not Started | Tanmay Nalawade, Johnson Jeeva John Jacob | Week 4 | High | Create visualizations, such as line charts for crop production trends over time and bar charts comparing regional outputs. |</span>
+<span id="cb17-126"><a href="#cb17-126"></a>| *Question 2 Feature Engineering* | Not Started | Sreeharsha Nalluri, Likhith Ramesh | Week 3 | High | Calculate and compare livestock production metrics, including trade data, population-related variables, and regional indicators. |</span>
+<span id="cb17-127"><a href="#cb17-127"></a>| *Question 2 Visualization* | Not Started | Tanmay Nalawade, Sumanth Manohar | Week 4 | High | Create visualizations, including bar charts comparing regional livestock production and line charts for trends in production and trade. |</span>
+<span id="cb17-128"><a href="#cb17-128"></a>| *Drafting and Reviewing Results* | Not Started | Likhith Ramesh, Pragnya Narasimha | Week 5 | Moderate | Compile findings, draft the report, and review the results for insights into global agricultural trends. |</span>
+<span id="cb17-129"><a href="#cb17-129"></a>| *Final Report and Presentation* | Not Started | Pragnya Narasimha, Sumanth Manohar | Week 6 | High | Finalize the report, prepare presentation materials, and present findings on global agricultural production and trade trends. |</span>
+<span id="cb17-130"><a href="#cb17-130"></a></span>
+<span id="cb17-131"><a href="#cb17-131"></a><span class="fu"># 2. Coffee Quality Data</span></span>
+<span id="cb17-132"><a href="#cb17-132"></a></span>
+<span id="cb17-133"><a href="#cb17-133"></a><span class="in">```         </span></span>
+<span id="cb17-134"><a href="#cb17-134"></a><span class="in">Dataset Description:</span></span>
+<span id="cb17-135"><a href="#cb17-135"></a><span class="in">```</span></span>
+<span id="cb17-136"><a href="#cb17-136"></a></span>
+<span id="cb17-137"><a href="#cb17-137"></a><span class="in">```         </span></span>
+<span id="cb17-138"><a href="#cb17-138"></a><span class="in">**Coffee Quality Data:** This dataset provides insights into the quality of coffee produced in various regions around the world. It includes key metrics such as flavor, aftertaste, acidity, and body, along with environmental factors like altitude and region of origin. The data allows us to explore how these factors influence the overall quality of coffee.</span></span>
+<span id="cb17-139"><a href="#cb17-139"></a></span>
+<span id="cb17-140"><a href="#cb17-140"></a><span class="in">**Provenance:** The dataset includes coffee quality evaluations and environmental factors from coffee producers globally. It is collected from cupping sessions and other quality assessments performed by coffee professionals.</span></span>
+<span id="cb17-141"><a href="#cb17-141"></a></span>
+<span id="cb17-142"><a href="#cb17-142"></a><span class="in">**Dimensions:** The dataset consists of 989 rows and 23 columns that provide information about the coffee’s origin, environmental conditions, and quality scores.</span></span>
+<span id="cb17-143"><a href="#cb17-143"></a><span class="in">```</span></span>
+<span id="cb17-144"><a href="#cb17-144"></a></span>
+<span id="cb17-145"><a href="#cb17-145"></a><span class="in">```         </span></span>
+<span id="cb17-146"><a href="#cb17-146"></a><span class="in">Column Overview:</span></span>
+<span id="cb17-147"><a href="#cb17-147"></a><span class="in">```</span></span>
+<span id="cb17-148"><a href="#cb17-148"></a></span>
+<span id="cb17-149"><a href="#cb17-149"></a><span class="ss">1.  </span>**Location.Country:** Name of the country where the coffee was produced.</span>
+<span id="cb17-150"><a href="#cb17-150"></a><span class="ss">2.  </span>**Location.Region:** Specific region of production within the country.</span>
+<span id="cb17-151"><a href="#cb17-151"></a><span class="ss">3.  </span>**Location.Altitude.Min:** Minimum altitude where the coffee was grown.</span>
+<span id="cb17-152"><a href="#cb17-152"></a><span class="ss">4.  </span>**Location.Altitude.Max:** Maximum altitude where the coffee was grown.</span>
+<span id="cb17-153"><a href="#cb17-153"></a><span class="ss">5.  </span>**Data.Owner:** Organization or individual that provided the coffee sample.</span>
+<span id="cb17-154"><a href="#cb17-154"></a><span class="ss">6.  </span>**Data.Type.Species:** Species of coffee (e.g., Arabica).</span>
+<span id="cb17-155"><a href="#cb17-155"></a><span class="ss">7.  </span>**Data.Scores.Flavor:** Flavor score (e.g., a number between 0 and 10).</span>
+<span id="cb17-156"><a href="#cb17-156"></a><span class="ss">8.  </span>**Data.Scores.Aftertaste:** Aftertaste score (e.g., a number between 0 and 10).</span>
+<span id="cb17-157"><a href="#cb17-157"></a><span class="ss">9.  </span>**Data.Scores.Acidity:** Acidity score (e.g., a number between 0 and 10).</span>
+<span id="cb17-158"><a href="#cb17-158"></a><span class="ss">10. </span>**Data.Scores.Body:** Body score (e.g., a number between 0 and 10).</span>
+<span id="cb17-159"><a href="#cb17-159"></a><span class="ss">11. </span>**Data.Scores.Balance:** Balance score (e.g., a number between 0 and 10).</span>
+<span id="cb17-160"><a href="#cb17-160"></a><span class="ss">12. </span>**Data.Scores.Total:** Total score combining all aspects of coffee quality.</span>
+<span id="cb17-161"><a href="#cb17-161"></a></span>
+<span id="cb17-162"><a href="#cb17-162"></a>------------------------------------------------------------------------</span>
+<span id="cb17-163"><a href="#cb17-163"></a></span>
+<span id="cb17-164"><a href="#cb17-164"></a><span class="fu">## Introduction and Data:</span></span>
+<span id="cb17-165"><a href="#cb17-165"></a></span>
+<span id="cb17-166"><a href="#cb17-166"></a><span class="in">```         </span></span>
+<span id="cb17-167"><a href="#cb17-167"></a><span class="in">Source of the Data:</span></span>
+<span id="cb17-168"><a href="#cb17-168"></a><span class="in">```</span></span>
+<span id="cb17-169"><a href="#cb17-169"></a></span>
+<span id="cb17-170"><a href="#cb17-170"></a>The dataset is composed of coffee quality evaluations, collected from cupping sessions conducted by coffee producers or quality testers. It captures detailed metrics on the sensory attributes of coffee, including flavor, acidity, and aftertaste, as well as geographic and environmental factors like region and altitude.</span>
+<span id="cb17-171"><a href="#cb17-171"></a></span>
+<span id="cb17-172"><a href="#cb17-172"></a><span class="in">```         </span></span>
+<span id="cb17-173"><a href="#cb17-173"></a><span class="in">Data Collection:</span></span>
+<span id="cb17-174"><a href="#cb17-174"></a><span class="in">```</span></span>
+<span id="cb17-175"><a href="#cb17-175"></a></span>
+<span id="cb17-176"><a href="#cb17-176"></a>The data was probably gathered from various coffee-producing regions and may have been assessed by professional coffee tasters. The key attributes measured include coffee species, altitude, and sensory scores for quality, offering a comprehensive view of global coffee production and quality trends.</span>
+<span id="cb17-177"><a href="#cb17-177"></a></span>
+<span id="cb17-178"><a href="#cb17-178"></a><span class="in">```         </span></span>
+<span id="cb17-179"><a href="#cb17-179"></a><span class="in">Description of Observations:</span></span>
+<span id="cb17-180"><a href="#cb17-180"></a><span class="in">```</span></span>
+<span id="cb17-181"><a href="#cb17-181"></a></span>
+<span id="cb17-182"><a href="#cb17-182"></a>Each record represents a coffee sample evaluated for specific quality metrics, such as flavor, aftertaste, acidity, and body. These metrics provide insight into the overall quality of coffee produced in different regions. Additional details about the environment, such as altitude and region, allow for analysis of how these factors impact coffee quality.</span>
+<span id="cb17-183"><a href="#cb17-183"></a></span>
+<span id="cb17-184"><a href="#cb17-184"></a><span class="in">```         </span></span>
+<span id="cb17-185"><a href="#cb17-185"></a><span class="in">Ethical Concerns:</span></span>
+<span id="cb17-186"><a href="#cb17-186"></a><span class="in">```</span></span>
+<span id="cb17-187"><a href="#cb17-187"></a></span>
+<span id="cb17-188"><a href="#cb17-188"></a><span class="ss">-   </span>**Producer Privacy:** The dataset may include the names of coffee producers, which could reveal sensitive business information.</span>
+<span id="cb17-189"><a href="#cb17-189"></a><span class="ss">-   </span>**Data Accuracy:** There may be variability in the evaluation methods used across regions, which could affect the consistency of quality scores.</span>
+<span id="cb17-190"><a href="#cb17-190"></a></span>
+<span id="cb17-191"><a href="#cb17-191"></a>------------------------------------------------------------------------</span>
+<span id="cb17-192"><a href="#cb17-192"></a></span>
+<span id="cb17-193"><a href="#cb17-193"></a><span class="fu">## Research Questions</span></span>
+<span id="cb17-194"><a href="#cb17-194"></a></span>
+<span id="cb17-195"><a href="#cb17-195"></a><span class="ss">1.  </span>**How do environmental factors, such as altitude and geographic region, affect coffee quality?**</span>
+<span id="cb17-196"><a href="#cb17-196"></a></span>
+<span id="cb17-197"><a href="#cb17-197"></a>    Importance: Environmental factors like altitude and region are often considered crucial in determining coffee quality. Understanding how these factors influence sensory metrics like flavor, aftertaste, and acidity is important for both coffee producers and consumers. This analysis could provide insights into optimal growing conditions for high-quality coffee.</span>
+<span id="cb17-198"><a href="#cb17-198"></a></span>
+<span id="cb17-199"><a href="#cb17-199"></a>    Hypothesis: Coffee grown at higher altitudes will generally receive higher flavor and overall quality scores due to favorable growing conditions.</span>
+<span id="cb17-200"><a href="#cb17-200"></a></span>
+<span id="cb17-201"><a href="#cb17-201"></a>    Variables:</span>
+<span id="cb17-202"><a href="#cb17-202"></a></span>
+<span id="cb17-203"><a href="#cb17-203"></a><span class="ss">    -   </span>Quantitative: Altitude, Flavor score, Acidity score</span>
+<span id="cb17-204"><a href="#cb17-204"></a><span class="ss">    -   </span>Categorical: Region, Country, Coffee species</span>
+<span id="cb17-205"><a href="#cb17-205"></a></span>
+<span id="cb17-206"><a href="#cb17-206"></a>------------------------------------------------------------------------</span>
+<span id="cb17-207"><a href="#cb17-207"></a></span>
+<span id="cb17-208"><a href="#cb17-208"></a><span class="ss">2.  </span>**Do coffees with higher sweetness scores also score higher in overall quality, or is there an inverse relationship?**</span>
+<span id="cb17-209"><a href="#cb17-209"></a></span>
+<span id="cb17-210"><a href="#cb17-210"></a>    Importance: Sweetness is a desirable quality in coffee, but it’s important to assess whether a high sweetness score correlates with higher overall quality or whether it sometimes detracts from other attributes.</span>
+<span id="cb17-211"><a href="#cb17-211"></a></span>
+<span id="cb17-212"><a href="#cb17-212"></a>    Hypothesis: Coffees with higher sweetness scores will generally have higher total quality scores, although some very sweet coffees may score lower due to imbalances in other attributes.</span>
+<span id="cb17-213"><a href="#cb17-213"></a></span>
+<span id="cb17-214"><a href="#cb17-214"></a>    Variables:</span>
+<span id="cb17-215"><a href="#cb17-215"></a></span>
+<span id="cb17-216"><a href="#cb17-216"></a><span class="ss">    -   </span>Quantitative: Sweetness score, Total quality score</span>
+<span id="cb17-217"><a href="#cb17-217"></a><span class="ss">    -   </span>Categorical: Coffee species, Region</span>
+<span id="cb17-218"><a href="#cb17-218"></a></span>
+<span id="cb17-219"><a href="#cb17-219"></a>------------------------------------------------------------------------</span>
+<span id="cb17-220"><a href="#cb17-220"></a></span>
+<span id="cb17-221"><a href="#cb17-221"></a><span class="fu">## Analysis Plan</span></span>
+<span id="cb17-222"><a href="#cb17-222"></a></span>
+<span id="cb17-223"><a href="#cb17-223"></a><span class="ss">-   </span>A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).</span>
+<span id="cb17-224"><a href="#cb17-224"></a></span>
+<span id="cb17-225"><a href="#cb17-225"></a>| **Task Name** | **Status** | **Assignee** | **Due** | **Priority** | **Summary** |</span>
+<span id="cb17-226"><a href="#cb17-226"></a>|------------|------------|------------|------------|------------|------------|</span>
+<span id="cb17-227"><a href="#cb17-227"></a>| Data Loading and Cleaning | Not started | Jay Patil, Johnson Jeeva John Jacob | Week 1 | High | Load the dataset, handle missing values, format columns, and clean data for analysis. |</span>
+<span id="cb17-228"><a href="#cb17-228"></a>| Exploratory Data Analysis | Not started | Pragnya Narasimha, Sumanth Manohar | Week 2 | High | Analyze basic statistics, explore production trends for coffee quality, visualize initial insights. |</span>
+<span id="cb17-229"><a href="#cb17-229"></a>| Question 1 Feature Engineering | Not Started | Sreeharsha Nalluri, Jay Patil | Week 3 | High | Preprocess the data by extracting relevant features, including handling outliers, creating time-based and regional attributes. |</span>
+<span id="cb17-230"><a href="#cb17-230"></a>| Question 1 Visualization | Not Started | Tanmay Nalawade, Johnson Jeeva John Jacob | Week 4 | High | Create visualizations, such as scatter plots for altitude vs flavor scores and bar charts comparing regional coffee quality. |</span>
+<span id="cb17-231"><a href="#cb17-231"></a>| Question 2 Feature Engineering | Not Started | Sreeharsha Nalluri, Likhith Ramesh | Week 3 | High | Calculate and compare processing methods, and extract metrics related to flavor and balance. |</span>
+<span id="cb17-232"><a href="#cb17-232"></a>| Question 2 Visualization | Not Started | Tanmay Nalawade, Sumanth Manohar | Week 4 | High | Create visualizations, including bar charts comparing processing methods and their effect on flavor and balance scores. |</span>
+<span id="cb17-233"><a href="#cb17-233"></a>| Drafting and Reviewing Results | Not Started | Likhith Ramesh, Pragnya Narasimha | Week 5 | Moderate | Compile findings, draft the report, and review the results for insights into global coffee quality trends. |</span>
+<span id="cb17-234"><a href="#cb17-234"></a>| Final Report and Presentation | Not Started | Jeeva John Jacob, Sumanth Manohar | Week 6 | High | Finalize the report, prepare presentation materials, and present findings on coffee quality and environmental influences. |</span>
+<span id="cb17-235"><a href="#cb17-235"></a></span>
+<span id="cb17-236"><a href="#cb17-236"></a><span class="fu"># 3. Trash Wheel Data</span></span>
+<span id="cb17-237"><a href="#cb17-237"></a></span>
+<span id="cb17-238"><a href="#cb17-238"></a><span class="in">```         </span></span>
+<span id="cb17-239"><a href="#cb17-239"></a><span class="in">  Dataset Description:</span></span>
+<span id="cb17-240"><a href="#cb17-240"></a></span>
+<span id="cb17-241"><a href="#cb17-241"></a><span class="in">  **Trash Wheel Data:** This dataset provides insights into the amount of trash collected by trash wheels in rivers and harbors. It includes key metrics such as the type of waste collected, weight, volume, and environmental factors like water flow and rainfall.</span></span>
+<span id="cb17-242"><a href="#cb17-242"></a></span>
+<span id="cb17-243"><a href="#cb17-243"></a><span class="in">**Provenance:** The dataset includes trash collection data from various trash wheels deployed in different locations, focusing on environmental cleanup efforts in urban waterways.</span></span>
+<span id="cb17-244"><a href="#cb17-244"></a></span>
+<span id="cb17-245"><a href="#cb17-245"></a><span class="in">**Dimensions:** The dataset consists of multiple rows and columns detailing the type of waste collected (plastic, organic, etc.), location, and environmental metrics.</span></span>
+<span id="cb17-246"><a href="#cb17-246"></a></span>
+<span id="cb17-247"><a href="#cb17-247"></a><span class="in">Column Overview:</span></span>
+<span id="cb17-248"><a href="#cb17-248"></a><span class="in">```</span></span>
+<span id="cb17-249"><a href="#cb17-249"></a></span>
+<span id="cb17-250"><a href="#cb17-250"></a><span class="ss">1.  </span>**Dumpster:** Identification of the dumpster where trash was collected.</span>
+<span id="cb17-251"><a href="#cb17-251"></a><span class="ss">2.  </span>**Month:** The month when the data was recorded.</span>
+<span id="cb17-252"><a href="#cb17-252"></a><span class="ss">3.  </span>**Year:** The year when the data was recorded.</span>
+<span id="cb17-253"><a href="#cb17-253"></a><span class="ss">4.  </span>**Date:** Specific date of trash collection.</span>
+<span id="cb17-254"><a href="#cb17-254"></a><span class="ss">5.  </span>**Weight (tons):** Weight of trash collected (in tons).</span>
+<span id="cb17-255"><a href="#cb17-255"></a><span class="ss">6.  </span>**Volume (cubic yards):** Volume of trash collected (in cubic yards).</span>
+<span id="cb17-256"><a href="#cb17-256"></a><span class="ss">7.  </span>**Plastic Bottles:** Number of plastic bottles collected.</span>
+<span id="cb17-257"><a href="#cb17-257"></a><span class="ss">8.  </span>**Polystyrene:** Amount of polystyrene collected.</span>
+<span id="cb17-258"><a href="#cb17-258"></a><span class="ss">9.  </span>**Cigarette Butts:** Number of cigarette butts collected.</span>
+<span id="cb17-259"><a href="#cb17-259"></a><span class="ss">10. </span>**Glass Bottles:** Number of glass bottles collected.</span>
+<span id="cb17-260"><a href="#cb17-260"></a><span class="ss">11. </span>**Plastic Bags:** Number of plastic bags collected.</span>
+<span id="cb17-261"><a href="#cb17-261"></a><span class="ss">12. </span>**Wrappers:** Number of wrappers collected.</span>
+<span id="cb17-262"><a href="#cb17-262"></a><span class="ss">13. </span>**Sports Balls:** Number of sports balls collected.</span>
+<span id="cb17-263"><a href="#cb17-263"></a><span class="ss">14. </span>**Homes Powered:** Number of homes that could be powered by the energy produced from the collected waste.</span>
+<span id="cb17-264"><a href="#cb17-264"></a></span>
+<span id="cb17-265"><a href="#cb17-265"></a>------------------------------------------------------------------------</span>
+<span id="cb17-266"><a href="#cb17-266"></a></span>
+<span id="cb17-267"><a href="#cb17-267"></a><span class="fu">## Introduction and Data:</span></span>
+<span id="cb17-268"><a href="#cb17-268"></a></span>
+<span id="cb17-269"><a href="#cb17-269"></a><span class="in">```         </span></span>
+<span id="cb17-270"><a href="#cb17-270"></a><span class="in">Source of the Data:</span></span>
+<span id="cb17-271"><a href="#cb17-271"></a><span class="in">```</span></span>
+<span id="cb17-272"><a href="#cb17-272"></a></span>
+<span id="cb17-273"><a href="#cb17-273"></a>This dataset is composed of information on trash collection by trash wheels deployed in various urban waterways. The data captures details on the types of trash collected, environmental factors such as rainfall and water flow, and other metrics associated with trash collection operations.</span>
+<span id="cb17-274"><a href="#cb17-274"></a></span>
+<span id="cb17-275"><a href="#cb17-275"></a><span class="in">```         </span></span>
+<span id="cb17-276"><a href="#cb17-276"></a><span class="in">Data Collection:</span></span>
+<span id="cb17-277"><a href="#cb17-277"></a><span class="in">```</span></span>
+<span id="cb17-278"><a href="#cb17-278"></a></span>
+<span id="cb17-279"><a href="#cb17-279"></a>The data was gathered from trash wheels installed in urban rivers and harbors. Key attributes measured include waste types, collection weight, and environmental factors like rainfall and water flow, offering insights into the impact of environmental conditions on waste accumulation.</span>
+<span id="cb17-280"><a href="#cb17-280"></a></span>
+<span id="cb17-281"><a href="#cb17-281"></a><span class="in">```         </span></span>
+<span id="cb17-282"><a href="#cb17-282"></a><span class="in">Description of Observations:</span></span>
+<span id="cb17-283"><a href="#cb17-283"></a><span class="in">```</span></span>
+<span id="cb17-284"><a href="#cb17-284"></a></span>
+<span id="cb17-285"><a href="#cb17-285"></a>Each record represents a specific collection event where waste was removed from the water by a trash wheel. The data includes metrics like the weight and volume of trash, categorized by type, as well as environmental factors that may influence the quantity of trash collected.</span>
+<span id="cb17-286"><a href="#cb17-286"></a></span>
+<span id="cb17-287"><a href="#cb17-287"></a><span class="in">```         </span></span>
+<span id="cb17-288"><a href="#cb17-288"></a><span class="in">Ethical Concerns:</span></span>
+<span id="cb17-289"><a href="#cb17-289"></a><span class="in">```</span></span>
+<span id="cb17-290"><a href="#cb17-290"></a></span>
+<span id="cb17-291"><a href="#cb17-291"></a><span class="ss">-   </span>**Data Transparency:** The data should ensure that it accurately reflects the amount of waste collected without manipulation or misrepresentation.</span>
+<span id="cb17-292"><a href="#cb17-292"></a><span class="ss">-   </span>**Environmental Impact:** The dataset should promote positive environmental actions without stigmatizing certain areas for waste pollution.</span>
+<span id="cb17-293"><a href="#cb17-293"></a></span>
+<span id="cb17-294"><a href="#cb17-294"></a>------------------------------------------------------------------------</span>
+<span id="cb17-295"><a href="#cb17-295"></a></span>
+<span id="cb17-296"><a href="#cb17-296"></a><span class="fu">## Research Questions</span></span>
+<span id="cb17-297"><a href="#cb17-297"></a></span>
+<span id="cb17-298"><a href="#cb17-298"></a><span class="ss">1.  </span>**How do environmental factors such as rainfall and water flow affect the volume of trash collected by trash wheels?**</span>
+<span id="cb17-299"><a href="#cb17-299"></a></span>
+<span id="cb17-300"><a href="#cb17-300"></a>    Importance: Environmental factors like rainfall and water flow are critical in understanding the behavior of waste in waterways. This analysis could provide insights into how trash wheels perform under different environmental conditions.</span>
+<span id="cb17-301"><a href="#cb17-301"></a></span>
+<span id="cb17-302"><a href="#cb17-302"></a>    Hypothesis: Higher rainfall and water flow will result in a larger volume of trash collected by trash wheels due to increased debris being washed into waterways.</span>
+<span id="cb17-303"><a href="#cb17-303"></a></span>
+<span id="cb17-304"><a href="#cb17-304"></a>    Variables:</span>
+<span id="cb17-305"><a href="#cb17-305"></a></span>
+<span id="cb17-306"><a href="#cb17-306"></a><span class="ss">    -   </span>Quantitative: Rainfall, Water flow, Trash volume</span>
+<span id="cb17-307"><a href="#cb17-307"></a><span class="ss">    -   </span>Categorical: City, Body of water</span>
+<span id="cb17-308"><a href="#cb17-308"></a></span>
+<span id="cb17-309"><a href="#cb17-309"></a>------------------------------------------------------------------------</span>
+<span id="cb17-310"><a href="#cb17-310"></a></span>
+<span id="cb17-311"><a href="#cb17-311"></a><span class="ss">2.  </span>**How do the weight and volume of collected trash correlate with specific trash items, and what impact does this have on energy generation?**</span>
+<span id="cb17-312"><a href="#cb17-312"></a></span>
+<span id="cb17-313"><a href="#cb17-313"></a>Importance: Understanding how specific waste types (e.g., plastic bottles, cigarette butts) affect the total weight and volume helps identify major contributors to trash. Additionally, evaluating the relationship between trash weight and energy generation (&quot;Homes Powered&quot;) can provide insights into waste-to-energy efficiency.</span>
+<span id="cb17-314"><a href="#cb17-314"></a></span>
+<span id="cb17-315"><a href="#cb17-315"></a>Hypothesis: Higher amounts of glass bottles will strongly correlate with greater weight and volume, and heavier trash will generate more energy.</span>
+<span id="cb17-316"><a href="#cb17-316"></a></span>
+<span id="cb17-317"><a href="#cb17-317"></a>Variables: - Quantitative: Weight, Volume, Plastic bottles, Cigarette butts, Homes Powered - Categorical: Waste type</span>
+<span id="cb17-318"><a href="#cb17-318"></a></span>
+<span id="cb17-319"><a href="#cb17-319"></a>------------------------------------------------------------------------</span>
+<span id="cb17-320"><a href="#cb17-320"></a></span>
+<span id="cb17-321"><a href="#cb17-321"></a><span class="fu">## Analysis Plan</span></span>
+<span id="cb17-322"><a href="#cb17-322"></a></span>
+<span id="cb17-323"><a href="#cb17-323"></a>| **Task Name** | **Status** | **Assignee** | **Due** | **Priority** | **Summary** |</span>
+<span id="cb17-324"><a href="#cb17-324"></a>|------------|------------|------------|------------|------------|------------|</span>
+<span id="cb17-325"><a href="#cb17-325"></a>| Data Loading and Cleaning | In Progress | Jay Patil, Johnson Jeeva John Jacob | Week 1 | High | Load the dataset, handle missing values, format columns, and clean data for analysis. |</span>
+<span id="cb17-326"><a href="#cb17-326"></a>| Exploratory Data Analysis | In Progress | Pragnya Narasimha, Sumanth Manohar | Week 2 | High | Analyze basic statistics, explore trends in trash collection, and visualize initial insights. |</span>
+<span id="cb17-327"><a href="#cb17-327"></a>| Question 1 Feature Engineering | Not Started | Sreeharsha Nalluri, Jay Patil | Week 3 | High | Preprocess the data by extracting relevant features, handling outliers, and merging external environmental data. |</span>
+<span id="cb17-328"><a href="#cb17-328"></a>| Question 1 Visualization | Not Started | Tanmay Nalawade, Johnson Jeeva John Jacob | Week 4 | High | Create visualizations, such as scatter plots for rainfall vs trash volume and bar charts comparing city vs. rural trash types. |</span>
+<span id="cb17-329"><a href="#cb17-329"></a>| Question 2 Feature Engineering | Not Started | Sreeharsha Nalluri, Likhith Ramesh | Week 3 | High | Create features related to waste type, perform comparisons across regions, and analyze trash composition. |</span>
+<span id="cb17-330"><a href="#cb17-330"></a>| Question 2 Visualization | Not Started | Tanmay Nalawade, Sumanth Manohar | Week 4 | High | Create visualizations, including pie charts for trash types and stacked bar charts comparing trash types across cities. |</span>
+<span id="cb17-331"><a href="#cb17-331"></a>| Drafting and Reviewing Results | Not Started | Likhith Ramesh, Pragnya Narasimha | Week 5 | Moderate | Compile findings, draft the report, and review results for trends in trash collection and environmental factors. |</span>
+<span id="cb17-332"><a href="#cb17-332"></a>| Final Report and Presentation | Not Started | Sreeharsha Nalluri, Sumanth Manohar | Week 6 | High | Finalize the report, prepare presentation materials, and present findings on trash collection and environmental influences. |</span>
+<span id="cb17-333"><a href="#cb17-333"></a></span>
+<span id="cb17-334"><a href="#cb17-334"></a>After careful consideration of the available datasets, we have chosen to proceed with the **FAOSTAT Crop and Livestock Production dataset** for the remainder of the project. This dataset was selected due to its rich potential for uncovering global agricultural trends, its strong alignment with our research questions, and the significance of the insights it can provide on food production and sustainability. By concentrating on this dataset, we aim to perform an in-depth analysis and thoroughly address the research objectives of our project.</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

@@ -14,230 +14,6 @@ format:
     background-transition: fade
 ---
 
-```{r}
-#| label: load-libraries
-#| include: false
-
-library(dplyr)
-library(ggplot2)
-library(tidyr)
-library(readr)
-library(sf)
-library(rnaturalearth)
-library(viridis)
-library(leaflet)
-```
-
-```{css}
-    .plot-container {
-      width: 800px; /* Adjust width as needed */
-      height:300px; /* Adjust height as needed */
-    }
-```
-
-------------------------------------------------------------------------
-
-```{r, GETTING THE LIBRARIES}
-if (!require(pacman))
-  install.packages(pacman)
-
-
-pacman::p_load(tidyverse,
-               dplyr,
-               janitor,
-               here,
-               plotly,
-               gganimate,
-               scales,
-               gifski,
-               ggimage,
-               ggtext,magick,
-               tidymodels,
-               animation)
-
-pacman::p_load_gh("BlakeRMills/MoMAColors")
-  message = FALSE
-
-
-```
-
-```{r}
-#| label: setup
-#| include: false
-
-# Plot theme
-ggplot2::theme_set(ggplot2::theme_minimal(base_size = 11))
-
-# For better figure resolution
-knitr::opts_chunk$set(
-  fig.retina = 3,
-  dpi = 300,
-  fig.width = 5, 
-  fig.asp = 0.618 
-  )
-```
-
-```{r}
-#| label: load-data
-#| include: false
-
-# Load data here
-prod_data <- read.csv("data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_All_Data.csv")
-area_codes <- read.csv("data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_AreaCodes.csv")
-item_codes <- read.csv("data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_ItemCodes.csv")
-elements <- read.csv("data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_Elements.csv")
-
-livestock_data <- read.csv("./data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_All_Data.csv")
-area_codes <- read.csv("./data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_AreaCodes.csv")
-elements <- read.csv("./data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_Elements.csv")
-item_codes <- read.csv("./data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_ItemCodes.csv")
-```
-
-```{r , fig.height=9,fig.width=12}
-# Load required libraries
-# Define the top 10 staple crops based on Item names
-top_crops <- c("Wheat", "Rice", "Maize (corn)", "Potatoes", "Barley", 
-               "Cassava", "Sweet potatoes", "Sorghum", "Oats", "Beans")
-
-# Filter the data for these crops and "Production" element (not "Area harvested")
-prod_data_filtered <- prod_data %>%
-  filter(Item %in% top_crops) %>%
-  filter(Element == "Production") %>%
-  select(Area, Item, Element, Unit, starts_with('Y'))  # Select relevant columns
-
-# Remove columns that have characters like 'F' or 'N' in their names (e.g. Y1961F, Y1961N)
-prod_data_filtered <- prod_data_filtered %>%
-  select(-matches("F$|N$"))  # Remove columns ending with "F" or "N"
-
-# Pivot the data so that each year's production is a separate column
-prod_data_long <- prod_data_filtered %>%
-  pivot_longer(cols = starts_with("Y"), 
-               names_to = "Year", 
-               values_to = "Production") %>%
-  filter(!is.na(Production))  # Remove rows with missing production data
-
-# Convert Year to numeric and Production to numeric
-prod_data_long <- prod_data_long %>%
-  mutate(Year = as.numeric(gsub("Y", "", Year)),  # Extract numeric year from column names
-         Production = as.numeric(Production))  # Ensure production is numeric
-
-# Export the cleaned data to a CSV file
-write.csv(prod_data_long, "data/Processed_Staple_Crops_Production.csv", row.names = FALSE)
-
-# Classify countries into Developed and Developing
-developed_countries <- c("United States", "Canada", "Germany", "United Kingdom", "France", "Australia", "Japan")
-developing_countries <- c("India", "China", "Brazil", "Nigeria", "Indonesia", "Mexico", "South Africa")
-
-prod_data_long <- prod_data_long %>%
-  mutate(
-    Country_Category = case_when(
-      Area %in% developed_countries ~ "Developed",
-      Area %in% developing_countries ~ "Developing",
-      TRUE ~ "Other"
-    )
-  )
-
-# Filter and aggregate production by year and category
-prod_data_classified <- prod_data_long %>%
-  filter(Country_Category %in% c("Developed", "Developing"))
-
-agg_trends <- prod_data_classified %>%
-  group_by(Year, Country_Category) %>%
-  summarize(Total_Production = sum(Production, na.rm = TRUE), .groups = "drop")
-
-```
-
-```{r}
-# Identifying livestock commodities that we want
-livestock_items <- c("Beef and Buffalo Meat, primary", "Fat of pigs", "Meat, Poultry", "Sheep and Goat Meat", "Milk, Total")
-
-# Filtering for livestock production and trade data
-livestock_data_filtered <- livestock_data %>%
-  filter(Item %in% livestock_items,
-         Element %in% c("Production", "Area harvested", "Yield")) %>%
-  select(Area, Item, Element, starts_with("Y"))
-
-columns_to_pivot <- grep("^Y[0-9]{4}$", names(livestock_data_filtered), value = TRUE)
-
-# Reshaping the data to long format
-livestock_data_long <- livestock_data_filtered %>%
-  pivot_longer(
-    cols = all_of(columns_to_pivot),
-    names_to = "Year",
-    values_to = "Value"
-  ) %>%
-  mutate(Year = as.numeric(gsub("Y", "", Year))) # To convert Year to numeric
-
-# Remove rows with missing Year values if there are any
-livestock_data_long <- livestock_data_long %>%
-  filter(!is.na(Year))
-
-# Aggregate data by year and element
-aggregated_data <- livestock_data_long %>%
-  group_by(Year, Element) %>%
-  summarise(Total_Value = sum(Value, na.rm = TRUE), .groups = "drop")
-
-# Step 4: Decode area names and item names
-area_decoded <- area_codes %>%
-  rename(Area_Code = `Area.Code`, Area_Name = Area)
-
-item_decoded <- item_codes %>%
-  rename(Item_Code = `Item.Code`, Item_Name = `Item`)
-
-# For plot 2
-commodity_trends <- livestock_data_long %>%
-  filter(Element == "Production") %>%
-  group_by(Year, Item) %>%
-  summarise(Total_Production = sum(Value, na.rm = TRUE), .groups = "drop")
-
-# For plot 3
-# Load Natural Earth data for country boundaries
-world <- ne_countries(scale = "medium", returnclass = "sf")
-
-# Prepare data for map-based visualizations
-# Summarize livestock production by country
-map_data <- livestock_data_long %>%
-  filter(Element %in% c("Production", "Export Quantity", "Import Quantity")) %>%
-  group_by(Area, Element) %>%
-  summarize(Total_Value = sum(Value, na.rm = TRUE)) %>%
-  ungroup()
-
-# Merge map data with country boundaries
-map_data <- map_data %>%
-  left_join(world, by = c("Area" = "admin"))
-
-# Create separate datasets for production, export, and import
-map_production <- map_data %>%
-  filter(Element == "Production")
-
-map_trade <- map_data %>%
-  filter(Element %in% c("Export Quantity", "Import Quantity")) %>%
-  mutate(Trade_Type = ifelse(Element == "Export Quantity", "Export", "Import"))
-
-#For Interactive plot 4
-# Ensure `geometry` column is in correct SF format
-map_production_sf <- map_production %>%
-  st_as_sf()
-
-population_data <- data.frame(
-  Area = unique(map_production$Area),
-  Population = runif(length(unique(map_production$Area)), 1e6, 1e8) # Simulated population
-)
-
-# Merge population data to calculate per capita production
-map_production <- map_production %>%
-  left_join(population_data, by = "Area") %>%
-  mutate(Per_Capita_Production = Total_Value / Population)
-
-# Convert to sf object
-map_production_sf <- map_production %>%
-  st_as_sf()
-
-# Step 2: Define color palette
-production_pal <- colorNumeric("YlGn", domain = map_production_sf$Total_Value)
-per_capita_pal <- colorNumeric("Blues", domain = map_production_sf$Per_Capita_Production)
-```
-
 ## Introduction
 
 ::: incremental
@@ -249,15 +25,15 @@ per_capita_pal <- colorNumeric("Blues", domain = map_production_sf$Per_Capita_Pr
 
 ::: incremental
 -   **Dataset Description**: This report examines the FAOSTAT Crop and Livestock Production dataset, offering comprehensive global agricultural production statistics for over 200 countries.
--   **Features**: It includes data on crop production volumes, harvested areas, yields, and livestock statistics, aiming to analyze agricultural productivity trends, regional outputs, and sustainable agricultural practices. FAO uses estimation methods. This ensures consistency in the data for over 200 countries and regions. *"Source" : [FAO FAOSTAT](https://www.fao.org/faostat/en/#data/QCL/visualize)*
+-   **Features**: It includes data on crop production volumes, harvested areas, yields, and livestock statistics, aiming to analyze agricultural productivity trends, regional outputs, and sustainable agricultural practices. FAO uses estimation methods, ensuring consistency in the data for over 200 countries and regions.\
+    *Source: [FAO FAOSTAT](https://www.fao.org/faostat/en/#data/QCL/visualize)*
 :::
 
 ## Project Approach
 
 ::: incremental
--   **Data Cleaning:**We cleaned the dataset by removing rows with missing values in key columns such as *Area*, *Item*, and *Element* to ensure completeness. The cleaned data was then structured with *Year* and *Item* as grouping variables and *Value* representing total production or harvested area. This preprocessing step enabled focused and accurate analysis of agricultural trends.
-
--   **Exploratory Data Analysis (EDA):** Uncover crop production & live stocks patterns and trends using statistical methods and visualizations.
+-   **Data Cleaning**: We cleaned the dataset by removing rows with missing values in key columns such as *Area*, *Item*, and *Element* to ensure completeness. The cleaned data was then structured with *Year* and *Item* as grouping variables, and *Value* representing total production or harvested area. This preprocessing step enabled focused and accurate analysis of agricultural trends.
+-   **Exploratory Data Analysis (EDA)**: Uncovered crop production and livestock patterns and trends using statistical methods and visualizations.
 :::
 
 ## Question 1
@@ -301,34 +77,34 @@ library(sf)
 library(rnaturalearth)
 library(viridis)
 
-# Step 1: Load the map data (world map)
+prod_data_long <- read.csv("data/Processed_Staple_Crops_Production.csv")
+
+# Load world map data
 world <- ne_countries(scale = "medium", returnclass = "sf")
 
-# Step 2: Aggregate production data for the 10 staple crops
-# Define the top 10 crops
+# Aggregate total production of top 10 crops by country
 top_crops <- c("Wheat", "Rice", "Maize (corn)", "Potatoes", "Barley", 
                "Cassava", "Sweet potatoes", "Sorghum", "Oats", "Beans")
 
-# Aggregate total production by country across all years for the top crops
 agg_prod_data <- prod_data_long %>%
   filter(Item %in% top_crops) %>%
   group_by(Area) %>%
   summarize(Total_Production = sum(Production, na.rm = TRUE), .groups = "drop")
 
-# Step 3: Join the aggregated production data with the world map data
+# Join aggregated data with world map
 regional_map_data <- world %>%
-  left_join(agg_prod_data, by = c("name" = "Area"))  # Join by country names
+  left_join(agg_prod_data, by = c("name" = "Area"))
 
-# Step 4: Create the choropleth map with a sequential blue palette and custom color for missing data
+# Create the choropleth map
 ggplot(data = regional_map_data) +
-  geom_sf(aes(fill = Total_Production), color = "black", size = 0.1) +  # Fill countries with production data
+  geom_sf(aes(fill = Total_Production), color = "black", size = 0.1) +
   scale_fill_gradient(
-    low = "#3182bd",  # Light blue
-    high = "#225577", # Dark blue
+    low = "#3182bd", 
+    high = "#225577", 
     name = "Total Production\n(Metric Tons)",
-    labels = scales::comma_format(scale = 1e-6, suffix = "M"),  # Format in millions
-    na.value = "#e0efff",  # Use the specified color (#e0efff) for missing data
-    guide = guide_colorbar(barwidth = 15, barheight = 1)  # Increase the width of the legend
+    labels = scales::comma_format(scale = 1e-6, suffix = "M"), 
+    na.value = "#e0efff", 
+    guide = guide_colorbar(barwidth = 15, barheight = 1)
   ) +
   labs(
     title = "Production of Top 10 Staple Crops",
@@ -336,212 +112,15 @@ ggplot(data = regional_map_data) +
   ) +
   theme_minimal() +
   theme(
-    plot.title = element_text(size = 20, face = "bold", hjust = 0.5),  # Title styling
-    plot.caption = element_text(size = 14, hjust = 1, color = "#e0efff"),  # Caption styling
-    legend.position = "bottom",  # Legend at the bottom
-    legend.title = element_text(size = 16),  # Legend title font size
-    legend.text = element_text(size = 14),  # Legend text font size
-    axis.text = element_blank(),  # Remove axis ticks for cleaner map
-    axis.title = element_blank()  # Remove axis titles
+    plot.title = element_text(size = 20, face = "bold", hjust = 0.5),
+    plot.caption = element_text(size = 14, hjust = 1, color = "#e0efff"),
+    legend.position = "bottom",
+    legend.title = element_text(size = 16),
+    legend.text = element_text(size = 14),
+    axis.text = element_blank(),
+    axis.title = element_blank()
   )
 
-```
-
-#### Insights
-
--   **Developed vs. Developing:** This line plot contrasts production trends in developed and developing countries from 1961 to 2022.
-
--   **Steady vs. Growth:** Highlights steady production in developed nations and a steeper growth trajectory in developing countries.
-
--   **Driving Factors:** Reflects rising demand, advancements in agricultural practices, and economic development in developing regions.
-:::
-
-## Question 2
-
-**(Vulnerability Assessment)**
-
--   How has the global production and trade of livestock commodities changed in response to rising population and demand for protein?
-
-------------------------------------------------------------------------
-
-::: panel-tabset
-#### Plot A
-
-```{r, fig.height=9,fig.width=12}
-
-# Identifying livestock commodities that we want
-livestock_items <- c("Beef and Buffalo Meat, primary", "Fat of pigs", "Meat, Poultry", "Sheep and Goat Meat", "Milk, Total")
-
-# Filtering for livestock production and trade data
-livestock_data_filtered <- livestock_data %>%
-  filter(Item %in% livestock_items,
-         Element %in% c("Production", "Area harvested", "Stocks")) %>%
-  select(Area, Item, Element, starts_with("Y"))
-
-columns_to_pivot <- grep("^Y[0-9]{4}$", names(livestock_data_filtered), value = TRUE)
-
-# Reshaping the data to long format
-livestock_data_long <- livestock_data_filtered %>%
-  pivot_longer(
-    cols = all_of(columns_to_pivot),
-    names_to = "Year",
-    values_to = "Value"
-  ) %>%
-  mutate(Year = as.numeric(gsub("Y", "", Year))) # To convert Year to numeric
-
-# Remove rows with missing Year values if there are any
-livestock_data_long <- livestock_data_long %>%
-  filter(!is.na(Year))
-
-# Aggregate data by year and element
-aggregated_data <- livestock_data_long %>%
-  group_by(Year, Element) %>%
-  summarise(Total_Value = sum(Value, na.rm = TRUE), .groups = "drop")
-
-# Step 4: Decode area names and item names
-area_decoded <- area_codes %>%
-  rename(Area_Code = `Area.Code`, Area_Name = Area)
-
-item_decoded <- item_codes %>%
-  rename(Item_Code = `Item.Code`, Item_Name = `Item`)
-
-# For plot 2
-commodity_trends <- livestock_data_long %>%
-  filter(Element == "Production") %>%
-  group_by(Year, Item) %>%
-  summarise(Total_Production = sum(Value, na.rm = TRUE), .groups = "drop")
-
-# For plot 3
-# Load Natural Earth data for country boundaries
-world <- ne_countries(scale = "medium", returnclass = "sf")
-
-# Prepare data for map-based visualizations
-# Summarize livestock production by country
-map_data <- livestock_data_long %>%
-  filter(Element %in% c("Production", "Export Quantity", "Import Quantity")) %>%
-  group_by(Area, Element) %>%
-  summarize(Total_Value = sum(Value, na.rm = TRUE)) %>%
-  ungroup()
-
-# Merge map data with country boundaries
-map_data <- map_data %>%
-  left_join(world, by = c("Area" = "admin"))
-
-# Create separate datasets for production, export, and import
-map_production <- map_data %>%
-  filter(Element == "Production")
-
-map_trade <- map_data %>%
-  filter(Element %in% c("Export Quantity", "Import Quantity")) %>%
-  mutate(Trade_Type = ifelse(Element == "Export Quantity", "Export", "Import"))
-
-#For Interactive plot 4
-# Ensure `geometry` column is in correct SF format
-map_production_sf <- map_production %>%
-  st_as_sf()
-
-population_data <- data.frame(
-  Area = unique(map_production$Area),
-  Population = runif(length(unique(map_production$Area)), 1e6, 1e8) # Simulated population
-)
-
-# Merge population data to calculate per capita production
-map_production <- map_production %>%
-  left_join(population_data, by = "Area") %>%
-  mutate(Per_Capita_Production = Total_Value / Population)
-
-# Convert to sf object
-map_production_sf <- map_production %>%
-  st_as_sf()
-
-# Step 2: Define color palette
-production_pal <- colorNumeric("YlGn", domain = map_production_sf$Total_Value)
-per_capita_pal <- colorNumeric("Blues", domain = map_production_sf$Per_Capita_Production)
-
-#Plot 1: Trends in livestock production and yeids
-ggplot(data = aggregated_data, aes(x = Year, y = Total_Value / 1e6, color = Element)) +
-  geom_line(linewidth = 1.2) +
-  labs(
-    title = "Global Trends in Livestock Production and Trade",
-    x = "Year",
-    y = "Volume ( Millions - Tons )",
-    color = "Element"
-  ) +
-   theme(
-    plot.title = element_text(size = 22, face = "bold", hjust = 0.5),
-    axis.title.x = element_text(size = 19),
-    axis.title.y = element_text(size = 19),
-    axis.text = element_text(size = 12),
-    plot.caption = element_text(size = 14, hjust = 1, color = "grey30"),
-    legend.position = "right",  # Legend on the right
-    legend.direction = "vertical",  # Stack legend vertically
-    legend.title = element_text(size = 19),
-    legend.text = element_text(size = 18),
-    panel.background = element_rect(fill = "white", color = NA),  # Set white background
-    plot.background = element_rect(fill = "white", color = NA),  # Ensure white plot background
-    panel.grid.major = element_line(color = "grey90"),  # Subtle grid lines
-    panel.grid.minor = element_blank()  # Remove minor grid lines
-  )+
-  scale_y_continuous(labels = scales::comma)
-
-```
-
-#### Plot B
-
-```{r, fig.height=9,fig.width=12 }
-
-
-# Plot 2: Trends in individual livestock commodities (Production Only)
-ggplot(data = commodity_trends, aes(x = Year, y = Total_Production / 1e6, fill = Item)) +
-  geom_area(position = "stack", alpha = 0.7) +
-  labs(
-    title = "Trends in Production of Livestock Commodities",
-    x = "Year",
-    y = "Production Volume ( Millions - Tons )",
-    fill = "Commodity"
-  ) +
-   theme(
-    plot.title = element_text(size = 22, face = "bold", hjust = 0.5),
-    axis.title.x = element_text(size = 19),
-    axis.title.y = element_text(size = 19),
-    axis.text = element_text(size = 12),
-    plot.caption = element_text(size = 14, hjust = 1, color = "grey30"),
-    legend.position = "right",  # Legend on the right
-    legend.direction = "vertical",  # Stack legend vertically
-    legend.title = element_text(size = 19),
-    legend.text = element_text(size = 18),
-    panel.background = element_rect(fill = "white", color = NA),  # Set white background
-    plot.background = element_rect(fill = "white", color = NA),  # Ensure white plot background
-    panel.grid.major = element_line(color = "grey90"),  # Subtle grid lines
-    panel.grid.minor = element_blank()  # Remove minor grid lines
-  )
-```
-
-#### Plot C
-
-```{r, fig.height=9,fig.width=12 }
-
-ggplot() +
-  geom_sf(data = world, fill = "gray90", color = "white") + # Add world map base layer
-  geom_sf(data = map_production, aes(geometry = geometry, fill = cut(Total_Value, 
-    breaks = c(0, 1e5, 5e5, 1e6, 5e6, 1e7, Inf), 
-    labels = c("<100K", "100K-500K", "500K-1M", "1M-5M", "5M-10M", ">10M"))), 
-    color = "black") +
-  scale_fill_manual(
-    values = c("khaki1", "gold", "orange", "darkorange", "pink", "red"), # Custom colors
-    name = "Production (tons)" # Legend title
-  ) +
-  labs(
-    title = "Global Livestock Production",
-    subtitle = "Production volumes (tons) by country",
-    caption = "Source: FAO Livestock Data"
-  ) +
-  theme_minimal() +
-  theme(
-    legend.position = "bottom", # Move legend to the bottom
-    legend.title = element_text(size = 12, face = "bold", hjust = 0.5), # Center-align legend title
-    legend.text = element_text(size = 10) # Customize legend text
-  )
 ```
 
 #### Insights

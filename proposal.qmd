@@ -18,39 +18,7 @@ execute:
   warning: false
 ---
 
-```{r}
-#| label: load-pkgs
-#| message: false
-#| 
-# Install required packages
-
-# Define a function to check and install packages
-check_and_install <- function(package_name) {
-  if (!require(package_name, character.only = TRUE, quietly = TRUE)) {
-    install.packages(package_name, dependencies = TRUE, 
-                     repos = "https://cloud.r-project.org/")
-    library(package_name, character.only = TRUE)
-  }
-}
-
-# Check and install necessary packages
-check_and_install("tidyverse")
-```
-
 # 1. Crop and Livestock Data
-
-```{r}
-#| label: load-dataset
-#| message: false
-
-data = read.csv(file = "data/Production_Crops_Livestock_E_All_Data/Production_Crops_Livestock_E_All_Data.csv")
-
-# Display basic information about the dataset
-dim(data)  # Dimensions of the dataset
-glimpse(data)  # Quick overview of the data
-summary(data)  # Summary statistics
-
-```
 
 **Dataset Description:**
 
@@ -162,19 +130,7 @@ Despite these concerns, FAOSTAT remains one of the most reliable sources of agri
 
 # 2. Coffee Quality Data
 
-```{r}
-#| label: load-dataset1
-#| message: false
-
-data = read.csv(file = "data/Coffee_Data/coffee.csv")
-
-# Display basic information about the dataset
-dim(data)  # Dimensions of the dataset
-glimpse(data)  # Quick overview of the data
-summary(data)  # Summary statistics
-```
-
-```      
+```         
 Dataset Description:
 ```
 
@@ -278,18 +234,6 @@ Ethical Concerns:
 | Final Report and Presentation | Not Started | Jeeva John Jacob, Sumanth Manohar | Week 6 | High | Finalize the report, prepare presentation materials, and present findings on coffee quality and environmental influences. |
 
 # 3. Trash Wheel Data
-
-```{r}
-#| label: load-dataset2
-#| message: false
-
-data = read.csv(file = "data/Trash_Wheel/Trash_Wheel.csv")
-
-# Display basic information about the dataset
-dim(data)  # Dimensions of the dataset
-glimpse(data)  # Quick overview of the data
-summary(data)  # Summary statistics
-```
 
 ```         
   Dataset Description:
